@@ -1,9 +1,6 @@
 #pragma once
 
-#include "Human.h"
-#include "Computer.h"
 #include "Round.h"
-#include <vector>
 
 class Tournament
 {
@@ -12,7 +9,7 @@ public:
     void Start();
     void Load() {}
 private:
-    Human m_human;
     Computer m_computer;
+    Human m_human;
     Round m_round;
 };

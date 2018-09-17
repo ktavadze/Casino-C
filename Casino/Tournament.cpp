@@ -22,14 +22,23 @@ void Tournament::Start()
     int coin = rand() % 2 + 1;
 
     string result;
-    if (coin == 1) {
+    if (coin == 1)
+    {
         result = "Heads";
     }
-    else {
+    else
+    {
         result = "Tails";
     }
     cout << endl << "Result" << endl;
     cout << coin << " - " << result << endl;
 
-    m_round.Start();
+    if (choice == coin)
+    {
+        m_round.Start(m_computer, m_human, true);
+    }
+    else
+    {
+        m_round.Start(m_computer, m_human, false);
+    }
 }
