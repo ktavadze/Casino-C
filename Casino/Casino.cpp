@@ -5,10 +5,12 @@ using namespace std;
 
 int main()
 {
+    cout << "Welcome to Casino!" << endl;
+
     int choice;
     do
     {
-        cout << endl << "Casino" << endl;
+        cout << endl << "Main menu" << endl;
         cout << "1. Start a new game" << endl;
         cout << "2. Load an old game" << endl;
         cout << "3. Quit the game" << endl;

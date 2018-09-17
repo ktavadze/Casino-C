@@ -5,11 +5,11 @@ class Card
 public:
     Card() {}
     Card(char a_suit, int a_value);
-    inline char suit()
+    inline char get_suit()
     {
         return m_suit;
     }
-    inline int value()
+    inline int get_value()
     {
         return m_value;
     }
