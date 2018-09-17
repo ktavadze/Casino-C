@@ -1,0 +1,6 @@
+/.vs/*
+/Debug/*
+/Casino/Debug/*
+/Casino/Casino.vcxproj
+/Casino/Casino.vcxproj.filters
+/Casino/Casino.vcxproj.user
