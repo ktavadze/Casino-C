@@ -1,3 +1,9 @@
+/***********************************************************
+* Name: Konstantine Tavadze                                *
+* Project: Casino - Milestone 2                            *
+* Class: OPL                                               *
+* Date: 9/25/18                                            *
+***********************************************************/
 #include "pch.h"
 #include "Tournament.h"
 
@@ -29,7 +35,7 @@ int main()
         tournament.Load();
         break;
     case 3:
-        return 0;
+        exit(0);
     }
 
     return 0;

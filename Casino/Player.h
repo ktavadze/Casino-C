@@ -32,6 +32,9 @@ public:
     {
         m_pile = a_pile;
     }
+    void Play(std::vector<Card> &a_table);
+    bool MakeMove(std::vector<Card> &a_table);
+    bool Trail(std::vector<Card> &a_table, int a_index);
 private:
     int m_score;
     std::vector<Card> m_hand;

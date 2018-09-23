@@ -7,6 +7,10 @@ class Deck
 {
 public:
     Deck();
+    inline std::stack<Card> get_cards()
+    {
+        return m_cards;
+    }
     inline void set_cards(std::stack<Card> a_cards)
     {
         m_cards = a_cards;
