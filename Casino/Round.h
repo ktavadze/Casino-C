@@ -2,6 +2,7 @@
 
 #include "Computer.h"
 #include "Human.h"
+#include "Table.h"
 #include "Deck.h"
 
 class Round
@@ -15,6 +16,6 @@ private:
     bool m_human_next;
     Computer *m_computer;
     Human *m_human;
+    Table m_table;
     Deck m_deck;
-    std::vector<Card> m_table;
 };

@@ -10,11 +10,13 @@ void Round::Start(Computer& a_computer, Human& a_human, bool a_human_first)
 
     DealCards();
 
+    vector<Card> cards;
     for (int i = 0; i < 4; i++)
     {
         Card card = m_deck.Draw();
-        m_table.push_back(card);
+        cards.push_back(card);
     }
+    m_table.set_cards(cards);
 
     m_human_next = a_human_first;
 
@@ -92,10 +94,11 @@ void Round::DisplayCards()
         cout << card.get_suit() << card.get_value() << "\t";
     }
 
+    vector<Card> cards = m_table.get_cards();
     cout << endl << "Table" << endl;
-    for (unsigned int i = 0; i < m_table.size(); i++)
+    for (unsigned int i = 0; i < cards.size(); i++)
     {
-        Card card = m_table.at(i);
+        Card card = cards.at(i);
         cout << card.get_suit() << card.get_value() << "\t";
     }
     cout << endl;

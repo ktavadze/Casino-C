@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Card.h"
+#include "Table.h"
 #include <vector>
 #include <stack>
 
@@ -32,9 +33,9 @@ public:
     {
         m_pile = a_pile;
     }
-    void Play(std::vector<Card> &a_table);
-    bool MakeMove(std::vector<Card> &a_table);
-    bool Trail(std::vector<Card> &a_table, int a_index);
+    void Play(Table& a_table);
+    bool MakeMove(Table& a_table);
+    bool Trail(Table& a_table, int a_index);
 private:
     int m_score;
     std::vector<Card> m_hand;

@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void Player::Play(std::vector<Card> &a_table)
+void Player::Play(Table& a_table)
 {
     while (true)
     {
@@ -27,7 +27,7 @@ void Player::Play(std::vector<Card> &a_table)
     }
 }
 
-bool Player::MakeMove(std::vector<Card>& a_table)
+bool Player::MakeMove(Table& a_table)
 {
     int choice;
     cout << endl << "Make move" << endl;
@@ -51,7 +51,7 @@ bool Player::MakeMove(std::vector<Card>& a_table)
     return false;
 }
 
-bool Player::Trail(std::vector<Card>& a_table, int a_index)
+bool Player::Trail(Table& a_table, int a_index)
 {
     if (a_index >= m_hand.size())
     {
@@ -59,7 +59,7 @@ bool Player::Trail(std::vector<Card>& a_table, int a_index)
     }
 
     Card card = m_hand[a_index];
-    a_table.push_back(card);
+    a_table.AddCard(card);
     m_hand.erase(m_hand.begin() + a_index);
 
     return true;
