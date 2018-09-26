@@ -3,11 +3,8 @@
 
 using namespace std;
 
-void Round::Start(Computer& a_computer, Human& a_human, bool a_human_first)
+void Round::Start()
 {
-    m_computer = &a_computer;
-    m_human = &a_human;
-
     DealCards();
 
     vector<Card> cards;
@@ -18,29 +15,25 @@ void Round::Start(Computer& a_computer, Human& a_human, bool a_human_first)
     }
     m_table.set_cards(cards);
 
-    m_human_next = a_human_first;
-
     int turn = 1;
     while (turn <= 48)
     {
-        DisplayCards();
+        Console::DisplayMessage(ToString());
 
         if (m_human_next)
         {
-            cout << endl << "Human turn " << turn << endl;
-            a_human.Play(m_table);
+            m_human->Play(m_table);
             m_human_next = false;
         }
         else
         {
-            cout << endl << "Computer turn " << turn << endl;
-            a_computer.Play(m_table);
+            m_computer->Play(m_table);
             m_human_next = true;
         }
 
         if (turn == 48)
         {
-            DisplayCards();
+            Console::DisplayMessage(ToString());
 
             break;
         }
@@ -55,8 +48,6 @@ void Round::Start(Computer& a_computer, Human& a_human, bool a_human_first)
 
 void Round::DealCards()
 {
-    cout << endl << "Dealing cards..." << endl;
-
     vector<Card> hand;
     for (int i = 0; i < 4; i++)
     {
@@ -72,34 +63,31 @@ void Round::DealCards()
         hand.push_back(card);
     }
     m_computer->set_hand(hand);
-
-    cout << endl << "Cards left: " << m_deck.get_cards().size() << endl;
 }
 
-void Round::DisplayCards()
+string Round::ToString()
 {
-    vector<Card> hand = m_computer->get_hand();
-    cout << endl << "Computer" << endl;
-    for (unsigned int i = 0; i < hand.size(); i++)
+    string info;
+
+    info += "\nRound: " + to_string(m_number) + "\n";
+
+    info += "\nComputer:" + m_computer->ToString() + "\n";
+
+    info += "\nHuman:" + m_human->ToString() + "\n";
+
+    info += "\nTable:" + m_table.ToString() + "\n";
+
+    info += "\nDeck:" + m_deck.ToString() + "\n";
+
+    info += "\nNext Player: ";
+    if (m_human_next)
     {
-        Card card = hand.at(i);
-        cout << card.get_suit() << card.get_value() << "\t";
+        info += "Human";
+    }
+    else
+    {
+        info += "Computer";
     }
 
-    hand = m_human->get_hand();
-    cout << endl << "Human" << endl;
-    for (unsigned int i = 0; i < hand.size(); i++)
-    {
-        Card card = hand.at(i);
-        cout << card.get_suit() << card.get_value() << "\t";
-    }
-
-    vector<Card> cards = m_table.get_cards();
-    cout << endl << "Table" << endl;
-    for (unsigned int i = 0; i < cards.size(); i++)
-    {
-        Card card = cards.at(i);
-        cout << card.get_suit() << card.get_value() << "\t";
-    }
-    cout << endl;
+    return info;
 }

@@ -25,19 +25,20 @@ public:
     {
         m_hand = a_hand;
     }
-    inline std::stack<Card> get_pile()
+    inline std::vector<Card> get_pile()
     {
         return m_pile;
     }
-    inline void set_pile(std::stack<Card> a_pile)
+    inline void set_pile(std::vector<Card> a_pile)
     {
         m_pile = a_pile;
     }
     void Play(Table& a_table);
     bool MakeMove(Table& a_table);
-    bool Trail(Table& a_table, int a_index);
+    bool Trail(Table& a_table);
+    std::string ToString();
 private:
     int m_score;
     std::vector<Card> m_hand;
-    std::stack<Card> m_pile;
+    std::vector<Card> m_pile;
 };

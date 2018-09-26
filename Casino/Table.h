@@ -25,6 +25,7 @@ public:
         m_builds = a_builds;
     }
     void AddCard(Card a_card);
+    std::string ToString();
 private:
     std::vector<Card> m_cards;
     std::vector<Build> m_builds;

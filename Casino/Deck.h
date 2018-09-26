@@ -1,21 +1,22 @@
 #pragma once
 
 #include "Card.h"
-#include <stack>
+#include <vector>
 
 class Deck
 {
 public:
     Deck();
-    inline std::stack<Card> get_cards()
+    inline std::vector<Card> get_cards()
     {
         return m_cards;
     }
-    inline void set_cards(std::stack<Card> a_cards)
+    inline void set_cards(std::vector<Card> a_cards)
     {
         m_cards = a_cards;
     }
     Card Draw();
+    std::string ToString();
 private:
-    std::stack<Card> m_cards;
+    std::vector<Card> m_cards;
 };

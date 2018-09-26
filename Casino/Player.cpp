@@ -7,21 +7,20 @@ void Player::Play(Table& a_table)
 {
     while (true)
     {
-        int choice;
-        cout << "1. Save the game" << endl;
-        cout << "2. Make a move" << endl;
-        cout << "3. Quit the game" << endl;
-        cin >> choice;
+        int choice = Console::ProcessTurnMenu();
 
-        if (choice == 2)
+        switch (choice)
         {
+        case 1:
+            // TODO: save game;
+            exit(0);
+        case 2:
             if (MakeMove(a_table))
             {
-                break;
+                return;
             }
-        }
-        else if (choice == 3)
-        {
+            break;
+        case 3:
             exit(0);
         }
     }
@@ -29,20 +28,18 @@ void Player::Play(Table& a_table)
 
 bool Player::MakeMove(Table& a_table)
 {
-    int choice;
-    cout << endl << "Make move" << endl;
-    cout << "1. Build" << endl;
-    cout << "2. Capture" << endl;
-    cout << "3. Trail" << endl;
-    cin >> choice;
+    int choice = Console::ProcessMoveMenu();
 
-    if (choice == 3)
+    switch (choice)
     {
-        int index;
-        cout << endl << "Which card would you like to trail? ";
-        cin >> index;
-
-        if (Trail(a_table, index))
+    case 1:
+        // TODO: build
+        return false;
+    case 2:
+        // TODO: capture
+        return false;
+    case 3:
+        if (Trail(a_table))
         {
             return true;
         }
@@ -51,16 +48,34 @@ bool Player::MakeMove(Table& a_table)
     return false;
 }
 
-bool Player::Trail(Table& a_table, int a_index)
+bool Player::Trail(Table& a_table)
 {
-    if (a_index >= m_hand.size())
-    {
-        return false;
-    }
+    int index = Console::ProcessTrailMenu(m_hand.size());
 
-    Card card = m_hand[a_index];
+    Card card = m_hand[index];
     a_table.AddCard(card);
-    m_hand.erase(m_hand.begin() + a_index);
+    m_hand.erase(m_hand.begin() + index);
 
     return true;
+}
+
+string Player::ToString()
+{
+    string info;
+
+    info += "\n    Score: " + m_score;
+
+    info += "\n    Hand:";
+    for (Card card : m_hand)
+    {
+        info += " " + card.get_name();
+    }
+
+    info += "\n    Pile:";
+    for (Card card : m_pile)
+    {
+        info += " " + card.get_name();
+    }
+
+    return info;
 }

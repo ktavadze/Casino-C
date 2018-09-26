@@ -4,16 +4,20 @@ class Card
 {
 public:
     Card() {}
-    Card(char a_suit, int a_value);
-    inline char get_suit()
+    Card(std::string a_name);
+    inline std::string get_name()
     {
-        return m_suit;
+        return m_name;
     }
     inline int get_value()
     {
         return m_value;
     }
+    inline int set_value(int a_value)
+    {
+        m_value = a_value;
+    }
 private:
-    char m_suit;
+    std::string m_name;
     int m_value;
 };
