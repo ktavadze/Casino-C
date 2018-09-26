@@ -59,7 +59,23 @@ bool Console::ProcessCoinToss()
     return false;
 }
 
-int Console::ProcessTurnMenu()
+int Console::ProcessHumanTurnMenu()
+{
+    int choice;
+    do
+    {
+        cout << endl << "Turn menu" << endl;
+        cout << "1. Save the game" << endl;
+        cout << "2. Make a move" << endl;
+        cout << "3. Ask for help" << endl;
+        cout << "4. Quit the game" << endl;
+        cin >> choice;
+    } while (choice != 1 && choice != 2 && choice != 3 && choice != 4);
+
+    return choice;
+}
+
+int Console::ProcessComputerTurnMenu()
 {
     int choice;
     do

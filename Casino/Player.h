@@ -33,11 +33,17 @@ public:
     {
         m_pile = a_pile;
     }
-    void Play(Table& a_table);
-    bool MakeMove(Table& a_table);
-    bool Trail(Table& a_table);
+    virtual void Play(Table& a_table) {}
+    virtual bool MakeMove(Table& a_table)
+    {
+        return false;
+    }
+    virtual bool Trail(Table& a_table)
+    {
+        return false;
+    }
     std::string ToString();
-private:
+protected:
     int m_score;
     std::vector<Card> m_hand;
     std::vector<Card> m_pile;
