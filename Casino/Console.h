@@ -1,5 +1,8 @@
 #pragma once
 
+#include "Card.h"
+#include "Build.h"
+
 class Console
 {
 public:
@@ -8,6 +11,6 @@ public:
     static int ProcessHumanTurnMenu();
     static int ProcessComputerTurnMenu();
     static int ProcessMoveMenu();
-    static int ProcessTrailMenu(int a_size);
+    static int ProcessTrailMenu(std::vector<Card> a_hand);
     static void DisplayMessage(std::string a_message);
 };

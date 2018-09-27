@@ -1,9 +1,5 @@
 #pragma once
 
-#include "Card.h"
-#include "Build.h"
-#include <vector>
-
 class Table
 {
 public:

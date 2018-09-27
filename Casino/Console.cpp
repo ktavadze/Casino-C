@@ -18,7 +18,7 @@ int Console::ProcessMainMenu()
         cin >> choice;
         cin.clear();
         cin.ignore(1000, '\n');
-    } while (choice != 1 && choice != 2 && choice != 3);
+    } while (choice < 1 || choice > 3);
 
     return choice;
 }
@@ -71,7 +71,9 @@ int Console::ProcessHumanTurnMenu()
         cout << "3. Ask for help" << endl;
         cout << "4. Quit the game" << endl;
         cin >> choice;
-    } while (choice != 1 && choice != 2 && choice != 3 && choice != 4);
+        cin.clear();
+        cin.ignore(1000, '\n');
+    } while (choice < 1 || choice > 4);
 
     return choice;
 }
@@ -86,7 +88,9 @@ int Console::ProcessComputerTurnMenu()
         cout << "2. Make a move" << endl;
         cout << "3. Quit the game" << endl;
         cin >> choice;
-    } while (choice != 1 && choice != 2 && choice != 3);
+        cin.clear();
+        cin.ignore(1000, '\n');
+    } while (choice < 1 || choice > 3);
 
     return choice;
 }
@@ -101,21 +105,35 @@ int Console::ProcessMoveMenu()
         cout << "2. Capture" << endl;
         cout << "3. Trail" << endl;
         cin >> choice;
-    } while (choice != 1 && choice != 2 && choice != 3);
+        cin.clear();
+        cin.ignore(1000, '\n');
+    } while (choice < 1 || choice > 3);
 
     return choice;
 }
 
-int Console::ProcessTrailMenu(int a_size)
+int Console::ProcessTrailMenu(std::vector<Card> a_hand)
 {
-    int index;
+    int size = a_hand.size();
+
+    int choice;
     do
     {
-        cout << endl << "Card index: ";
-        cin >> index;
-    } while (index < 0 || index >= a_size);
+        cout << endl << "Trail menu" << endl;
 
-    return index;
+        Card card;
+        for (int i = 0; i < size; i++)
+        {
+            card = a_hand[i];
+            cout << i + 1 << ". " << card.get_name() << endl;
+        }
+
+        cin >> choice;
+        cin.clear();
+        cin.ignore(1000, '\n');
+    } while (choice < 1 || choice > size);
+
+    return choice;
 }
 
 void Console::DisplayMessage(string a_message)

@@ -1,9 +1,6 @@
 #pragma once
 
-#include "Card.h"
 #include "Table.h"
-#include <vector>
-#include <stack>
 
 class Player
 {

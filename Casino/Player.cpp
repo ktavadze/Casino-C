@@ -27,7 +27,7 @@ bool Player::MakeMove(Table& a_table)
 
 bool Player::Trail(Table& a_table)
 {
-    int index = Console::ProcessTrailMenu(m_hand.size());
+    int index = Console::ProcessTrailMenu(m_hand) - 1;
 
     Card card = m_hand[index];
     a_table.AddCard(card);
