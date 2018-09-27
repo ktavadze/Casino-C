@@ -20,7 +20,7 @@ int main()
         tournament.Start();
         break;
     case 2:
-        tournament.Load();
+        // TODO: load
         break;
     case 3:
         exit(0);

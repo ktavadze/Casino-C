@@ -34,14 +34,8 @@ public:
         m_pile = a_pile;
     }
     virtual void Play(Table& a_table) {}
-    virtual bool MakeMove(Table& a_table)
-    {
-        return false;
-    }
-    virtual bool Trail(Table& a_table)
-    {
-        return false;
-    }
+    virtual bool MakeMove(Table& a_table);
+    virtual bool Trail(Table& a_table);
     std::string ToString();
 protected:
     int m_score;

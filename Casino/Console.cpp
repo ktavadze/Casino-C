@@ -48,14 +48,15 @@ bool Console::ProcessCoinToss()
     {
         result = "Tails";
     }
-    cout << endl << "Result" << endl;
-    cout << coin << ". " << result << endl;
+    cout << endl << "Result: " << result << endl;
 
     if (choice == coin)
     {
+        cout << "You guessed RIGHT" << endl;
         return true;
     }
 
+    cout << "You guessed WRONG" << endl;
     return false;
 }
 
