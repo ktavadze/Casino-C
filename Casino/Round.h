@@ -5,6 +5,8 @@
 #include "Table.h"
 #include "Deck.h"
 
+using namespace std;
+
 class Round
 {
 public:
@@ -18,7 +20,7 @@ public:
     }
     void Start();
     void DealCards();
-    std::string ToString();
+    string ToString();
 private:
     int m_number;
     Computer *m_computer;

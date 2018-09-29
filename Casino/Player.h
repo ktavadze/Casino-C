@@ -2,10 +2,16 @@
 
 #include "Table.h"
 
+using namespace std;
+
 class Player
 {
 public:
     Player() {}
+    inline bool is_human()
+    {
+        return m_is_human;
+    }
     inline int get_score()
     {
         return m_score;
@@ -14,28 +20,29 @@ public:
     {
         m_score = a_score;
     }
-    inline std::vector<Card> get_hand()
+    inline vector<Card> get_hand()
     {
         return m_hand;
     }
-    inline void set_hand(std::vector<Card> a_hand)
+    inline void set_hand(vector<Card> a_hand)
     {
         m_hand = a_hand;
     }
-    inline std::vector<Card> get_pile()
+    inline vector<Card> get_pile()
     {
         return m_pile;
     }
-    inline void set_pile(std::vector<Card> a_pile)
+    inline void set_pile(vector<Card> a_pile)
     {
         m_pile = a_pile;
     }
-    virtual void Play(Table& a_table) {}
+    virtual void Play(Table& a_table);
     virtual bool MakeMove(Table& a_table);
     virtual bool Trail(Table& a_table);
-    std::string ToString();
+    string ToString();
 protected:
+    bool m_is_human;
     int m_score;
-    std::vector<Card> m_hand;
-    std::vector<Card> m_pile;
+    vector<Card> m_hand;
+    vector<Card> m_pile;
 };

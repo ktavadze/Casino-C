@@ -3,14 +3,15 @@
 #include "Card.h"
 #include "Build.h"
 
+using namespace std;
+
 class Console
 {
 public:
     static int ProcessMainMenu();
     static bool ProcessCoinToss();
-    static int ProcessHumanTurnMenu();
-    static int ProcessComputerTurnMenu();
+    static int ProcessTurnMenu(bool a_is_human);
     static int ProcessMoveMenu();
-    static int ProcessTrailMenu(std::vector<Card> a_hand);
-    static void DisplayMessage(std::string a_message);
+    static int ProcessTrailMenu(vector<Card> a_hand);
+    static void DisplayMessage(string a_message);
 };

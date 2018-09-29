@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "Build.h"
 
-using namespace std;
-
 bool Build::AddCard(Card a_card)
 {
     if (m_cards.size() == 1)
@@ -17,7 +15,7 @@ bool Build::AddCard(Card a_card)
     return false;
 }
 
-bool Build::AddBuild(std::vector<Card> a_cards)
+bool Build::AddBuild(vector<Card> a_cards)
 {
     int value = 0;
     for (Card card : a_cards)

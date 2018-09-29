@@ -1,10 +1,12 @@
 #pragma once
 
+using namespace std;
+
 class Build
 {
 public:
     Build() {}
-    Build(std::vector<Card> a_cards)
+    Build(vector<Card> a_cards)
     {
         m_value = 0;
         for (Card card : a_cards)
@@ -18,17 +20,17 @@ public:
     {
         return m_value;
     }
-    inline void set_cards(std::vector<std::vector<Card>> a_cards)
+    inline void set_cards(vector<vector<Card>> a_cards)
     {
         m_cards = a_cards;
     }
-    inline std::vector<std::vector<Card>> get_cards()
+    inline vector<vector<Card>> get_cards()
     {
         return m_cards;
     }
     bool AddCard(Card a_card);
-    bool AddBuild(std::vector<Card> a_cards);
+    bool AddBuild(vector<Card> a_cards);
 private:
     int m_value;
-    std::vector<std::vector<Card>> m_cards;
+    vector<vector<Card>> m_cards;
 };

@@ -3,8 +3,6 @@
 #include <vector>
 #include <ctime>
 
-using namespace std;
-
 Deck::Deck()
 {
     // create deck
@@ -34,7 +32,7 @@ Card Deck::Draw()
     return card;
 }
 
-std::string Deck::ToString()
+string Deck::ToString()
 {
     string info;
 

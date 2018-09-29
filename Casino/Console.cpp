@@ -2,8 +2,6 @@
 #include "Console.h"
 #include <ctime>
 
-using namespace std;
-
 int Console::ProcessMainMenu()
 {
     cout << "Welcome to Casino!" << endl;
@@ -60,37 +58,36 @@ bool Console::ProcessCoinToss()
     return false;
 }
 
-int Console::ProcessHumanTurnMenu()
+int Console::ProcessTurnMenu(bool a_is_human)
 {
     int choice;
-    do
+    if (a_is_human)
     {
-        cout << endl << "Turn menu" << endl;
-        cout << "1. Save the game" << endl;
-        cout << "2. Make a move" << endl;
-        cout << "3. Ask for help" << endl;
-        cout << "4. Quit the game" << endl;
-        cin >> choice;
-        cin.clear();
-        cin.ignore(1000, '\n');
-    } while (choice < 1 || choice > 4);
-
-    return choice;
-}
-
-int Console::ProcessComputerTurnMenu()
-{
-    int choice;
-    do
+        do
+        {
+            cout << endl << "Turn menu" << endl;
+            cout << "1. Save the game" << endl;
+            cout << "2. Make a move" << endl;
+            cout << "3. Ask for help" << endl;
+            cout << "4. Quit the game" << endl;
+            cin >> choice;
+            cin.clear();
+            cin.ignore(1000, '\n');
+        } while (choice < 1 || choice > 4);
+    }
+    else
     {
-        cout << endl << "Turn menu" << endl;
-        cout << "1. Save the game" << endl;
-        cout << "2. Make a move" << endl;
-        cout << "3. Quit the game" << endl;
-        cin >> choice;
-        cin.clear();
-        cin.ignore(1000, '\n');
-    } while (choice < 1 || choice > 3);
+        do
+        {
+            cout << endl << "Turn menu" << endl;
+            cout << "1. Save the game" << endl;
+            cout << "2. Make a move" << endl;
+            cout << "3. Quit the game" << endl;
+            cin >> choice;
+            cin.clear();
+            cin.ignore(1000, '\n');
+        } while (choice < 1 || choice > 3);
+    }
 
     return choice;
 }
@@ -112,7 +109,7 @@ int Console::ProcessMoveMenu()
     return choice;
 }
 
-int Console::ProcessTrailMenu(std::vector<Card> a_hand)
+int Console::ProcessTrailMenu(vector<Card> a_hand)
 {
     int size = a_hand.size();
 

@@ -1,9 +1,7 @@
 #include "pch.h"
 #include "Card.h"
 
-using namespace std;
-
-Card::Card(std::string a_name)
+Card::Card(string a_name)
 {
     m_name = a_name;
     switch (a_name[1])

@@ -1,7 +1,51 @@
 #include "pch.h"
 #include "Player.h"
 
-using namespace std;
+void Player::Play(Table & a_table)
+{
+    while (true)
+    {
+        int choice = Console::ProcessTurnMenu(m_is_human);
+
+        if (m_is_human)
+        {
+            switch (choice)
+            {
+            case 1:
+                // TODO: save game
+                exit(0);
+            case 2:
+                if (MakeMove(a_table))
+                {
+                    return;
+                }
+                break;
+            case 3:
+                // TODO: ask for help
+                exit(0);
+            case 4:
+                exit(0);
+            }
+        }
+        else
+        {
+            switch (choice)
+            {
+            case 1:
+                // TODO: save game
+                exit(0);
+            case 2:
+                if (MakeMove(a_table))
+                {
+                    return;
+                }
+                break;
+            case 3:
+                exit(0);
+            }
+        }
+    }
+}
 
 bool Player::MakeMove(Table& a_table)
 {

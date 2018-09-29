@@ -1,11 +1,13 @@
 #pragma once
 
+using namespace std;
+
 class Card
 {
 public:
     Card() {}
-    Card(std::string a_name);
-    inline std::string get_name()
+    Card(string a_name);
+    inline string get_name()
     {
         return m_name;
     }
@@ -18,6 +20,6 @@ public:
         m_value = a_value;
     }
 private:
-    std::string m_name;
+    string m_name;
     int m_value;
 };

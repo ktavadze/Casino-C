@@ -2,6 +2,8 @@
 
 #include "Round.h"
 
+using namespace std;
+
 class Tournament
 {
 public:

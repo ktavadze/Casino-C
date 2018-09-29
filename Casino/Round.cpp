@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "Round.h"
 
-using namespace std;
-
 void Round::Start()
 {
     DealCards();

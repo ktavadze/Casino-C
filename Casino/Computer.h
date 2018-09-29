@@ -2,9 +2,13 @@
 
 #include "Player.h"
 
+using namespace std;
+
 class Computer : public Player
 {
 public:
-    Computer() {}
-    virtual void Play(Table& a_table);
+    Computer()
+    {
+        m_is_human = false;
+    }
 };

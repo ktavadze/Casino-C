@@ -1,28 +1,30 @@
 #pragma once
 
+using namespace std;
+
 class Table
 {
 public:
     Table() {}
-    inline std::vector<Card> get_cards()
+    inline vector<Card> get_cards()
     {
         return m_cards;
     }
-    inline void set_cards(std::vector<Card> a_cards)
+    inline void set_cards(vector<Card> a_cards)
     {
         m_cards = a_cards;
     }
-    inline std::vector<Build> get_builds()
+    inline vector<Build> get_builds()
     {
         return m_builds;
     }
-    inline void set_builds(std::vector<Build> a_builds)
+    inline void set_builds(vector<Build> a_builds)
     {
         m_builds = a_builds;
     }
     void AddCard(Card a_card);
-    std::string ToString();
+    string ToString();
 private:
-    std::vector<Card> m_cards;
-    std::vector<Build> m_builds;
+    vector<Card> m_cards;
+    vector<Build> m_builds;
 };

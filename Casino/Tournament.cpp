@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "Tournament.h"
 
-using namespace std;
-
 void Tournament::Start()
 {
     bool human_first = Console::ProcessCoinToss();
