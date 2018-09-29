@@ -36,9 +36,11 @@ public:
     {
         m_pile = a_pile;
     }
-    virtual void Play(Table& a_table);
-    virtual bool MakeMove(Table& a_table);
-    virtual bool Trail(Table& a_table);
+    virtual void Play(Table & a_table);
+    virtual bool MakeMove(Table & a_table);
+    virtual bool TrailMove(Table & a_table);
+    virtual bool BuildMove(Table & a_table);
+    virtual bool CreateBuild(Table & a_table);
     string ToString();
 protected:
     bool m_is_human;

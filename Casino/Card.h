@@ -19,6 +19,10 @@ public:
     {
         m_value = a_value;
     }
+    inline bool operator==(const Card a_card) const
+    {
+        return m_name == a_card.m_name;
+    }
 private:
     string m_name;
     int m_value;

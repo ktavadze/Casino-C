@@ -23,6 +23,8 @@ public:
         m_builds = a_builds;
     }
     void AddCard(Card a_card);
+    void RemoveCard(Card a_card);
+    void AddBuild(Build a_build);
     string ToString();
 private:
     vector<Card> m_cards;

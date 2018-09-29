@@ -11,7 +11,7 @@ class Round
 {
 public:
     Round() {}
-    Round(int a_number, Computer *a_computer, Human *a_human, bool a_human_next)
+    Round(int a_number, Computer * a_computer, Human * a_human, bool a_human_next)
     {
         m_number = a_number;
         m_computer = a_computer;
@@ -23,8 +23,8 @@ public:
     string ToString();
 private:
     int m_number;
-    Computer *m_computer;
-    Human *m_human;
+    Computer * m_computer;
+    Human * m_human;
     bool m_human_next;
     Table m_table;
     Deck m_deck;

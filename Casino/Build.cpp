@@ -32,3 +32,32 @@ bool Build::AddBuild(vector<Card> a_cards)
 
     return false;
 }
+
+string Build::ToString()
+{
+    string info;
+
+    info += " [";
+
+    for (vector<Card> v : m_cards)
+    {
+        info += " [";
+
+        int count = 0;
+        for (Card card : v)
+        {
+            if (count > 0)
+            {
+                info += " ";
+            }
+            info += card.get_name();
+            count++;
+        }
+
+        info += "]";
+    }
+
+    info += " ]";
+
+    return info;
+}

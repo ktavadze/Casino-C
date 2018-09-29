@@ -109,14 +109,14 @@ int Console::ProcessMoveMenu()
     return choice;
 }
 
-int Console::ProcessTrailMenu(vector<Card> a_hand)
+int Console::ProcessCardPick(vector<Card> a_hand)
 {
     int size = a_hand.size();
 
     int choice;
     do
     {
-        cout << endl << "Trail menu" << endl;
+        cout << endl << "Card pick" << endl;
 
         Card card;
         for (int i = 0; i < size; i++)
@@ -129,6 +129,23 @@ int Console::ProcessTrailMenu(vector<Card> a_hand)
         cin.clear();
         cin.ignore(1000, '\n');
     } while (choice < 1 || choice > size);
+
+    return choice;
+}
+
+int Console::ProcessBuildMenu()
+{
+    int choice;
+    do
+    {
+        cout << endl << "Build menu" << endl;
+        cout << "1. Create" << endl;
+        cout << "2. Increase" << endl;
+        cout << "3. Extend" << endl;
+        cin >> choice;
+        cin.clear();
+        cin.ignore(1000, '\n');
+    } while (choice < 1 || choice > 3);
 
     return choice;
 }
