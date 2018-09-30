@@ -17,6 +17,26 @@ void Table::AddBuild(Build a_build)
     m_builds.push_back(a_build);
 }
 
+bool Table::Contains(Card a_card)
+{
+    // Check cards
+    if (find(m_cards.begin(), m_cards.end(), a_card) != m_cards.end())
+    {
+        return true;
+    }
+
+    // Check builds
+    for (Build build : m_builds)
+    {
+        if (build.Contains(a_card))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 string Table::ToString()
 {
     string info;

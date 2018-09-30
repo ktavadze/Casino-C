@@ -2,6 +2,7 @@
 
 #include "Card.h"
 #include "Build.h"
+#include "Table.h"
 
 using namespace std;
 
@@ -12,7 +13,10 @@ public:
     static bool ProcessCoinToss();
     static int ProcessTurnMenu(bool a_is_human);
     static int ProcessMoveMenu();
-    static int ProcessCardPick(vector<Card> a_hand);
     static int ProcessBuildMenu();
+    static int ProcessCardPick(vector<Card> a_hand);
+    static vector<Card> ProcessCardPick(Table a_table);
     static void DisplayMessage(string a_message);
+private:
+    static vector<string> StringToVector(string a_string, char a_delimiter);
 };

@@ -40,6 +40,7 @@ public:
     }
     bool AddCard(Card a_card);
     bool AddBuild(vector<Card> a_cards);
+    bool Contains(Card a_card);
     string ToString();
 private:
     int m_value;

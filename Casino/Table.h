@@ -25,6 +25,7 @@ public:
     void AddCard(Card a_card);
     void RemoveCard(Card a_card);
     void AddBuild(Build a_build);
+    bool Contains(Card a_card);
     string ToString();
 private:
     vector<Card> m_cards;

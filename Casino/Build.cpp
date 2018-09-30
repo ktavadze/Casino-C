@@ -33,6 +33,22 @@ bool Build::AddBuild(vector<Card> a_cards)
     return false;
 }
 
+bool Build::Contains(Card a_card)
+{
+    for (vector<Card> v : m_cards)
+    {
+        for (Card card : v)
+        {
+            if (card == a_card)
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 string Build::ToString()
 {
     string info;

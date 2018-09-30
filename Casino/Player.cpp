@@ -67,9 +67,9 @@ bool Player::MakeMove(Table & a_table)
         {
             return true;
         }
+    default:
+        return false;
     }
-
-    return false;
 }
 
 bool Player::TrailMove(Table & a_table)
@@ -90,41 +90,59 @@ bool Player::BuildMove(Table & a_table)
     switch (choice)
     {
     case 1:
-        if (CreateBuild(a_table))
-        {
-            return true;
-        }
+        return CreateBuild(a_table);
     case 2:
         // TODO: increase
         return false;
     case 3:
         // TODO: extend
         return false;
+    default:
+        return false;
     }
-
-    return false;
 }
 
 bool Player::CreateBuild(Table & a_table)
 {
+    if (a_table.get_cards().empty())
+    {
+        return false;
+    }
+
+    vector<Card> selected_cards;
+
+    // Select player card
     int player_card_index = Console::ProcessCardPick(m_hand) - 1;
     Card player_card = m_hand.at(player_card_index);
+    selected_cards.push_back(player_card);
 
-    int table_card_index = Console::ProcessCardPick(a_table.get_cards()) - 1;
-    Card table_card = a_table.get_cards().at(table_card_index);
+    // Select table cards
+    vector<Card> table_cards = Console::ProcessCardPick(a_table);
+    for (Card card : table_cards)
+    {
+        selected_cards.push_back(card);
+    }
 
-    vector<Card> cards;
-    cards.push_back(player_card);
-    cards.push_back(table_card);
+    Build build(selected_cards, m_is_human);
 
-    Build build(cards, m_is_human);
-    a_table.AddBuild(build);
+    for (Card card : m_hand)
+    {
+        if (card.get_value() == build.get_value())
+        {
+            a_table.AddBuild(build);
 
-    a_table.RemoveCard(table_card);
+            for (Card card : table_cards)
+            {
+                a_table.RemoveCard(card);
+            }
 
-    m_hand.erase(m_hand.begin() + player_card_index);
+            m_hand.erase(m_hand.begin() + player_card_index);
 
-    return true;
+            return true;
+        }
+    }
+
+    return false;
 }
 
 string Player::ToString()

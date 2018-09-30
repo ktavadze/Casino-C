@@ -16,7 +16,7 @@ Deck::Deck()
     }
 
     // shuffle deck
-    srand(time(NULL));
+    srand((unsigned int)time(NULL));
     for (int size = 52; size > 0; size--)
     {
         int index = rand() % size;
