@@ -91,7 +91,8 @@ bool Player::BuildMove(Table & a_table)
     case 1:
         return CreateBuild(a_table);
     case 2:
-        return IncreaseBuild(a_table);
+        // TODO: increase
+        return false;
     case 3:
         // TODO: extend
         return false;
