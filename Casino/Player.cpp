@@ -123,7 +123,7 @@ bool Player::CreateBuild(Table & a_table)
         selected_cards.push_back(card);
     }
 
-    Build build(selected_cards, m_is_human);
+    Build build(m_is_human, selected_cards);
 
     for (Card card : m_hand)
     {

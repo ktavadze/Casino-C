@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Card.h"
+#include "Set.h"
 #include "Build.h"
 #include "Table.h"
 

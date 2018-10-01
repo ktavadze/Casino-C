@@ -1,13 +1,13 @@
 #include "pch.h"
 #include "Build.h"
 
-bool Build::AddCard(Card a_card)
+bool Build::Increase(Card a_card)
 {
-    if (m_cards.size() == 1)
+    if (m_sets.size() == 1)
     {
         m_value += a_card.get_value();
 
-        m_cards[0].push_back(a_card);
+        m_sets[0].AddCard(a_card);
 
         return true;
     }
@@ -15,17 +15,11 @@ bool Build::AddCard(Card a_card)
     return false;
 }
 
-bool Build::AddBuild(vector<Card> a_cards)
+bool Build::Extend(Set a_set)
 {
-    int value = 0;
-    for (Card card : a_cards)
+    if (m_value == a_set.get_value())
     {
-        value += card.get_value();
-    }
-
-    if (m_value == value)
-    {
-        m_cards.push_back(a_cards);
+        m_sets.push_back(a_set);
 
         return true;
     }
@@ -35,14 +29,11 @@ bool Build::AddBuild(vector<Card> a_cards)
 
 bool Build::Contains(Card a_card)
 {
-    for (vector<Card> v : m_cards)
+    for (Set set : m_sets)
     {
-        for (Card card : v)
+        if (set.Contains(a_card))
         {
-            if (card == a_card)
-            {
-                return true;
-            }
+            return true;
         }
     }
 
@@ -55,22 +46,9 @@ string Build::ToString()
 
     info += " [";
 
-    for (vector<Card> v : m_cards)
+    for (Set set : m_sets)
     {
-        info += " [";
-
-        int count = 0;
-        for (Card card : v)
-        {
-            if (count > 0)
-            {
-                info += " ";
-            }
-            info += card.get_name();
-            count++;
-        }
-
-        info += "]";
+        info += set.ToString();
     }
 
     info += " ]";

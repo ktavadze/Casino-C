@@ -6,29 +6,13 @@ class Build
 {
 public:
     Build() {}
-    Build(vector<Card> a_cards, bool a_is_human)
+    Build(bool a_is_human, Set a_set)
     {
-        m_value = 0;
-        for (Card card : a_cards)
-        {
-            m_value += card.get_value();
-        }
-
-        m_cards.push_back(a_cards);
-
         m_is_human = a_is_human;
-    }
-    inline int get_value()
-    {
-        return m_value;
-    }
-    inline void set_cards(vector<vector<Card>> a_cards)
-    {
-        m_cards = a_cards;
-    }
-    inline vector<vector<Card>> get_cards()
-    {
-        return m_cards;
+
+        m_value = a_set.get_value();
+
+        m_sets.push_back(a_set);
     }
     inline bool is_human()
     {
@@ -38,12 +22,20 @@ public:
     {
         m_is_human = a_is_human;
     }
-    bool AddCard(Card a_card);
-    bool AddBuild(vector<Card> a_cards);
+    inline int get_value()
+    {
+        return m_value;
+    }
+    inline vector<Set> get_sets()
+    {
+        return m_sets;
+    }
+    bool Increase(Card a_card);
+    bool Extend(Set a_set);
     bool Contains(Card a_card);
     string ToString();
 private:
-    int m_value;
-    vector<vector<Card>> m_cards;
     bool m_is_human;
+    int m_value;
+    vector<Set> m_sets;
 };
