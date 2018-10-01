@@ -54,19 +54,12 @@ bool Player::MakeMove(Table & a_table)
     switch (choice)
     {
     case 1:
-        // TODO: build
-        if (BuildMove(a_table))
-        {
-            return true;
-        }
+        return BuildMove(a_table);
     case 2:
         // TODO: capture
         return false;
     case 3:
-        if (TrailMove(a_table))
-        {
-            return true;
-        }
+        return TrailMove(a_table);
     default:
         return false;
     }
@@ -98,8 +91,7 @@ bool Player::BuildMove(Table & a_table)
     case 1:
         return CreateBuild(a_table);
     case 2:
-        // TODO: increase
-        return false;
+        return IncreaseBuild(a_table);
     case 3:
         // TODO: extend
         return false;
