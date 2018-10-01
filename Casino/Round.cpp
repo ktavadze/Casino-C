@@ -5,11 +5,11 @@ void Round::Start()
 {
     DealCards();
 
-    vector<Card> cards;
+    Set cards;
     for (int i = 0; i < 4; i++)
     {
         Card card = m_deck.Draw();
-        cards.push_back(card);
+        cards.AddCard(card);
     }
     m_table.set_cards(cards);
 
@@ -46,19 +46,19 @@ void Round::Start()
 
 void Round::DealCards()
 {
-    vector<Card> hand;
+    Set hand;
     for (int i = 0; i < 4; i++)
     {
         Card card = m_deck.Draw();
-        hand.push_back(card);
+        hand.AddCard(card);
     }
     m_human->set_hand(hand);
 
-    hand.clear();
+    hand.Clear();
     for (int i = 0; i < 4; i++)
     {
         Card card = m_deck.Draw();
-        hand.push_back(card);
+        hand.AddCard(card);
     }
     m_computer->set_hand(hand);
 }
@@ -73,7 +73,7 @@ string Round::ToString()
 
     info += "\nHuman:" + m_human->ToString() + "\n";
 
-    info += "\nTable:" + m_table.ToString() + "\n";
+    info += "\nTable: " + m_table.ToString() + "\n";
 
     info += "\nDeck:" + m_deck.ToString() + "\n";
 

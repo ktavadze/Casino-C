@@ -127,45 +127,40 @@ int Console::ProcessBuildMenu()
     return choice;
 }
 
-int Console::PickPlayerCard(vector<Card> a_hand)
+int Console::PickPlayerCard(Set a_hand)
 {
-    unsigned int choice;
+    int choice;
     do
     {
         cout << endl << "Pick card" << endl;
 
         Card card;
-        for (unsigned int i = 0; i < a_hand.size(); i++)
+        for (int i = 0; i < a_hand.Size(); i++)
         {
-            card = a_hand[i];
+            card = a_hand.Get(i);
             cout << i + 1 << ". " << card.get_name() << endl;
         }
 
         cin >> choice;
         cin.clear();
         cin.ignore(1000, '\n');
-    } while (choice < 1 || choice > a_hand.size());
+    } while (choice < 1 || choice > a_hand.Size());
 
     return choice;
 }
 
-vector<Card> Console::PickLooseCards(vector<Card> a_cards)
+Set Console::PickLooseCards(Set a_cards)
 {
-    vector<Card> cards;
+    Set cards;
 
     bool do_again;
     do
     {
-        cards.clear();
+        cards.Clear();
 
         do_again = false;
 
-        cout << endl << "Pick card(s):";
-        for (Card card : a_cards)
-        {
-            cout << " " + card.get_name();
-        }
-        cout << endl;
+        cout << endl << "Pick card(s):" + a_cards.ToString() << endl;
 
         // Get names
         string input;
@@ -187,13 +182,13 @@ vector<Card> Console::PickLooseCards(vector<Card> a_cards)
         {
             Card card(name);
 
-            if (find(a_cards.begin(), a_cards.end(), card) == a_cards.end())
+            if (!a_cards.Contains(card))
             {
                 do_again = true;
             }
             else
             {
-                cards.push_back(card);
+                cards.AddCard(card);
             }
         }
     } while (do_again);
@@ -201,14 +196,14 @@ vector<Card> Console::PickLooseCards(vector<Card> a_cards)
     return cards;
 }
 
-vector<Card> Console::PickTableCards(Table a_table)
+Set Console::PickTableCards(Table a_table)
 {
-    vector<Card> cards;
+    Set cards;
 
     bool do_again;
     do
     {
-        cards.clear();
+        cards.Clear();
 
         do_again = false;
 
@@ -240,7 +235,7 @@ vector<Card> Console::PickTableCards(Table a_table)
             }
             else
             {
-                cards.push_back(card);
+                cards.AddCard(card);
             }
         }
     } while (do_again);

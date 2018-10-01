@@ -2,7 +2,6 @@
 
 #include "Computer.h"
 #include "Human.h"
-#include "Table.h"
 #include "Deck.h"
 
 using namespace std;

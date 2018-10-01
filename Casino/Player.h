@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Table.h"
-
 using namespace std;
 
 class Player
@@ -20,19 +18,19 @@ public:
     {
         m_score = a_score;
     }
-    inline vector<Card> get_hand()
+    inline Set get_hand()
     {
         return m_hand;
     }
-    inline void set_hand(vector<Card> a_hand)
+    inline void set_hand(Set a_hand)
     {
         m_hand = a_hand;
     }
-    inline vector<Card> get_pile()
+    inline Set get_pile()
     {
         return m_pile;
     }
-    inline void set_pile(vector<Card> a_pile)
+    inline void set_pile(Set a_pile)
     {
         m_pile = a_pile;
     }
@@ -46,6 +44,6 @@ public:
 protected:
     bool m_is_human;
     int m_score;
-    vector<Card> m_hand;
-    vector<Card> m_pile;
+    Set m_hand;
+    Set m_pile;
 };

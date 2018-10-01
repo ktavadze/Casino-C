@@ -25,6 +25,11 @@ public:
         return m_cards;
     }
     void AddCard(Card a_card);
+    void RemoveCard(Card a_card);
+    Card Get(int a_index);
+    void Clear();
+    int Size();
+    bool Empty();
     bool Contains(Card a_card);
     string ToString();
 private:

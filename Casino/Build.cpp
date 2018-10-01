@@ -44,14 +44,14 @@ string Build::ToString()
 {
     string info;
 
-    info += " [";
+    info += "[";
 
     for (Set set : m_sets)
     {
-        info += set.ToString();
+        info += " [" + set.ToString() + "]";
     }
 
-    info += " ]";
+    info += " ] ";
 
     return info;
 }

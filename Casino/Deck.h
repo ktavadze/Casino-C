@@ -6,7 +6,7 @@ class Deck
 {
 public:
     Deck();
-    inline vector<Card> get_cards()
+    inline Set get_cards()
     {
         return m_cards;
     }

@@ -6,11 +6,11 @@ class Table
 {
 public:
     Table() {}
-    inline vector<Card> get_cards()
+    inline Set get_cards()
     {
         return m_cards;
     }
-    inline void set_cards(vector<Card> a_cards)
+    inline void set_cards(Set a_cards)
     {
         m_cards = a_cards;
     }
@@ -28,6 +28,6 @@ public:
     bool Contains(Card a_card);
     string ToString();
 private:
-    vector<Card> m_cards;
+    Set m_cards;
     vector<Build> m_builds;
 };

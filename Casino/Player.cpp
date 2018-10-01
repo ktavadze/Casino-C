@@ -68,13 +68,13 @@ bool Player::MakeMove(Table & a_table)
 bool Player::TrailMove(Table & a_table)
 {
     int index = Console::PickPlayerCard(m_hand) - 1;
-    Card card = m_hand[index];
+    Card card = m_hand.Get(index);
 
     if (CanPlay(a_table, card))
     {
         a_table.AddCard(card);
 
-        m_hand.erase(m_hand.begin() + index);
+        m_hand.RemoveCard(card);
 
         return true;
     }
@@ -103,28 +103,28 @@ bool Player::BuildMove(Table & a_table)
 
 bool Player::CreateBuild(Table & a_table)
 {
-    if (a_table.get_cards().empty())
+    if (a_table.get_cards().Empty())
     {
         return false;
     }
 
-    vector<Card> selected_cards;
+    Set selected_cards;
 
     // Select player card
     int player_card_index = Console::PickPlayerCard(m_hand) - 1;
-    Card player_card = m_hand.at(player_card_index);
-    selected_cards.push_back(player_card);
+    Card player_card = m_hand.Get(player_card_index);
+    selected_cards.AddCard(player_card);
 
     // Select loose cards
-    vector<Card> loose_cards = Console::PickLooseCards(a_table.get_cards());
-    for (Card card : loose_cards)
+    Set loose_cards = Console::PickLooseCards(a_table.get_cards());
+    for (Card card : loose_cards.get_cards())
     {
-        selected_cards.push_back(card);
+        selected_cards.AddCard(card);
     }
 
     Build build(m_is_human, selected_cards);
 
-    for (Card card : m_hand)
+    for (Card card : m_hand.get_cards())
     {
         if (card.get_value() == build.get_value())
         {
@@ -132,12 +132,12 @@ bool Player::CreateBuild(Table & a_table)
             {
                 a_table.AddBuild(build);
 
-                for (Card loose_card : loose_cards)
+                for (Card loose_card : loose_cards.get_cards())
                 {
                     a_table.RemoveCard(loose_card);
                 }
 
-                m_hand.erase(m_hand.begin() + player_card_index);
+                m_hand.RemoveCard(player_card);
 
                 return true;
             }
@@ -155,7 +155,7 @@ bool Player::CanPlay(Table a_table, Card a_card)
         {
             int count = 0;
 
-            for (Card card : m_hand)
+            for (Card card : m_hand.get_cards())
             {
                 if (card.get_value() == a_card.get_value())
                 {
@@ -179,17 +179,9 @@ string Player::ToString()
 
     info += "\n    Score: " + m_score;
 
-    info += "\n    Hand:";
-    for (Card card : m_hand)
-    {
-        info += " " + card.get_name();
-    }
+    info += "\n    Hand: " + m_hand.ToString();
 
-    info += "\n    Pile:";
-    for (Card card : m_pile)
-    {
-        info += " " + card.get_name();
-    }
+    info += "\n    Pile: " + m_pile.ToString();
 
     return info;
 }

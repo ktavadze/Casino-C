@@ -3,13 +3,12 @@
 
 void Table::AddCard(Card a_card)
 {
-    m_cards.push_back(a_card);
+    m_cards.AddCard(a_card);
 }
 
 void Table::RemoveCard(Card a_card)
 {
-    int index = find(m_cards.begin(), m_cards.end(), a_card) - m_cards.begin();
-    m_cards.erase(m_cards.begin() + index);
+    m_cards.RemoveCard(a_card);
 }
 
 void Table::AddBuild(Build a_build)
@@ -20,7 +19,7 @@ void Table::AddBuild(Build a_build)
 bool Table::Contains(Card a_card)
 {
     // Check cards
-    if (find(m_cards.begin(), m_cards.end(), a_card) != m_cards.end())
+    if (m_cards.Contains(a_card))
     {
         return true;
     }
@@ -46,10 +45,7 @@ string Table::ToString()
         info += build.ToString();
     }
 
-    for (Card card : m_cards)
-    {
-        info += " " + card.get_name();
-    }
+    info += m_cards.ToString();
 
     return info;
 }
