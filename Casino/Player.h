@@ -41,6 +41,7 @@ public:
     virtual bool TrailMove(Table & a_table);
     virtual bool BuildMove(Table & a_table);
     virtual bool CreateBuild(Table & a_table);
+    virtual bool CanPlay(Table a_table, Card a_card);
     string ToString();
 protected:
     bool m_is_human;

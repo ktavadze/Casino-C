@@ -74,13 +74,19 @@ bool Player::MakeMove(Table & a_table)
 
 bool Player::TrailMove(Table & a_table)
 {
-    int index = Console::ProcessCardPick(m_hand) - 1;
-
+    int index = Console::PickPlayerCard(m_hand) - 1;
     Card card = m_hand[index];
-    a_table.AddCard(card);
-    m_hand.erase(m_hand.begin() + index);
 
-    return true;
+    if (CanPlay(a_table, card))
+    {
+        a_table.AddCard(card);
+
+        m_hand.erase(m_hand.begin() + index);
+
+        return true;
+    }
+
+    return false;
 }
 
 bool Player::BuildMove(Table & a_table)
@@ -112,13 +118,13 @@ bool Player::CreateBuild(Table & a_table)
     vector<Card> selected_cards;
 
     // Select player card
-    int player_card_index = Console::ProcessCardPick(m_hand) - 1;
+    int player_card_index = Console::PickPlayerCard(m_hand) - 1;
     Card player_card = m_hand.at(player_card_index);
     selected_cards.push_back(player_card);
 
-    // Select table cards
-    vector<Card> table_cards = Console::ProcessCardPick(a_table);
-    for (Card card : table_cards)
+    // Select loose cards
+    vector<Card> loose_cards = Console::PickLooseCards(a_table.get_cards());
+    for (Card card : loose_cards)
     {
         selected_cards.push_back(card);
     }
@@ -129,20 +135,49 @@ bool Player::CreateBuild(Table & a_table)
     {
         if (card.get_value() == build.get_value())
         {
-            a_table.AddBuild(build);
-
-            for (Card card : table_cards)
+            if (CanPlay(a_table, player_card))
             {
-                a_table.RemoveCard(card);
+                a_table.AddBuild(build);
+
+                for (Card loose_card : loose_cards)
+                {
+                    a_table.RemoveCard(loose_card);
+                }
+
+                m_hand.erase(m_hand.begin() + player_card_index);
+
+                return true;
             }
-
-            m_hand.erase(m_hand.begin() + player_card_index);
-
-            return true;
         }
     }
 
     return false;
+}
+
+bool Player::CanPlay(Table a_table, Card a_card)
+{
+    for (Build build : a_table.get_builds())
+    {
+        if (build.get_value() == a_card.get_value() && build.is_human() == m_is_human)
+        {
+            int count = 0;
+
+            for (Card card : m_hand)
+            {
+                if (card.get_value() == a_card.get_value())
+                {
+                    count++;
+                }
+            }
+
+            if (count < 2)
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
 }
 
 string Player::ToString()

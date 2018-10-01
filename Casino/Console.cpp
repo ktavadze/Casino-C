@@ -127,7 +127,7 @@ int Console::ProcessBuildMenu()
     return choice;
 }
 
-int Console::ProcessCardPick(vector<Card> a_hand)
+int Console::PickPlayerCard(vector<Card> a_hand)
 {
     unsigned int choice;
     do
@@ -149,7 +149,7 @@ int Console::ProcessCardPick(vector<Card> a_hand)
     return choice;
 }
 
-vector<Card> Console::ProcessCardPick(Table a_table)
+vector<Card> Console::PickLooseCards(vector<Card> a_cards)
 {
     vector<Card> cards;
 
@@ -160,8 +160,59 @@ vector<Card> Console::ProcessCardPick(Table a_table)
 
         do_again = false;
 
-        cout << endl << "Pick card(s)" << endl;
-        cout << "Table:" << a_table.ToString() << endl;
+        cout << endl << "Pick card(s):";
+        for (Card card : a_cards)
+        {
+            cout << " " + card.get_name();
+        }
+        cout << endl;
+
+        // Get names
+        string input;
+        getline(cin, input, '\n');
+
+        // Convert to uppercase
+        transform(input.begin(), input.end(), input.begin(), ::toupper);
+
+        // Tokenize
+        vector<string> names = StringToVector(input, ' ');
+
+        // Validate
+        if (names.empty())
+        {
+            do_again = true;
+        }
+
+        for (string name : names)
+        {
+            Card card(name);
+
+            if (find(a_cards.begin(), a_cards.end(), card) == a_cards.end())
+            {
+                do_again = true;
+            }
+            else
+            {
+                cards.push_back(card);
+            }
+        }
+    } while (do_again);
+
+    return cards;
+}
+
+vector<Card> Console::PickTableCards(Table a_table)
+{
+    vector<Card> cards;
+
+    bool do_again;
+    do
+    {
+        cards.clear();
+
+        do_again = false;
+
+        cout << endl << "Pick card(s):" << a_table.ToString() << endl;
 
         // Get names
         string input;
