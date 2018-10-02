@@ -174,14 +174,35 @@ bool Player::increase_build(Table & a_table)
 
 bool Player::trail_move(Table & a_table)
 {
-    int index = Console::pick_player_card(m_hand) - 1;
-    Card card = m_hand.get_card(index);
+    // Select player card
+    int player_card_index = Console::pick_player_card(m_hand) - 1;
+    Card player_card = m_hand.get_card(player_card_index);
 
-    if (can_play(a_table, card))
+    // Check loose cards
+    for (Card loose_card : a_table.get_loose_set().get_cards())
     {
-        a_table.add_card(card);
+        if (loose_card.get_value() == player_card.get_value())
+        {
+            return false;
+        }
+    }
 
-        m_hand.remove_card(card);
+    // Check builds
+    for (Build build : a_table.get_builds())
+    {
+        if (build.is_human() == m_is_human)
+        {
+            return false;
+        }
+    }
+
+    if (can_play(a_table, player_card))
+    {
+        // Update table
+        a_table.add_card(player_card);
+
+        // Update hand
+        m_hand.remove_card(player_card);
 
         return true;
     }
