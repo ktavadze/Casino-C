@@ -68,13 +68,13 @@ bool Player::MakeMove(Table & a_table)
 bool Player::TrailMove(Table & a_table)
 {
     int index = Console::PickPlayerCard(m_hand) - 1;
-    Card card = m_hand.Get(index);
+    Card card = m_hand.get_card(index);
 
     if (CanPlay(a_table, card))
     {
-        a_table.AddCard(card);
+        a_table.add_card(card);
 
-        m_hand.RemoveCard(card);
+        m_hand.remove_card(card);
 
         return true;
     }
@@ -103,7 +103,7 @@ bool Player::BuildMove(Table & a_table)
 
 bool Player::CreateBuild(Table & a_table)
 {
-    if (a_table.get_cards().Empty())
+    if (a_table.get_cards().get_size() == 0)
     {
         return false;
     }
@@ -112,14 +112,14 @@ bool Player::CreateBuild(Table & a_table)
 
     // Select player card
     int player_card_index = Console::PickPlayerCard(m_hand) - 1;
-    Card player_card = m_hand.Get(player_card_index);
-    selected_cards.AddCard(player_card);
+    Card player_card = m_hand.get_card(player_card_index);
+    selected_cards.add_card(player_card);
 
     // Select loose cards
     Set loose_cards = Console::PickLooseCards(a_table.get_cards());
     for (Card card : loose_cards.get_cards())
     {
-        selected_cards.AddCard(card);
+        selected_cards.add_card(card);
     }
 
     Build build(m_is_human, selected_cards);
@@ -134,10 +134,10 @@ bool Player::CreateBuild(Table & a_table)
 
                 for (Card loose_card : loose_cards.get_cards())
                 {
-                    a_table.RemoveCard(loose_card);
+                    a_table.remove_card(loose_card);
                 }
 
-                m_hand.RemoveCard(player_card);
+                m_hand.remove_card(player_card);
 
                 return true;
             }

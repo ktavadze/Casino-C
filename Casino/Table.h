@@ -22,10 +22,10 @@ public:
     {
         m_builds = a_builds;
     }
-    void AddCard(Card a_card);
-    void RemoveCard(Card a_card);
+    void add_card(Card a_card);
+    void remove_card(Card a_card);
     void AddBuild(Build a_build);
-    bool Contains(Card a_card);
+    bool contains(Card a_card);
     string ToString();
 private:
     Set m_cards;

@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "Table.h"
 
-void Table::AddCard(Card a_card)
+void Table::add_card(Card a_card)
 {
-    m_cards.AddCard(a_card);
+    m_cards.add_card(a_card);
 }
 
-void Table::RemoveCard(Card a_card)
+void Table::remove_card(Card a_card)
 {
-    m_cards.RemoveCard(a_card);
+    m_cards.remove_card(a_card);
 }
 
 void Table::AddBuild(Build a_build)
@@ -16,10 +16,10 @@ void Table::AddBuild(Build a_build)
     m_builds.push_back(a_build);
 }
 
-bool Table::Contains(Card a_card)
+bool Table::contains(Card a_card)
 {
     // Check cards
-    if (m_cards.Contains(a_card))
+    if (m_cards.contains(a_card))
     {
         return true;
     }
@@ -27,7 +27,7 @@ bool Table::Contains(Card a_card)
     // Check builds
     for (Build build : m_builds)
     {
-        if (build.Contains(a_card))
+        if (build.contains(a_card))
         {
             return true;
         }

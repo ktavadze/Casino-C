@@ -7,7 +7,7 @@ bool Build::Increase(Card a_card)
     {
         m_value += a_card.get_value();
 
-        m_sets[0].AddCard(a_card);
+        m_sets[0].add_card(a_card);
 
         return true;
     }
@@ -27,11 +27,11 @@ bool Build::Extend(Set a_set)
     return false;
 }
 
-bool Build::Contains(Card a_card)
+bool Build::contains(Card a_card)
 {
     for (Set set : m_sets)
     {
-        if (set.Contains(a_card))
+        if (set.contains(a_card))
         {
             return true;
         }

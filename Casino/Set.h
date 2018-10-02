@@ -16,21 +16,31 @@ public:
 
         m_cards = a_cards;
     }
+    inline void reset()
+    {
+        m_value = 0;
+
+        m_cards.clear();
+    }
     inline int get_value()
     {
         return m_value;
+    }
+    inline int get_size()
+    {
+        return m_cards.size();
     }
     inline vector<Card> get_cards()
     {
         return m_cards;
     }
-    void AddCard(Card a_card);
-    void RemoveCard(Card a_card);
-    Card Get(int a_index);
-    void Clear();
-    int Size();
-    bool Empty();
-    bool Contains(Card a_card);
+    inline Card get_card(int a_index)
+    {
+        return m_cards.at(a_index);
+    }
+    void add_card(Card a_card);
+    void remove_card(Card a_card);
+    bool contains(Card a_card);
     string ToString();
 private:
     int m_value;

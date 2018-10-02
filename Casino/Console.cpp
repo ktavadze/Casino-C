@@ -135,16 +135,16 @@ int Console::PickPlayerCard(Set a_hand)
         cout << endl << "Pick card" << endl;
 
         Card card;
-        for (int i = 0; i < a_hand.Size(); i++)
+        for (int i = 0; i < a_hand.get_size(); i++)
         {
-            card = a_hand.Get(i);
+            card = a_hand.get_card(i);
             cout << i + 1 << ". " << card.get_name() << endl;
         }
 
         cin >> choice;
         cin.clear();
         cin.ignore(1000, '\n');
-    } while (choice < 1 || choice > a_hand.Size());
+    } while (choice < 1 || choice > a_hand.get_size());
 
     return choice;
 }
@@ -156,7 +156,7 @@ Set Console::PickLooseCards(Set a_cards)
     bool do_again;
     do
     {
-        cards.Clear();
+        cards.reset();
 
         do_again = false;
 
@@ -182,13 +182,13 @@ Set Console::PickLooseCards(Set a_cards)
         {
             Card card(name);
 
-            if (!a_cards.Contains(card))
+            if (!a_cards.contains(card))
             {
                 do_again = true;
             }
             else
             {
-                cards.AddCard(card);
+                cards.add_card(card);
             }
         }
     } while (do_again);
@@ -203,7 +203,7 @@ Set Console::PickTableCards(Table a_table)
     bool do_again;
     do
     {
-        cards.Clear();
+        cards.reset();
 
         do_again = false;
 
@@ -229,13 +229,13 @@ Set Console::PickTableCards(Table a_table)
         {
             Card card(name);
 
-            if (!a_table.Contains(card))
+            if (!a_table.contains(card))
             {
                 do_again = true;
             }
             else
             {
-                cards.AddCard(card);
+                cards.add_card(card);
             }
         }
     } while (do_again);

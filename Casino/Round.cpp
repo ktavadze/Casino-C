@@ -9,7 +9,7 @@ void Round::Start()
     for (int i = 0; i < 4; i++)
     {
         Card card = m_deck.Draw();
-        cards.AddCard(card);
+        cards.add_card(card);
     }
     m_table.set_cards(cards);
 
@@ -50,15 +50,15 @@ void Round::DealCards()
     for (int i = 0; i < 4; i++)
     {
         Card card = m_deck.Draw();
-        hand.AddCard(card);
+        hand.add_card(card);
     }
     m_human->set_hand(hand);
 
-    hand.Clear();
+    hand.reset();
     for (int i = 0; i < 4; i++)
     {
         Card card = m_deck.Draw();
-        hand.AddCard(card);
+        hand.add_card(card);
     }
     m_computer->set_hand(hand);
 }

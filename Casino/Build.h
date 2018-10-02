@@ -32,7 +32,7 @@ public:
     }
     bool Increase(Card a_card);
     bool Extend(Set a_set);
-    bool Contains(Card a_card);
+    bool contains(Card a_card);
     string ToString();
 private:
     bool m_is_human;
