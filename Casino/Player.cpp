@@ -115,7 +115,7 @@ bool Player::create_build(Table & a_table)
     selected_cards.add_card(player_card);
 
     // Select loose cards
-    Set loose_cards = Console::pick_loose_card(a_table.get_cards());
+    Set loose_cards = Console::pick_loose_cards(a_table.get_cards());
     for (Card card : loose_cards.get_cards())
     {
         selected_cards.add_card(card);
@@ -160,7 +160,7 @@ bool Player::increase_build(Table & a_table)
     selected_cards.add_card(player_card);
 
     // Select build cards
-    Set selected_build_cards = Console::pick_table_cards(a_table);
+    Set selected_build_cards = Console::pick_build_cards(a_table);
     for (Card card : selected_build_cards.get_cards())
     {
         selected_cards.add_card(card);

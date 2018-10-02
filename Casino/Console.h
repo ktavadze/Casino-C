@@ -16,7 +16,8 @@ public:
     static int process_move_menu();
     static int process_build_menu();
     static int pick_player_card(Set a_hand);
-    static Set pick_loose_card(Set a_cards);
+    static Set pick_loose_cards(Set a_cards);
+    static Set pick_build_cards(Table a_table);
     static Set pick_table_cards(Table a_table);
     static void display_message(string a_message);
 private:

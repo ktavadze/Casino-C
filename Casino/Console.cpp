@@ -149,7 +149,7 @@ int Console::pick_player_card(Set a_hand)
     return choice;
 }
 
-Set Console::pick_loose_card(Set a_cards)
+Set Console::pick_loose_cards(Set a_cards)
 {
     Set cards;
 
@@ -181,15 +181,72 @@ Set Console::pick_loose_card(Set a_cards)
         for (string name : names)
         {
             Card card(name);
+            cards.add_card(card);
+        }
 
+        for (Card card : cards.get_cards())
+        {
             if (!a_cards.contains(card))
             {
                 do_again = true;
             }
-            else
+        }
+    } while (do_again);
+
+    return cards;
+}
+
+Set Console::pick_build_cards(Table a_table)
+{
+    Set cards;
+
+    bool do_again;
+    do
+    {
+        cards.reset();
+
+        do_again = false;
+
+        cout << endl << "Pick card(s): ";
+        int count = 0;
+        for (Build build : a_table.get_builds())
+        {
+            count++;
+            if (count > 1)
             {
-                cards.add_card(card);
+                cout << " ";
             }
+            cout << build.ToString();
+        }
+        cout << endl;
+
+        // Get names
+        string input;
+        getline(cin, input, '\n');
+
+        // Convert to uppercase
+        transform(input.begin(), input.end(), input.begin(), ::toupper);
+
+        // Tokenize
+        vector<string> names = string_to_vector(input, ' ');
+
+        // Validate
+        if (names.empty())
+        {
+            do_again = true;
+        }
+
+        for (string name : names)
+        {
+            Card card(name);
+            cards.add_card(card);
+        }
+
+        Build human_build(true, cards);
+        Build computer_build(false, cards);
+        if (!a_table.contains(human_build) && !a_table.contains(computer_build))
+        {
+            do_again = true;
         }
     } while (do_again);
 
