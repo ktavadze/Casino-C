@@ -149,18 +149,18 @@ int Console::pick_player_card(Set a_hand)
     return choice;
 }
 
-Set Console::pick_loose_cards(Set a_cards)
+Set Console::pick_loose_set(Set a_set)
 {
-    Set cards;
+    Set selected_set;
 
     bool do_again;
     do
     {
-        cards.reset();
+        selected_set.reset();
 
         do_again = false;
 
-        cout << endl << "Pick card(s): " + a_cards.ToString() << endl;
+        cout << endl << "Pick card(s): " + a_set.ToString() << endl;
 
         // Get names
         string input;
@@ -181,29 +181,29 @@ Set Console::pick_loose_cards(Set a_cards)
         for (string name : names)
         {
             Card card(name);
-            cards.add_card(card);
+            selected_set.add_card(card);
         }
 
-        for (Card card : cards.get_cards())
+        for (Card card : selected_set.get_cards())
         {
-            if (!a_cards.contains(card))
+            if (!a_set.contains(card))
             {
                 do_again = true;
             }
         }
     } while (do_again);
 
-    return cards;
+    return selected_set;
 }
 
-Set Console::pick_build_cards(Table a_table)
+Set Console::pick_build_set(Table a_table)
 {
-    Set cards;
+    Set selected_set;
 
     bool do_again;
     do
     {
-        cards.reset();
+        selected_set.reset();
 
         do_again = false;
 
@@ -239,28 +239,28 @@ Set Console::pick_build_cards(Table a_table)
         for (string name : names)
         {
             Card card(name);
-            cards.add_card(card);
+            selected_set.add_card(card);
         }
 
-        Build human_build(true, cards);
-        Build computer_build(false, cards);
+        Build human_build(true, selected_set);
+        Build computer_build(false, selected_set);
         if (!a_table.contains(human_build) && !a_table.contains(computer_build))
         {
             do_again = true;
         }
     } while (do_again);
 
-    return cards;
+    return selected_set;
 }
 
-Set Console::pick_table_cards(Table a_table)
+Set Console::pick_table_set(Table a_table)
 {
-    Set cards;
+    Set selected_set;
 
     bool do_again;
     do
     {
-        cards.reset();
+        selected_set.reset();
 
         do_again = false;
 
@@ -285,10 +285,10 @@ Set Console::pick_table_cards(Table a_table)
         for (string name : names)
         {
             Card card(name);
-            cards.add_card(card);
+            selected_set.add_card(card);
         }
 
-        for (Card card : cards.get_cards())
+        for (Card card : selected_set.get_cards())
         {
             if (!a_table.contains(card))
             {
@@ -297,7 +297,7 @@ Set Console::pick_table_cards(Table a_table)
         }
     } while (do_again);
 
-    return cards;
+    return selected_set;
 }
 
 void Console::display_message(string a_message)

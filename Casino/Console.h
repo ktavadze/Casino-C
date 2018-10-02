@@ -16,9 +16,9 @@ public:
     static int process_move_menu();
     static int process_build_menu();
     static int pick_player_card(Set a_hand);
-    static Set pick_loose_cards(Set a_cards);
-    static Set pick_build_cards(Table a_table);
-    static Set pick_table_cards(Table a_table);
+    static Set pick_loose_set(Set a_set);
+    static Set pick_build_set(Table a_table);
+    static Set pick_table_set(Table a_table);
     static void display_message(string a_message);
 private:
     static vector<string> string_to_vector(string a_string, char a_delimiter);

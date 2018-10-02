@@ -5,13 +5,13 @@ void Round::start()
 {
     deal_cards();
 
-    Set cards;
+    Set set;
     for (int i = 0; i < 4; i++)
     {
         Card card = m_deck.draw();
-        cards.add_card(card);
+        set.add_card(card);
     }
-    m_table.set_cards(cards);
+    m_table.set_loose_set(set);
 
     int turn = 1;
     while (turn <= 48)

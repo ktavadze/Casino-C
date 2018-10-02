@@ -3,12 +3,12 @@
 
 void Table::add_card(Card a_card)
 {
-    m_cards.add_card(a_card);
+    m_loose_set.add_card(a_card);
 }
 
 void Table::remove_card(Card a_card)
 {
-    m_cards.remove_card(a_card);
+    m_loose_set.remove_card(a_card);
 }
 
 void Table::add_build(Build a_build)
@@ -52,7 +52,7 @@ bool Table::contains(Build a_build)
 bool Table::contains(Card a_card)
 {
     // Check cards
-    if (m_cards.contains(a_card))
+    if (m_loose_set.contains(a_card))
     {
         return true;
     }
@@ -88,7 +88,7 @@ string Table::ToString()
     {
         info += " ";
     }
-    info += m_cards.ToString();
+    info += m_loose_set.ToString();
 
     return info;
 }

@@ -6,13 +6,13 @@ class Table
 {
 public:
     Table() {}
-    inline Set get_cards()
+    inline Set get_loose_set()
     {
-        return m_cards;
+        return m_loose_set;
     }
-    inline void set_cards(Set a_cards)
+    inline void set_loose_set(Set a_set)
     {
-        m_cards = a_cards;
+        m_loose_set = a_set;
     }
     inline vector<Build> get_builds()
     {
@@ -31,6 +31,6 @@ public:
     bool contains(Card a_card);
     string ToString();
 private:
-    Set m_cards;
+    Set m_loose_set;
     vector<Build> m_builds;
 };

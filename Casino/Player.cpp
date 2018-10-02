@@ -102,26 +102,26 @@ bool Player::build_move(Table & a_table)
 
 bool Player::create_build(Table & a_table)
 {
-    if (a_table.get_cards().get_size() == 0)
+    if (a_table.get_loose_set().get_size() == 0)
     {
         return false;
     }
 
-    Set selected_cards;
+    Set selected_set;
 
     // Select player card
     int player_card_index = Console::pick_player_card(m_hand) - 1;
     Card player_card = m_hand.get_card(player_card_index);
-    selected_cards.add_card(player_card);
+    selected_set.add_card(player_card);
 
-    // Select loose cards
-    Set loose_cards = Console::pick_loose_cards(a_table.get_cards());
-    for (Card card : loose_cards.get_cards())
+    // Select loose set
+    Set loose_set = Console::pick_loose_set(a_table.get_loose_set());
+    for (Card card : loose_set.get_cards())
     {
-        selected_cards.add_card(card);
+        selected_set.add_card(card);
     }
 
-    Build build(m_is_human, selected_cards);
+    Build build(m_is_human, selected_set);
 
     if (holds_card_of_value(build.get_value()))
     {
@@ -130,7 +130,7 @@ bool Player::create_build(Table & a_table)
             // Update table
             a_table.add_build(build);
 
-            for (Card loose_card : loose_cards.get_cards())
+            for (Card loose_card : loose_set.get_cards())
             {
                 a_table.remove_card(loose_card);
             }
@@ -152,25 +152,25 @@ bool Player::increase_build(Table & a_table)
         return false;
     }
 
-    Set selected_cards;
+    Set selected_set;
 
     // Select player card
     int player_card_index = Console::pick_player_card(m_hand) - 1;
     Card player_card = m_hand.get_card(player_card_index);
-    selected_cards.add_card(player_card);
+    selected_set.add_card(player_card);
 
-    // Select build cards
-    Set selected_build_cards = Console::pick_build_cards(a_table);
-    for (Card card : selected_build_cards.get_cards())
+    // Select build set
+    Set build_set = Console::pick_build_set(a_table);
+    for (Card card : build_set.get_cards())
     {
-        selected_cards.add_card(card);
+        selected_set.add_card(card);
     }
 
-    Build selected_build(!m_is_human, selected_build_cards);
+    Build selected_build(!m_is_human, build_set);
 
     if (a_table.contains(selected_build))
     {
-        Build increased_build(m_is_human, selected_cards);
+        Build increased_build(m_is_human, selected_set);
 
         if (holds_card_of_value(increased_build.get_value()))
         {
