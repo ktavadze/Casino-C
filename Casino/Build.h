@@ -32,6 +32,8 @@ public:
     }
     bool increase(Card a_card);
     bool extend(Set a_set);
+    bool equals(Build a_build);
+    bool contains(Set a_set);
     bool contains(Card a_card);
     string ToString();
 private:

@@ -160,7 +160,7 @@ Set Console::pick_loose_card(Set a_cards)
 
         do_again = false;
 
-        cout << endl << "Pick card(s):" + a_cards.ToString() << endl;
+        cout << endl << "Pick card(s): " + a_cards.ToString() << endl;
 
         // Get names
         string input;
@@ -207,7 +207,7 @@ Set Console::pick_table_cards(Table a_table)
 
         do_again = false;
 
-        cout << endl << "Pick card(s):" << a_table.ToString() << endl;
+        cout << endl << "Pick card(s): " << a_table.ToString() << endl;
 
         // Get names
         string input;

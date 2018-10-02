@@ -16,6 +16,39 @@ void Table::add_build(Build a_build)
     m_builds.push_back(a_build);
 }
 
+void Table::remove_build(Build a_build)
+{
+    int index = index_of(a_build);
+
+    m_builds.erase(m_builds.begin() + index);
+}
+
+int Table::index_of(Build a_build)
+{
+    for (unsigned int i = 0; i < m_builds.size(); i++)
+    {
+        if (a_build.equals(m_builds[i]))
+        {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+bool Table::contains(Build a_build)
+{
+    for (Build build : m_builds)
+    {
+        if (build.equals(a_build))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 bool Table::contains(Card a_card)
 {
     // Check cards

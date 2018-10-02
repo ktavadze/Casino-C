@@ -39,7 +39,9 @@ public:
     virtual bool trail_move(Table & a_table);
     virtual bool build_move(Table & a_table);
     virtual bool create_build(Table & a_table);
+    virtual bool increase_build(Table & a_table);
     virtual bool can_play(Table a_table, Card a_card);
+    virtual bool holds_card_of_value(int a_value);
     string ToString();
 protected:
     bool m_is_human;

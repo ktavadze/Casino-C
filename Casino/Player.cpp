@@ -91,8 +91,7 @@ bool Player::build_move(Table & a_table)
     case 1:
         return create_build(a_table);
     case 2:
-        // TODO: increase
-        return false;
+        return increase_build(a_table);
     case 3:
         // TODO: extend
         return false;
@@ -124,23 +123,66 @@ bool Player::create_build(Table & a_table)
 
     Build build(m_is_human, selected_cards);
 
-    for (Card card : m_hand.get_cards())
+    if (holds_card_of_value(build.get_value()))
     {
-        if (card.get_value() == build.get_value())
+        if (can_play(a_table, player_card))
         {
-            if (can_play(a_table, player_card))
+            // Update table
+            a_table.add_build(build);
+
+            for (Card loose_card : loose_cards.get_cards())
             {
-                a_table.add_build(build);
-
-                for (Card loose_card : loose_cards.get_cards())
-                {
-                    a_table.remove_card(loose_card);
-                }
-
-                m_hand.remove_card(player_card);
-
-                return true;
+                a_table.remove_card(loose_card);
             }
+
+            // Update hand
+            m_hand.remove_card(player_card);
+
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool Player::increase_build(Table & a_table)
+{
+    if (a_table.get_builds().size() == 0)
+    {
+        return false;
+    }
+
+    Set selected_cards;
+
+    // Select player card
+    int player_card_index = Console::pick_player_card(m_hand) - 1;
+    Card player_card = m_hand.get_card(player_card_index);
+    selected_cards.add_card(player_card);
+
+    // Select build cards
+    Set selected_build_cards = Console::pick_table_cards(a_table);
+    for (Card card : selected_build_cards.get_cards())
+    {
+        selected_cards.add_card(card);
+    }
+
+    Build selected_build(!m_is_human, selected_build_cards);
+
+    if (a_table.contains(selected_build))
+    {
+        Build increased_build(m_is_human, selected_cards);
+
+        if (holds_card_of_value(increased_build.get_value()))
+        {
+            // Update table
+            a_table.add_build(increased_build);
+
+            a_table.remove_build(selected_build);
+
+            // Update hand
+            m_hand.remove_card(player_card);
+
+            return true;
         }
     }
 
@@ -171,6 +213,19 @@ bool Player::can_play(Table a_table, Card a_card)
     }
 
     return true;
+}
+
+bool Player::holds_card_of_value(int a_value)
+{
+    for (Card card : m_hand.get_cards())
+    {
+        if (card.get_value() == a_value)
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 string Player::ToString()

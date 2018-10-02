@@ -40,6 +40,7 @@ public:
     }
     void add_card(Card a_card);
     void remove_card(Card a_card);
+    bool equals(Set a_set);
     bool contains(Card a_card);
     string ToString();
 private:

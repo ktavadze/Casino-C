@@ -15,6 +15,26 @@ void Set::remove_card(Card a_card)
     m_cards.erase(m_cards.begin() + index);
 }
 
+bool Set::equals(Set a_set)
+{
+    // Check size
+    if (a_set.get_size() != get_size())
+    {
+        return false;
+    }
+
+    // Check cards
+    for (Card card : a_set.get_cards())
+    {
+        if (!contains(card))
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 bool Set::contains(Card a_card)
 {
     for (Card card : m_cards)
