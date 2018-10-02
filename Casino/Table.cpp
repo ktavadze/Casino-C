@@ -51,7 +51,7 @@ bool Table::contains(Build a_build)
 
 bool Table::contains(Card a_card)
 {
-    // Check loose cards
+    // Check loose set
     if (m_loose_set.contains(a_card))
     {
         return true;

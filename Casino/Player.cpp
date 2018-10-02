@@ -56,8 +56,7 @@ bool Player::make_move(Table & a_table)
     case 1:
         return build_move(a_table);
     case 2:
-        // TODO: capture
-        return false;
+        return capture_move(a_table);
     case 3:
         return trail_move(a_table);
     default:
@@ -172,16 +171,65 @@ bool Player::increase_build(Table & a_table)
     return false;
 }
 
+bool Player::capture_move(Table & a_table)
+{
+    // Select player card
+    int player_card_index = Console::pick_player_card(m_hand) - 1;
+    Card player_card = m_hand.get_card(player_card_index);
+
+    // Select table set
+    Set table_set = Console::pick_table_set(a_table);
+
+    // Classify
+    Set loose_set;
+    Set firm_set;
+    for (Card card : table_set.get_cards())
+    {
+        if (a_table.get_loose_set().contains(card))
+        {
+            loose_set.add_card(card);
+        }
+        else
+        {
+            firm_set.add_card(card);
+        }
+    }
+
+    // Check loose set
+    if (loose_set.get_size() > 0)
+    {
+        Set non_matching_set;
+        int non_matching_sum = 0;
+        for (Card card : loose_set.get_cards())
+        {
+            if (card.get_value() != player_card.get_value())
+            {
+                non_matching_set.add_card(card);
+                non_matching_sum += card.get_value();
+            }
+        }
+
+        if (non_matching_set.get_size() > 0 && non_matching_sum != player_card.get_value())
+        {
+            return false;
+        }
+    }
+
+    // TODO: check firm set
+
+    return false;
+}
+
 bool Player::trail_move(Table & a_table)
 {
     // Select player card
     int player_card_index = Console::pick_player_card(m_hand) - 1;
     Card player_card = m_hand.get_card(player_card_index);
 
-    // Check loose cards
-    for (Card loose_card : a_table.get_loose_set().get_cards())
+    // Check loose set
+    for (Card card : a_table.get_loose_set().get_cards())
     {
-        if (loose_card.get_value() == player_card.get_value())
+        if (card.get_value() == player_card.get_value())
         {
             return false;
         }
