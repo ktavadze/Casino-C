@@ -285,14 +285,14 @@ Set Console::pick_table_cards(Table a_table)
         for (string name : names)
         {
             Card card(name);
+            cards.add_card(card);
+        }
 
+        for (Card card : cards.get_cards())
+        {
             if (!a_table.contains(card))
             {
                 do_again = true;
-            }
-            else
-            {
-                cards.add_card(card);
             }
         }
     } while (do_again);
