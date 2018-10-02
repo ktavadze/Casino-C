@@ -35,9 +35,15 @@ string Deck::ToString()
 {
     string info;
 
+    int count = 0;
     for (Card card : m_cards)
     {
-        info += " " + card.get_name();
+        count++;
+        if (count > 1)
+        {
+            info += " ";
+        }
+        info += card.get_name();
     }
 
     return info;

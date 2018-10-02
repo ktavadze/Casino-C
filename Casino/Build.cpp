@@ -90,7 +90,7 @@ string Build::ToString()
         info += " [" + set.ToString() + "]";
     }
 
-    info += " ] ";
+    info += " ]";
 
     return info;
 }

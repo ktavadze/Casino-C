@@ -73,11 +73,21 @@ string Table::ToString()
 {
     string info;
 
+    int count = 0;
     for (Build build : m_builds)
     {
+        count++;
+        if (count > 1)
+        {
+            info += " ";
+        }
         info += build.ToString();
     }
 
+    if (count > 0)
+    {
+        info += " ";
+    }
     info += m_cards.ToString();
 
     return info;

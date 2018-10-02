@@ -75,7 +75,7 @@ string Round::ToString()
 
     info += "\nTable: " + m_table.ToString() + "\n";
 
-    info += "\nDeck:" + m_deck.ToString() + "\n";
+    info += "\nDeck: " + m_deck.ToString() + "\n";
 
     info += "\nNext Player: ";
     if (m_human_next)
