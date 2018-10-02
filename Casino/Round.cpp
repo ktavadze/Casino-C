@@ -16,22 +16,22 @@ void Round::start()
     int turn = 1;
     while (turn <= 48)
     {
-        Console::DisplayMessage(ToString());
+        Console::display_message(ToString());
 
         if (m_human_next)
         {
-            m_human->Play(m_table);
+            m_human->play(m_table);
             m_human_next = false;
         }
         else
         {
-            m_computer->Play(m_table);
+            m_computer->play(m_table);
             m_human_next = true;
         }
 
         if (turn == 48)
         {
-            Console::DisplayMessage(ToString());
+            Console::display_message(ToString());
 
             break;
         }

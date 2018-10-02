@@ -10,15 +10,15 @@ using namespace std;
 class Console
 {
 public:
-    static int ProcessMainMenu();
-    static bool ProcessCoinToss();
-    static int ProcessTurnMenu(bool a_is_human);
-    static int ProcessMoveMenu();
-    static int ProcessBuildMenu();
-    static int PickPlayerCard(Set a_hand);
-    static Set PickLooseCards(Set a_cards);
-    static Set PickTableCards(Table a_table);
-    static void DisplayMessage(string a_message);
+    static int process_main_menu();
+    static bool process_coin_toss();
+    static int process_turn_menu(bool a_is_human);
+    static int process_move_menu();
+    static int process_build_menu();
+    static int pick_player_card(Set a_hand);
+    static Set pick_loose_card(Set a_cards);
+    static Set pick_table_cards(Table a_table);
+    static void display_message(string a_message);
 private:
-    static vector<string> StringToVector(string a_string, char a_delimiter);
+    static vector<string> string_to_vector(string a_string, char a_delimiter);
 };

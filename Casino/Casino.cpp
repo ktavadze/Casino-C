@@ -13,7 +13,7 @@ int main()
 {
     Tournament tournament;
 
-    int choice = Console::ProcessMainMenu();
+    int choice = Console::process_main_menu();
     switch (choice)
     {
     case 1:

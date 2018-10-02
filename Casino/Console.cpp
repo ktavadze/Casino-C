@@ -3,7 +3,7 @@
 #include <ctime>
 #include <algorithm>
 
-int Console::ProcessMainMenu()
+int Console::process_main_menu()
 {
     cout << "Welcome to Casino!" << endl;
 
@@ -22,7 +22,7 @@ int Console::ProcessMainMenu()
     return choice;
 }
 
-bool Console::ProcessCoinToss()
+bool Console::process_coin_toss()
 {
     int choice;
     do
@@ -59,7 +59,7 @@ bool Console::ProcessCoinToss()
     return false;
 }
 
-int Console::ProcessTurnMenu(bool a_is_human)
+int Console::process_turn_menu(bool a_is_human)
 {
     int choice;
     if (a_is_human)
@@ -93,7 +93,7 @@ int Console::ProcessTurnMenu(bool a_is_human)
     return choice;
 }
 
-int Console::ProcessMoveMenu()
+int Console::process_move_menu()
 {
     int choice;
     do
@@ -110,7 +110,7 @@ int Console::ProcessMoveMenu()
     return choice;
 }
 
-int Console::ProcessBuildMenu()
+int Console::process_build_menu()
 {
     int choice;
     do
@@ -127,7 +127,7 @@ int Console::ProcessBuildMenu()
     return choice;
 }
 
-int Console::PickPlayerCard(Set a_hand)
+int Console::pick_player_card(Set a_hand)
 {
     int choice;
     do
@@ -149,7 +149,7 @@ int Console::PickPlayerCard(Set a_hand)
     return choice;
 }
 
-Set Console::PickLooseCards(Set a_cards)
+Set Console::pick_loose_card(Set a_cards)
 {
     Set cards;
 
@@ -170,7 +170,7 @@ Set Console::PickLooseCards(Set a_cards)
         transform(input.begin(), input.end(), input.begin(), ::toupper);
 
         // Tokenize
-        vector<string> names = StringToVector(input, ' ');
+        vector<string> names = string_to_vector(input, ' ');
 
         // Validate
         if (names.empty())
@@ -196,7 +196,7 @@ Set Console::PickLooseCards(Set a_cards)
     return cards;
 }
 
-Set Console::PickTableCards(Table a_table)
+Set Console::pick_table_cards(Table a_table)
 {
     Set cards;
 
@@ -217,7 +217,7 @@ Set Console::PickTableCards(Table a_table)
         transform(input.begin(), input.end(), input.begin(), ::toupper);
 
         // Tokenize
-        vector<string> names = StringToVector(input, ' ');
+        vector<string> names = string_to_vector(input, ' ');
 
         // Validate
         if (names.empty())
@@ -243,12 +243,12 @@ Set Console::PickTableCards(Table a_table)
     return cards;
 }
 
-void Console::DisplayMessage(string a_message)
+void Console::display_message(string a_message)
 {
     cout << a_message << endl;
 }
 
-vector<string> Console::StringToVector(string a_string, char a_delimiter)
+vector<string> Console::string_to_vector(string a_string, char a_delimiter)
 {
     vector<string> tokens;
 

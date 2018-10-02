@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "Player.h"
 
-void Player::Play(Table & a_table)
+void Player::play(Table & a_table)
 {
     while (true)
     {
-        int choice = Console::ProcessTurnMenu(m_is_human);
+        int choice = Console::process_turn_menu(m_is_human);
 
         if (m_is_human)
         {
@@ -15,7 +15,7 @@ void Player::Play(Table & a_table)
                 // TODO: save game
                 exit(0);
             case 2:
-                if (MakeMove(a_table))
+                if (make_move(a_table))
                 {
                     return;
                 }
@@ -35,7 +35,7 @@ void Player::Play(Table & a_table)
                 // TODO: save game
                 exit(0);
             case 2:
-                if (MakeMove(a_table))
+                if (make_move(a_table))
                 {
                     return;
                 }
@@ -47,30 +47,30 @@ void Player::Play(Table & a_table)
     }
 }
 
-bool Player::MakeMove(Table & a_table)
+bool Player::make_move(Table & a_table)
 {
-    int choice = Console::ProcessMoveMenu();
+    int choice = Console::process_move_menu();
 
     switch (choice)
     {
     case 1:
-        return BuildMove(a_table);
+        return build_move(a_table);
     case 2:
         // TODO: capture
         return false;
     case 3:
-        return TrailMove(a_table);
+        return trail_move(a_table);
     default:
         return false;
     }
 }
 
-bool Player::TrailMove(Table & a_table)
+bool Player::trail_move(Table & a_table)
 {
-    int index = Console::PickPlayerCard(m_hand) - 1;
+    int index = Console::pick_player_card(m_hand) - 1;
     Card card = m_hand.get_card(index);
 
-    if (CanPlay(a_table, card))
+    if (can_play(a_table, card))
     {
         a_table.add_card(card);
 
@@ -82,14 +82,14 @@ bool Player::TrailMove(Table & a_table)
     return false;
 }
 
-bool Player::BuildMove(Table & a_table)
+bool Player::build_move(Table & a_table)
 {
-    int choice = Console::ProcessBuildMenu();
+    int choice = Console::process_build_menu();
 
     switch (choice)
     {
     case 1:
-        return CreateBuild(a_table);
+        return create_build(a_table);
     case 2:
         // TODO: increase
         return false;
@@ -101,7 +101,7 @@ bool Player::BuildMove(Table & a_table)
     }
 }
 
-bool Player::CreateBuild(Table & a_table)
+bool Player::create_build(Table & a_table)
 {
     if (a_table.get_cards().get_size() == 0)
     {
@@ -111,12 +111,12 @@ bool Player::CreateBuild(Table & a_table)
     Set selected_cards;
 
     // Select player card
-    int player_card_index = Console::PickPlayerCard(m_hand) - 1;
+    int player_card_index = Console::pick_player_card(m_hand) - 1;
     Card player_card = m_hand.get_card(player_card_index);
     selected_cards.add_card(player_card);
 
     // Select loose cards
-    Set loose_cards = Console::PickLooseCards(a_table.get_cards());
+    Set loose_cards = Console::pick_loose_card(a_table.get_cards());
     for (Card card : loose_cards.get_cards())
     {
         selected_cards.add_card(card);
@@ -128,7 +128,7 @@ bool Player::CreateBuild(Table & a_table)
     {
         if (card.get_value() == build.get_value())
         {
-            if (CanPlay(a_table, player_card))
+            if (can_play(a_table, player_card))
             {
                 a_table.add_build(build);
 
@@ -147,7 +147,7 @@ bool Player::CreateBuild(Table & a_table)
     return false;
 }
 
-bool Player::CanPlay(Table a_table, Card a_card)
+bool Player::can_play(Table a_table, Card a_card)
 {
     for (Build build : a_table.get_builds())
     {

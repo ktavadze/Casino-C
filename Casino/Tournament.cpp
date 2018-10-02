@@ -3,7 +3,7 @@
 
 void Tournament::start()
 {
-    bool human_first = Console::ProcessCoinToss();
+    bool human_first = Console::process_coin_toss();
 
     m_round = Round(1, &m_computer, &m_human, human_first);
 
