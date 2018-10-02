@@ -30,8 +30,8 @@ public:
     {
         return m_sets;
     }
-    bool Increase(Card a_card);
-    bool Extend(Set a_set);
+    bool increase(Card a_card);
+    bool extend(Set a_set);
     bool contains(Card a_card);
     string ToString();
 private:

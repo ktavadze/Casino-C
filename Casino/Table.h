@@ -24,7 +24,7 @@ public:
     }
     void add_card(Card a_card);
     void remove_card(Card a_card);
-    void AddBuild(Build a_build);
+    void add_build(Build a_build);
     bool contains(Card a_card);
     string ToString();
 private:

@@ -17,8 +17,8 @@ public:
         m_human = a_human;
         m_human_next = a_human_next;
     }
-    void Start();
-    void DealCards();
+    void start();
+    void deal_cards();
     string ToString();
 private:
     int m_number;

@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "Round.h"
 
-void Round::Start()
+void Round::start()
 {
-    DealCards();
+    deal_cards();
 
     Set cards;
     for (int i = 0; i < 4; i++)
     {
-        Card card = m_deck.Draw();
+        Card card = m_deck.draw();
         cards.add_card(card);
     }
     m_table.set_cards(cards);
@@ -37,19 +37,19 @@ void Round::Start()
         }
         else if (turn % 8 == 0)
         {
-            DealCards();
+            deal_cards();
         }
 
         turn++;
     }
 }
 
-void Round::DealCards()
+void Round::deal_cards()
 {
     Set hand;
     for (int i = 0; i < 4; i++)
     {
-        Card card = m_deck.Draw();
+        Card card = m_deck.draw();
         hand.add_card(card);
     }
     m_human->set_hand(hand);
@@ -57,7 +57,7 @@ void Round::DealCards()
     hand.reset();
     for (int i = 0; i < 4; i++)
     {
-        Card card = m_deck.Draw();
+        Card card = m_deck.draw();
         hand.add_card(card);
     }
     m_computer->set_hand(hand);

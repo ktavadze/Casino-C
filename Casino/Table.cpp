@@ -11,7 +11,7 @@ void Table::remove_card(Card a_card)
     m_cards.remove_card(a_card);
 }
 
-void Table::AddBuild(Build a_build)
+void Table::add_build(Build a_build)
 {
     m_builds.push_back(a_build);
 }

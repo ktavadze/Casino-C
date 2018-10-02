@@ -14,7 +14,7 @@ public:
     {
         m_cards = a_cards;
     }
-    Card Draw();
+    Card draw();
     string ToString();
 private:
     vector<Card> m_cards;

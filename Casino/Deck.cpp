@@ -24,7 +24,7 @@ Deck::Deck()
     }
 }
 
-Card Deck::Draw()
+Card Deck::draw()
 {
     Card card = m_cards.back();
     m_cards.pop_back();

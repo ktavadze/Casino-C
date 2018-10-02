@@ -130,7 +130,7 @@ bool Player::CreateBuild(Table & a_table)
         {
             if (CanPlay(a_table, player_card))
             {
-                a_table.AddBuild(build);
+                a_table.add_build(build);
 
                 for (Card loose_card : loose_cards.get_cards())
                 {

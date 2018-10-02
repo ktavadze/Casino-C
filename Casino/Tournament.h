@@ -8,7 +8,7 @@ class Tournament
 {
 public:
     Tournament() {}
-    void Start();
+    void start();
 private:
     Computer m_computer;
     Human m_human;

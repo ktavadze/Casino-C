@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Build.h"
 
-bool Build::Increase(Card a_card)
+bool Build::increase(Card a_card)
 {
     if (m_sets.size() == 1)
     {
@@ -15,7 +15,7 @@ bool Build::Increase(Card a_card)
     return false;
 }
 
-bool Build::Extend(Set a_set)
+bool Build::extend(Set a_set)
 {
     if (m_value == a_set.get_value())
     {

@@ -17,7 +17,7 @@ int main()
     switch (choice)
     {
     case 1:
-        tournament.Start();
+        tournament.start();
         break;
     case 2:
         // TODO: load
