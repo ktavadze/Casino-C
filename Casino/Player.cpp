@@ -65,23 +65,6 @@ bool Player::make_move(Table & a_table)
     }
 }
 
-bool Player::trail_move(Table & a_table)
-{
-    int index = Console::pick_player_card(m_hand) - 1;
-    Card card = m_hand.get_card(index);
-
-    if (can_play(a_table, card))
-    {
-        a_table.add_card(card);
-
-        m_hand.remove_card(card);
-
-        return true;
-    }
-
-    return false;
-}
-
 bool Player::build_move(Table & a_table)
 {
     int choice = Console::process_build_menu();
@@ -184,6 +167,23 @@ bool Player::increase_build(Table & a_table)
 
             return true;
         }
+    }
+
+    return false;
+}
+
+bool Player::trail_move(Table & a_table)
+{
+    int index = Console::pick_player_card(m_hand) - 1;
+    Card card = m_hand.get_card(index);
+
+    if (can_play(a_table, card))
+    {
+        a_table.add_card(card);
+
+        m_hand.remove_card(card);
+
+        return true;
     }
 
     return false;

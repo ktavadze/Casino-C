@@ -36,10 +36,10 @@ public:
     }
     virtual void play(Table & a_table);
     virtual bool make_move(Table & a_table);
-    virtual bool trail_move(Table & a_table);
     virtual bool build_move(Table & a_table);
     virtual bool create_build(Table & a_table);
     virtual bool increase_build(Table & a_table);
+    virtual bool trail_move(Table & a_table);
     virtual bool can_play(Table a_table, Card a_card);
     virtual bool holds_card_of_value(int a_value);
     string ToString();
