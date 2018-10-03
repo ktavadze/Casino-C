@@ -288,14 +288,14 @@ bool Player::capture_move(Table & a_table)
     // Capture firm set
     for (Build build : a_table.get_builds())
     {
-        // Update pile
         if (firm_set.contains(build.get_sets()))
         {
+            // Update pile
             m_pile.add_sets(build.get_sets());
-        }
 
-        // Update table
-        a_table.remove_build(build);
+            // Update table
+            a_table.remove_build(build);
+        }
     }
 
     // Capture loose set
