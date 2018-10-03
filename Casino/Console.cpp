@@ -5,15 +5,16 @@
 
 int Console::process_main_menu()
 {
-    cout << "Welcome to Casino!" << endl;
+    cout << "***WELCOME TO CASINO!***" << endl;
 
     int choice;
     do
     {
-        cout << endl << "Main menu" << endl;
+        cout << endl << "***MAIN MENU***" << endl;
         cout << "1. Start a new game" << endl;
         cout << "2. Load an old game" << endl;
         cout << "3. Quit the game" << endl;
+
         cin >> choice;
         cin.clear();
         cin.ignore(1000, '\n');
@@ -27,35 +28,40 @@ bool Console::process_coin_toss()
     int choice;
     do
     {
-        cout << endl << "Coin toss" << endl;
+        cout << endl << "***COIN TOSS***" << endl;
         cout << "1. Guess heads" << endl;
         cout << "2. Guess tails" << endl;
+
         cin >> choice;
         cin.clear();
         cin.ignore(1000, '\n');
     } while (choice != 1 && choice != 2);
 
+    // Flip coin
     srand((unsigned int)time(NULL));
     int coin = rand() % 2 + 1;
 
-    string result;
+    // Display result
+    cout << endl << "Result: ";
     if (coin == 1)
     {
-        result = "Heads";
+        cout << "heads";
     }
     else
     {
-        result = "Tails";
+        cout << "tails";
     }
-    cout << endl << "Result: " << result << endl;
 
-    if (choice == coin)
+    cout << " - ";
+    if (coin == choice)
     {
-        cout << "You guessed RIGHT" << endl;
+        cout << "CORRECT!" << endl;
+
         return true;
     }
 
-    cout << "You guessed WRONG" << endl;
+    cout << "INCORRECT!" << endl;
+
     return false;
 }
 
@@ -66,11 +72,12 @@ int Console::process_turn_menu(bool a_is_human)
     {
         do
         {
-            cout << endl << "Human turn menu" << endl;
+            cout << endl << "***HUMAN TURN MENU***" << endl;
             cout << "1. Save the game" << endl;
             cout << "2. Make a move" << endl;
             cout << "3. Ask for help" << endl;
             cout << "4. Quit the game" << endl;
+
             cin >> choice;
             cin.clear();
             cin.ignore(1000, '\n');
@@ -80,10 +87,11 @@ int Console::process_turn_menu(bool a_is_human)
     {
         do
         {
-            cout << endl << "Computer turn menu" << endl;
+            cout << endl << "***COMPUTER TURN MENU***" << endl;
             cout << "1. Save the game" << endl;
             cout << "2. Make a move" << endl;
             cout << "3. Quit the game" << endl;
+
             cin >> choice;
             cin.clear();
             cin.ignore(1000, '\n');
@@ -98,10 +106,11 @@ int Console::process_move_menu()
     int choice;
     do
     {
-        cout << endl << "Move menu" << endl;
+        cout << endl << "***MOVE MENU***" << endl;
         cout << "1. Build" << endl;
         cout << "2. Capture" << endl;
         cout << "3. Trail" << endl;
+
         cin >> choice;
         cin.clear();
         cin.ignore(1000, '\n');
@@ -115,10 +124,11 @@ int Console::process_build_menu()
     int choice;
     do
     {
-        cout << endl << "Build menu" << endl;
+        cout << endl << "***BUILD MENU***" << endl;
         cout << "1. Create" << endl;
         cout << "2. Increase" << endl;
         cout << "3. Extend" << endl;
+
         cin >> choice;
         cin.clear();
         cin.ignore(1000, '\n');
@@ -134,12 +144,13 @@ int Console::pick_player_card(Set a_hand)
     int choice;
     do
     {
-        cout << endl << "Pick card" << endl;
+        cout << endl << "Pick card:" << endl;
 
         Card card;
         for (int i = 0; i < size; i++)
         {
             card = a_hand.get_card(i);
+
             cout << i + 1 << ". " << card.get_name() << endl;
         }
 
@@ -158,12 +169,13 @@ int Console::pick_build(vector<Build> a_builds)
     int choice;
     do
     {
-        cout << endl << "Pick build" << endl;
+        cout << endl << "Pick build:" << endl;
 
         Build build;
         for (int i = 0; i < size; i++)
         {
             build = a_builds.at(i);
+
             cout << i + 1 << ". " << build.ToString() << endl;
         }
 
@@ -188,11 +200,10 @@ Set Console::pick_loose_set(Set a_set)
 
         cout << endl << "Pick card(s): " + a_set.ToString() << endl;
 
-        // Get names
         string input;
         getline(cin, input, '\n');
 
-        // Convert to uppercase
+        // Normalize
         transform(input.begin(), input.end(), input.begin(), ::toupper);
 
         // Tokenize
@@ -235,11 +246,10 @@ Set Console::pick_table_set(Table a_table)
 
         cout << endl << "Pick card(s): " << a_table.ToString() << endl;
 
-        // Get names
         string input;
         getline(cin, input, '\n');
 
-        // Convert to uppercase
+        // Normalize
         transform(input.begin(), input.end(), input.begin(), ::toupper);
 
         // Tokenize

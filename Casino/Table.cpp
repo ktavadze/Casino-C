@@ -20,6 +20,8 @@ void Table::remove_build(Build a_build)
 {
     int index = index_of(a_build);
 
+    cout << endl << "Remove build at index " << index << endl;
+
     m_builds.erase(m_builds.begin() + index);
 }
 
