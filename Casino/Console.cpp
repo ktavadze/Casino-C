@@ -129,13 +129,15 @@ int Console::process_build_menu()
 
 int Console::pick_player_card(Set a_hand)
 {
+    int size = a_hand.get_size();
+
     int choice;
     do
     {
         cout << endl << "Pick card" << endl;
 
         Card card;
-        for (int i = 0; i < a_hand.get_size(); i++)
+        for (int i = 0; i < size; i++)
         {
             card = a_hand.get_card(i);
             cout << i + 1 << ". " << card.get_name() << endl;
@@ -144,7 +146,31 @@ int Console::pick_player_card(Set a_hand)
         cin >> choice;
         cin.clear();
         cin.ignore(1000, '\n');
-    } while (choice < 1 || choice > a_hand.get_size());
+    } while (choice < 1 || choice > size);
+
+    return choice;
+}
+
+int Console::pick_build(vector<Build> a_builds)
+{
+    int size = a_builds.size();
+
+    int choice;
+    do
+    {
+        cout << endl << "Pick build" << endl;
+
+        Build build;
+        for (int i = 0; i < size; i++)
+        {
+            build = a_builds.at(i);
+            cout << i + 1 << ". " << build.ToString() << endl;
+        }
+
+        cin >> choice;
+        cin.clear();
+        cin.ignore(1000, '\n');
+    } while (choice < 1 || choice > size);
 
     return choice;
 }
@@ -190,63 +216,6 @@ Set Console::pick_loose_set(Set a_set)
             {
                 do_again = true;
             }
-        }
-    } while (do_again);
-
-    return selected_set;
-}
-
-Set Console::pick_build_set(Table a_table)
-{
-    Set selected_set;
-
-    bool do_again;
-    do
-    {
-        selected_set.reset();
-
-        do_again = false;
-
-        cout << endl << "Pick card(s): ";
-        int count = 0;
-        for (Build build : a_table.get_builds())
-        {
-            count++;
-            if (count > 1)
-            {
-                cout << " ";
-            }
-            cout << build.ToString();
-        }
-        cout << endl;
-
-        // Get names
-        string input;
-        getline(cin, input, '\n');
-
-        // Convert to uppercase
-        transform(input.begin(), input.end(), input.begin(), ::toupper);
-
-        // Tokenize
-        vector<string> names = string_to_vector(input, ' ');
-
-        // Validate
-        if (names.empty())
-        {
-            do_again = true;
-        }
-
-        for (string name : names)
-        {
-            Card card(name);
-            selected_set.add_card(card);
-        }
-
-        Build human_build(true, selected_set);
-        Build computer_build(false, selected_set);
-        if (!a_table.contains(human_build) && !a_table.contains(computer_build))
-        {
-            do_again = true;
         }
     } while (do_again);
 

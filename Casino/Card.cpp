@@ -43,7 +43,7 @@ Card::Card(string a_name)
         m_value = 13;
         break;
     case 'A':
-        m_value = 14;
+        m_value = 1;
         break;
     }
 }

@@ -94,7 +94,16 @@ bool Player::create_build(Table & a_table)
     // Select player card
     int player_card_index = Console::pick_player_card(m_hand) - 1;
     Card player_card = m_hand.get_card(player_card_index);
-    selected_set.add_card(player_card);
+
+    // Check player card
+    if (can_play(a_table, player_card))
+    {
+        selected_set.add_card(player_card);
+    }
+    else
+    {
+        return false;
+    }
 
     // Select loose set
     Set loose_set = Console::pick_loose_set(a_table.get_loose_set());
@@ -106,26 +115,24 @@ bool Player::create_build(Table & a_table)
 
     Build build(m_is_human, selected_set);
 
-    if (holds_card_of_value(build.get_value()))
+    // Check build value
+    if (!holds_card_of_value(build.get_value()))
     {
-        if (can_play(a_table, player_card))
-        {
-            // Update table
-            a_table.add_build(build);
-
-            for (Card loose_card : loose_set.get_cards())
-            {
-                a_table.remove_card(loose_card);
-            }
-
-            // Update hand
-            m_hand.remove_card(player_card);
-
-            return true;
-        }
+        return false;
     }
 
-    return false;
+    // Update table
+    a_table.add_build(build);
+
+    for (Card loose_card : loose_set.get_cards())
+    {
+        a_table.remove_card(loose_card);
+    }
+
+    // Update hand
+    m_hand.remove_card(player_card);
+
+    return true;
 }
 
 bool Player::increase_build(Table & a_table)
@@ -140,37 +147,58 @@ bool Player::increase_build(Table & a_table)
     // Select player card
     int player_card_index = Console::pick_player_card(m_hand) - 1;
     Card player_card = m_hand.get_card(player_card_index);
-    selected_set.add_card(player_card);
 
-    // Select build set
-    Set build_set = Console::pick_build_set(a_table);
-
-    for (Card card : build_set.get_cards())
+    // Check player card
+    if (can_play(a_table, player_card))
     {
-        selected_set.add_card(card);
+        selected_set.add_card(player_card);
+    }
+    else
+    {
+        return false;
     }
 
-    Build selected_build(!m_is_human, build_set);
+    // Select build
+    int selected_build_index = Console::pick_build(a_table.get_builds()) - 1;
+    Build selected_build = a_table.get_builds().at(selected_build_index);
 
-    if (a_table.contains(selected_build))
+    // Check build owner
+    if (selected_build.is_human() == m_is_human)
     {
-        Build increased_build(m_is_human, selected_set);
+        return false;
+    }
 
-        if (holds_card_of_value(increased_build.get_value()))
+    // Check build size
+    if (selected_build.get_sets().size() > 1)
+    {
+        return false;
+    }
+
+    for (Set set : selected_build.get_sets())
+    {
+        for (Card card : set.get_cards())
         {
-            // Update table
-            a_table.add_build(increased_build);
-
-            a_table.remove_build(selected_build);
-
-            // Update hand
-            m_hand.remove_card(player_card);
-
-            return true;
+            selected_set.add_card(card);
         }
     }
 
-    return false;
+    Build increased_build(m_is_human, selected_set);
+
+    // Check build value
+    if (!holds_card_of_value(increased_build.get_value()))
+    {
+        return false;
+    }
+
+    // Update table
+    a_table.add_build(increased_build);
+
+    a_table.remove_build(selected_build);
+
+    // Update hand
+    m_hand.remove_card(player_card);
+
+    return true;
 }
 
 bool Player::capture_move(Table & a_table)
@@ -275,6 +303,12 @@ bool Player::trail_move(Table & a_table)
     int player_card_index = Console::pick_player_card(m_hand) - 1;
     Card player_card = m_hand.get_card(player_card_index);
 
+    // Check player card
+    if (!can_play(a_table, player_card))
+    {
+        return false;
+    }
+
     // Check loose set
     for (Card card : a_table.get_loose_set().get_cards())
     {
@@ -293,18 +327,13 @@ bool Player::trail_move(Table & a_table)
         }
     }
 
-    if (can_play(a_table, player_card))
-    {
-        // Update table
-        a_table.add_card(player_card);
+    // Update table
+    a_table.add_card(player_card);
 
-        // Update hand
-        m_hand.remove_card(player_card);
+    // Update hand
+    m_hand.remove_card(player_card);
 
-        return true;
-    }
-
-    return false;
+    return true;
 }
 
 bool Player::can_play(Table a_table, Card a_card)
