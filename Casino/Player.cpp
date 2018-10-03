@@ -75,8 +75,7 @@ bool Player::build_move(Table & a_table)
     case 2:
         return increase_build(a_table);
     case 3:
-        // TODO: extend
-        return false;
+        return extend_build(a_table);
     default:
         return false;
     }
@@ -210,6 +209,77 @@ bool Player::increase_build(Table & a_table)
     a_table.add_build(increased_build);
 
     a_table.remove_build(selected_build);
+
+    // Update hand
+    m_hand.remove_card(player_card);
+
+    return true;
+}
+
+bool Player::extend_build(Table & a_table)
+{
+    if (a_table.get_builds().size() == 0)
+    {
+        Console::display_message("ERROR: no builds to extend!");
+
+        return false;
+    }
+
+    Set selected_set;
+
+    // Select build
+    int selected_build_index = Console::pick_build(a_table.get_builds()) - 1;
+    Build selected_build = a_table.get_builds().at(selected_build_index);
+
+    // Select player card
+    int player_card_index = Console::pick_player_card(m_hand) - 1;
+    Card player_card = m_hand.get_card(player_card_index);
+
+    // Check player card
+    if (can_play(player_card, a_table))
+    {
+        selected_set.add_card(player_card);
+    }
+    else
+    {
+        Console::display_message("ERROR: selected card reserved for capture!");
+
+        return false;
+    }
+
+    // Select loose set
+    if (selected_build.get_value() != player_card.get_value())
+    {
+        Set loose_set = Console::pick_loose_set(a_table.get_loose_set());
+
+        for (Card card : loose_set.get_cards())
+        {
+            selected_set.add_card(card);
+        }
+    }
+
+    // Check build value
+    if (selected_build.get_value() != selected_set.get_value())
+    {
+        Console::display_message("ERROR: selected sum mismatch!");
+
+        return false;
+    }
+
+    // Update table
+    selected_build.is_human(m_is_human);
+
+    selected_build.extend(selected_set);
+
+    if (selected_set.get_size() > 1)
+    {
+        for (int i = 1; i < selected_set.get_size(); i++)
+        {
+            Card card = selected_set.get_card(i);
+
+            a_table.get_loose_set().remove_card(card);
+        }
+    }
 
     // Update hand
     m_hand.remove_card(player_card);

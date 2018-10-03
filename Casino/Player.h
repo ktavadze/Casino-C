@@ -39,6 +39,7 @@ public:
     virtual bool build_move(Table & a_table);
     virtual bool create_build(Table & a_table);
     virtual bool increase_build(Table & a_table);
+    virtual bool extend_build(Table & a_table);
     virtual bool capture_move(Table & a_table);
     virtual bool trail_move(Table & a_table);
     virtual bool can_play(Card a_card, Table a_table);
