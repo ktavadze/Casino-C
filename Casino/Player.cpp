@@ -86,6 +86,8 @@ bool Player::create_build(Table & a_table)
 {
     if (a_table.get_loose_set().get_size() == 0)
     {
+        Console::display_message("ERROR: no loose cards to build with!");
+
         return false;
     }
 
@@ -96,12 +98,14 @@ bool Player::create_build(Table & a_table)
     Card player_card = m_hand.get_card(player_card_index);
 
     // Check player card
-    if (can_play(a_table, player_card))
+    if (can_play(player_card, a_table))
     {
         selected_set.add_card(player_card);
     }
     else
     {
+        Console::display_message("ERROR: selected card reserved for capture!");
+
         return false;
     }
 
@@ -118,6 +122,8 @@ bool Player::create_build(Table & a_table)
     // Check build value
     if (!holds_card_of_value(build.get_value()))
     {
+        Console::display_message("ERROR: no card in hand matching build value!");
+
         return false;
     }
 
@@ -139,6 +145,8 @@ bool Player::increase_build(Table & a_table)
 {
     if (a_table.get_builds().size() == 0)
     {
+        Console::display_message("ERROR: no builds to increase!");
+
         return false;
     }
 
@@ -149,12 +157,14 @@ bool Player::increase_build(Table & a_table)
     Card player_card = m_hand.get_card(player_card_index);
 
     // Check player card
-    if (can_play(a_table, player_card))
+    if (can_play(player_card, a_table))
     {
         selected_set.add_card(player_card);
     }
     else
     {
+        Console::display_message("ERROR: selected card reserved for capture!");
+
         return false;
     }
 
@@ -165,12 +175,16 @@ bool Player::increase_build(Table & a_table)
     // Check build owner
     if (selected_build.is_human() == m_is_human)
     {
+        Console::display_message("ERROR: cannot increase own build!");
+
         return false;
     }
 
     // Check build size
     if (selected_build.get_sets().size() > 1)
     {
+        Console::display_message("ERROR: cannot increase multi-builds!");
+
         return false;
     }
 
@@ -187,6 +201,8 @@ bool Player::increase_build(Table & a_table)
     // Check build value
     if (!holds_card_of_value(increased_build.get_value()))
     {
+        Console::display_message("ERROR: no card in hand matching build value!");
+
         return false;
     }
 
@@ -244,6 +260,8 @@ bool Player::capture_move(Table & a_table)
         // Check loose sum
         if (non_matching_set.get_size() > 0 && non_matching_sum != player_card.get_value())
         {
+            Console::display_message("ERROR: loose set sum mismatch!");
+
             return false;
         }
     }
@@ -261,6 +279,8 @@ bool Player::capture_move(Table & a_table)
         // Check firm sum
         if (firm_sum % player_card.get_value() != 0)
         {
+            Console::display_message("ERROR: firm set sum mismatch!");
+
             return false;
         }
     }
@@ -304,8 +324,10 @@ bool Player::trail_move(Table & a_table)
     Card player_card = m_hand.get_card(player_card_index);
 
     // Check player card
-    if (!can_play(a_table, player_card))
+    if (!can_play(player_card, a_table))
     {
+        Console::display_message("ERROR: selected card reserved for capture!");
+
         return false;
     }
 
@@ -314,6 +336,8 @@ bool Player::trail_move(Table & a_table)
     {
         if (card.get_value() == player_card.get_value())
         {
+            Console::display_message("ERROR: cannot trail card matching loose card(s)!");
+
             return false;
         }
     }
@@ -323,6 +347,8 @@ bool Player::trail_move(Table & a_table)
     {
         if (build.is_human() == m_is_human)
         {
+            Console::display_message("ERROR: cannot trail while owner of build(s)!");
+
             return false;
         }
     }
@@ -336,7 +362,7 @@ bool Player::trail_move(Table & a_table)
     return true;
 }
 
-bool Player::can_play(Table a_table, Card a_card)
+bool Player::can_play(Card a_card, Table a_table)
 {
     for (Build build : a_table.get_builds())
     {

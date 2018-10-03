@@ -271,7 +271,7 @@ Set Console::pick_table_set(Table a_table)
 
 void Console::display_message(string a_message)
 {
-    cout << a_message << endl;
+    cout << endl << a_message << endl;
 }
 
 vector<string> Console::string_to_vector(string a_string, char a_delimiter)

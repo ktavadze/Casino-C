@@ -67,7 +67,7 @@ string Round::ToString()
 {
     string info;
 
-    info += "\nRound: " + to_string(m_number) + "\n";
+    info += "Round: " + to_string(m_number) + "\n";
 
     info += "\nComputer:" + m_computer->ToString() + "\n";
 
