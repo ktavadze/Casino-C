@@ -405,11 +405,11 @@ string Player::ToString()
 {
     string info;
 
-    info += "\n    Score: " + m_score;
+    info += "\n   Score: " + m_score;
 
-    info += "\n    Hand: " + m_hand.ToString();
+    info += "\n   Hand: " + m_hand.ToString();
 
-    info += "\n    Pile: " + m_pile.ToString();
+    info += "\n   Pile: " + m_pile.ToString();
 
     return info;
 }
