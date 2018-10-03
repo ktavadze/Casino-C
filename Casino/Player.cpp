@@ -98,6 +98,7 @@ bool Player::create_build(Table & a_table)
 
     // Select loose set
     Set loose_set = Console::pick_loose_set(a_table.get_loose_set());
+
     for (Card card : loose_set.get_cards())
     {
         selected_set.add_card(card);
@@ -143,6 +144,7 @@ bool Player::increase_build(Table & a_table)
 
     // Select build set
     Set build_set = Console::pick_build_set(a_table);
+
     for (Card card : build_set.get_cards())
     {
         selected_set.add_card(card);
@@ -180,9 +182,10 @@ bool Player::capture_move(Table & a_table)
     // Select table set
     Set table_set = Console::pick_table_set(a_table);
 
-    // Classify
+    // Classify selection
     Set loose_set;
     Set firm_set;
+
     for (Card card : table_set.get_cards())
     {
         if (a_table.get_loose_set().contains(card))
@@ -200,6 +203,7 @@ bool Player::capture_move(Table & a_table)
     {
         Set non_matching_set;
         int non_matching_sum = 0;
+
         for (Card card : loose_set.get_cards())
         {
             if (card.get_value() != player_card.get_value())
@@ -209,15 +213,60 @@ bool Player::capture_move(Table & a_table)
             }
         }
 
+        // Check loose sum
         if (non_matching_set.get_size() > 0 && non_matching_sum != player_card.get_value())
         {
             return false;
         }
     }
 
-    // TODO: check firm set
+    // Check firm set
+    if (firm_set.get_size() > 0)
+    {
+        int firm_sum = 0;
 
-    return false;
+        for (Card card : firm_set.get_cards())
+        {
+            firm_sum += card.get_value();
+        }
+
+        // Check firm sum
+        if (firm_sum % player_card.get_value() != 0)
+        {
+            return false;
+        }
+    }
+
+    // Capture firm set
+    for (Build build : a_table.get_builds())
+    {
+        // Update pile
+        if (firm_set.contains(build.get_sets()))
+        {
+            m_pile.add_sets(build.get_sets());
+        }
+
+        // Update table
+        a_table.remove_build(build);
+    }
+
+    // Capture loose set
+    for (Card card : loose_set.get_cards())
+    {
+        // Update pile
+        m_pile.add_card(card);
+
+        // Update table
+        a_table.remove_card(card);
+    }
+
+    // Update pile
+    m_pile.add_card(player_card);
+
+    // Update hand
+    m_hand.remove_card(player_card);
+
+    return true;
 }
 
 bool Player::trail_move(Table & a_table)

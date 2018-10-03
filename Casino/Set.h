@@ -39,8 +39,12 @@ public:
         return m_cards.at(a_index);
     }
     void add_card(Card a_card);
+    void add_set(Set a_set);
+    void add_sets(vector<Set> a_sets);
     void remove_card(Card a_card);
     bool equals(Set a_set);
+    bool contains(vector<Set> a_sets);
+    bool contains(Set a_set);
     bool contains(Card a_card);
     string ToString();
 private:
