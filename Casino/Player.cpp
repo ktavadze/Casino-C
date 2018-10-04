@@ -293,7 +293,7 @@ bool Player::extend_build(Table & a_table)
     selected_build.is_human(m_is_human);
 
     // Extend build
-    selected_build.extend(selected_set);
+    a_table.extend_build(selected_build_index, selected_set);
 
     // Remove loose set from table
     if (selected_set.get_size() > 1)
@@ -302,7 +302,7 @@ bool Player::extend_build(Table & a_table)
         {
             Card card = selected_set.get_card(i);
 
-            a_table.get_loose_set().remove_card(card);
+            a_table.remove_card(card);
         }
     }
 

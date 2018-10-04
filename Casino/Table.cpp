@@ -29,6 +29,11 @@ void Table::remove_build(Build a_build)
     }
 }
 
+void Table::extend_build(int a_index, Set a_set)
+{
+    m_builds.at(a_index).extend(a_set);
+}
+
 bool Table::contains(Build a_build)
 {
     for (Build build : m_builds)

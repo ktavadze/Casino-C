@@ -27,6 +27,7 @@ public:
     void remove_card(Card a_card);
     void add_build(Build a_build);
     void remove_build(Build a_build);
+    void extend_build(int a_index, Set a_set);
     bool contains(Build a_build);
     bool contains(Card a_card);
     string ToString();
