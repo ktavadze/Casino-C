@@ -4,7 +4,6 @@
 
 Deck::Deck()
 {
-    // create deck
     vector<Card> cards;
     for (string suit : { "C", "D", "H", "S" })
     {
@@ -14,7 +13,6 @@ Deck::Deck()
         }
     }
 
-    // shuffle deck
     srand((unsigned int)time(NULL));
     for (int size = 52; size > 0; size--)
     {
@@ -24,11 +22,27 @@ Deck::Deck()
     }
 }
 
-Card Deck::draw()
+Set Deck::draw_set()
 {
-    Card card = m_cards.back();
-    m_cards.pop_back();
-    return card;
+    Set set;
+
+    for (int i = 0; i < 4; i++)
+    {
+        set.add_card(m_cards.back());
+        m_cards.pop_back();
+    }
+
+    return set;
+}
+
+bool Deck::is_empty()
+{
+    if (m_cards.size() == 0)
+    {
+        return true;
+    }
+
+    return false;
 }
 
 string Deck::ToString()

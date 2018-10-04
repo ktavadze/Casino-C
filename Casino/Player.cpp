@@ -3,7 +3,7 @@
 
 void Player::play(Table & a_table)
 {
-    while (true)
+    for ( ;; )
     {
         int choice = Console::process_turn_menu(m_is_human);
 
@@ -83,6 +83,7 @@ bool Player::build_move(Table & a_table)
 
 bool Player::create_build(Table & a_table)
 {
+    // Check loose set
     if (a_table.get_loose_set().get_size() == 0)
     {
         Console::display_message("ERROR: no loose cards to build with!");
@@ -126,15 +127,16 @@ bool Player::create_build(Table & a_table)
         return false;
     }
 
-    // Update table
+    // Add build to table
     a_table.add_build(build);
 
+    // Remove loose set from table
     for (Card loose_card : loose_set.get_cards())
     {
         a_table.remove_card(loose_card);
     }
 
-    // Update hand
+    // Remove player card from hand
     m_hand.remove_card(player_card);
 
     return true;
@@ -142,6 +144,7 @@ bool Player::create_build(Table & a_table)
 
 bool Player::increase_build(Table & a_table)
 {
+    // Check builds
     if (a_table.get_builds().size() == 0)
     {
         Console::display_message("ERROR: no builds to increase!");
@@ -205,12 +208,13 @@ bool Player::increase_build(Table & a_table)
         return false;
     }
 
-    // Update table
+    // Add increased build to table
     a_table.add_build(increased_build);
 
+    // Remove selected build from table
     a_table.remove_build(selected_build);
 
-    // Update hand
+    // Remove player card from hand
     m_hand.remove_card(player_card);
 
     return true;
@@ -218,6 +222,7 @@ bool Player::increase_build(Table & a_table)
 
 bool Player::extend_build(Table & a_table)
 {
+    // Check builds
     if (a_table.get_builds().size() == 0)
     {
         Console::display_message("ERROR: no builds to extend!");
@@ -266,11 +271,13 @@ bool Player::extend_build(Table & a_table)
         return false;
     }
 
-    // Update table
+    // Update build owner
     selected_build.is_human(m_is_human);
 
+    // Extend build
     selected_build.extend(selected_set);
 
+    // Remove loose set from table
     if (selected_set.get_size() > 1)
     {
         for (int i = 1; i < selected_set.get_size(); i++)
@@ -281,7 +288,7 @@ bool Player::extend_build(Table & a_table)
         }
     }
 
-    // Update hand
+    // Remove player card from hand
     m_hand.remove_card(player_card);
 
     return true;
@@ -360,10 +367,13 @@ bool Player::capture_move(Table & a_table)
     {
         if (firm_set.contains(build.get_sets()))
         {
-            // Update pile
-            m_pile.add_sets(build.get_sets());
+            // Add build to pile
+            for (Set set : build.get_sets())
+            {
+                m_pile.add_set(set);
+            }
 
-            // Update table
+            // Remove build from table
             a_table.remove_build(build);
         }
     }
@@ -371,17 +381,17 @@ bool Player::capture_move(Table & a_table)
     // Capture loose set
     for (Card card : loose_set.get_cards())
     {
-        // Update pile
+        // Add loose card to pile
         m_pile.add_card(card);
 
-        // Update table
+        // Remove loose card from table
         a_table.remove_card(card);
     }
 
-    // Update pile
+    // Add player card to pile
     m_pile.add_card(player_card);
 
-    // Update hand
+    // Remove player card from hand
     m_hand.remove_card(player_card);
 
     return true;
@@ -423,10 +433,10 @@ bool Player::trail_move(Table & a_table)
         }
     }
 
-    // Update table
+    // Add player card to table
     a_table.add_card(player_card);
 
-    // Update hand
+    // Remove player card from hand
     m_hand.remove_card(player_card);
 
     return true;

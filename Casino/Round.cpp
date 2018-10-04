@@ -3,18 +3,7 @@
 
 void Round::start()
 {
-    deal_cards();
-
-    Set set;
-    for (int i = 0; i < 4; i++)
-    {
-        Card card = m_deck.draw();
-        set.add_card(card);
-    }
-    m_table.set_loose_set(set);
-
-    int turn = 1;
-    while (turn <= 48)
+    while (!is_over())
     {
         Console::display_message(ToString());
 
@@ -29,38 +18,14 @@ void Round::start()
             m_human_next = true;
         }
 
-        if (turn == 48)
+        if (m_computer->get_hand().get_size() == 0 && m_human->get_hand().get_size() == 0)
         {
-            Console::display_message(ToString());
-
-            break;
+            m_human->set_hand(m_deck.draw_set());
+            m_computer->set_hand(m_deck.draw_set());
         }
-        else if (turn % 8 == 0)
-        {
-            deal_cards();
-        }
-
-        turn++;
     }
-}
 
-void Round::deal_cards()
-{
-    Set hand;
-    for (int i = 0; i < 4; i++)
-    {
-        Card card = m_deck.draw();
-        hand.add_card(card);
-    }
-    m_human->set_hand(hand);
-
-    hand.reset();
-    for (int i = 0; i < 4; i++)
-    {
-        Card card = m_deck.draw();
-        hand.add_card(card);
-    }
-    m_computer->set_hand(hand);
+    update_scores();
 }
 
 string Round::ToString()
@@ -88,4 +53,113 @@ string Round::ToString()
     }
 
     return info;
+}
+
+bool Round::is_over()
+{
+    if (m_deck.is_empty())
+    {
+        if (m_computer->get_hand().get_size() == 0 && m_human->get_hand().get_size() == 0)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void Round::update_scores()
+{
+    int computer_score = 0;
+    int human_score = 0;
+
+    Set computer_pile = m_computer->get_pile();
+    Set human_pile = m_human->get_pile();
+
+    // Check pile sizes
+    if (computer_pile.get_size() > human_pile.get_size())
+    {
+        computer_score += 3;
+    }
+    else if (computer_pile.get_size() < human_pile.get_size())
+    {
+        human_score += 3;
+    }
+
+    // Count spades
+    int computer_spades = 0;
+    int human_spades = 0;
+
+    for (Card card : computer_pile.get_cards())
+    {
+        if (card.is_spade())
+        {
+            computer_spades++;
+        }
+    }
+
+    for (Card card : human_pile.get_cards())
+    {
+        if (card.is_spade())
+        {
+            human_spades++;
+        }
+    }
+
+    // Check spade counts
+    if (computer_spades > human_spades)
+    {
+        computer_score += 1;
+    }
+    else if (computer_spades < human_spades)
+    {
+        human_score += 1;
+    }
+
+    // Check DX
+    Card ten_of_diamonds("DX");
+
+    if (computer_pile.contains(ten_of_diamonds))
+    {
+        computer_score += 2;
+    }
+    else if (human_pile.contains(ten_of_diamonds))
+    {
+        human_score += 2;
+    }
+
+    // Check S2
+    Card two_of_spades("S2");
+
+    if (computer_pile.contains(two_of_spades))
+    {
+        computer_score += 1;
+    }
+    else if (human_pile.contains(two_of_spades))
+    {
+        human_score += 1;
+    }
+
+    // Check aces
+    for (Card card : computer_pile.get_cards())
+    {
+        if (card.is_ace())
+        {
+            computer_score += 1;
+        }
+    }
+
+    for (Card card : human_pile.get_cards())
+    {
+        if (card.is_ace())
+        {
+            human_score += 1;
+        }
+    }
+
+    // Update scores
+    m_computer->set_score(m_computer->get_score() + computer_score);
+    m_human->set_score(m_human->get_score() + human_score);
+
+    Console::display_round_scores(computer_score, human_score);
 }

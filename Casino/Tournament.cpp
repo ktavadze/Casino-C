@@ -3,9 +3,22 @@
 
 void Tournament::start()
 {
-    bool human_first = Console::process_coin_toss();
+    while (!is_over())
+    {
+        m_round.start();
 
-    m_round = Round(1, &m_computer, &m_human, human_first);
+        Console::display_tournament_scores(m_computer.get_score(), m_human.get_score());
+    }
 
-    m_round.start();
+    Console::display_tournament_result(m_computer.get_score(), m_human.get_score());
+}
+
+bool Tournament::is_over()
+{
+    if (m_computer.get_score() >= 21 || m_human.get_score() >= 21)
+    {
+        return true;
+    }
+
+    return false;
 }

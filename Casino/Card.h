@@ -23,6 +23,8 @@ public:
     {
         return m_name == a_card.m_name;
     }
+    bool is_spade();
+    bool is_ace();
 private:
     string m_name;
     int m_value;

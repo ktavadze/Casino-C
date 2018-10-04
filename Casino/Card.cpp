@@ -47,3 +47,23 @@ Card::Card(string a_name)
         break;
     }
 }
+
+bool Card::is_spade()
+{
+    if (m_name[0] == 'S')
+    {
+        return true;
+    }
+
+    return false;
+}
+
+bool Card::is_ace()
+{
+    if (m_name[1] == 'A')
+    {
+        return true;
+    }
+
+    return false;
+}

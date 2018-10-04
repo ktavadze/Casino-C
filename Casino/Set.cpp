@@ -8,27 +8,19 @@ void Set::add_card(Card a_card)
     m_cards.push_back(a_card);
 }
 
+void Set::remove_card(Card a_card)
+{
+    int index = find(m_cards.begin(), m_cards.end(), a_card) - m_cards.begin();
+
+    m_cards.erase(m_cards.begin() + index);
+}
+
 void Set::add_set(Set a_set)
 {
     for (Card card : a_set.get_cards())
     {
         add_card(card);
     }
-}
-
-void Set::add_sets(vector<Set> a_sets)
-{
-    for (Set set : a_sets)
-    {
-        add_set(set);
-    }
-}
-
-void Set::remove_card(Card a_card)
-{
-    int index = find(m_cards.begin(), m_cards.end(), a_card) - m_cards.begin();
-
-    m_cards.erase(m_cards.begin() + index);
 }
 
 bool Set::equals(Set a_set)

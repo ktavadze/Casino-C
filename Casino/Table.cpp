@@ -18,22 +18,15 @@ void Table::add_build(Build a_build)
 
 void Table::remove_build(Build a_build)
 {
-    int index = index_of(a_build);
-
-    m_builds.erase(m_builds.begin() + index);
-}
-
-int Table::index_of(Build a_build)
-{
     for (unsigned int i = 0; i < m_builds.size(); i++)
     {
         if (a_build.equals(m_builds[i]))
         {
-            return i;
+            m_builds.erase(m_builds.begin() + i);
+
+            return;
         }
     }
-
-    return -1;
 }
 
 bool Table::contains(Build a_build)

@@ -6,15 +6,12 @@ class Deck
 {
 public:
     Deck();
-    inline Set get_cards()
-    {
-        return m_cards;
-    }
-    inline void set_cards(vector<Card> a_cards)
+    Deck(vector<Card> a_cards)
     {
         m_cards = a_cards;
     }
-    Card draw();
+    Set draw_set();
+    bool is_empty();
     string ToString();
 private:
     vector<Card> m_cards;

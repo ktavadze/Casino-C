@@ -42,7 +42,7 @@ bool Console::process_coin_toss()
     int coin = rand() % 2 + 1;
 
     // Display result
-    cout << endl << "Result: ";
+    cout << endl << "RESULT: ";
     if (coin == 1)
     {
         cout << "heads";
@@ -55,12 +55,12 @@ bool Console::process_coin_toss()
     cout << " - ";
     if (coin == choice)
     {
-        cout << "CORRECT!" << endl;
+        cout << "correct!" << endl;
 
         return true;
     }
 
-    cout << "INCORRECT!" << endl;
+    cout << "incorrect!" << endl;
 
     return false;
 }
@@ -282,6 +282,38 @@ Set Console::pick_table_set(Table a_table)
 void Console::display_message(string a_message)
 {
     cout << endl << a_message << endl;
+}
+
+void Console::display_round_scores(int a_computer_score, int a_human_score)
+{
+    cout << endl << "***ROUND SCORES***" << endl;
+    cout << "Computer: " << a_computer_score << endl;
+    cout << "Human: " << a_human_score << endl;
+}
+
+void Console::display_tournament_scores(int a_computer_score, int a_human_score)
+{
+    cout << endl << "***TOURNAMENT SCORES***" << endl;
+    cout << "Computer: " << a_computer_score << endl;
+    cout << "Human: " << a_human_score << endl;
+}
+
+void Console::display_tournament_result(int a_computer_score, int a_human_score)
+{
+    cout << endl << "RESULT: ";
+    if (a_computer_score > a_human_score)
+    {
+        cout << "computer wins!";
+    }
+    else if (a_computer_score < a_human_score)
+    {
+        cout << "human wins!";
+    }
+    else
+    {
+        cout << "it's a tie!";
+    }
+    cout << endl;
 }
 
 vector<string> Console::string_to_vector(string a_string, char a_delimiter)
