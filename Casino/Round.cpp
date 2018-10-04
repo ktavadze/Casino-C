@@ -1,6 +1,21 @@
 #include "pch.h"
 #include "Round.h"
 
+Round::Round(Computer * a_computer, Human * a_human)
+{
+    m_number = 1;
+
+    m_computer = a_computer;
+    m_human = a_human;
+
+    deal_players();
+
+    // Deal table
+    m_table.set_loose_set(m_deck.draw_set());
+
+    m_human_next = Console::process_coin_toss();
+}
+
 void Round::start()
 {
     while (!is_over())
@@ -20,10 +35,11 @@ void Round::start()
 
         if (m_computer->get_hand().get_size() == 0 && m_human->get_hand().get_size() == 0)
         {
-            m_human->set_hand(m_deck.draw_set());
-            m_computer->set_hand(m_deck.draw_set());
+            deal_players();
         }
     }
+
+    clear_table();
 
     update_scores();
 }
@@ -66,6 +82,35 @@ bool Round::is_over()
     }
 
     return false;
+}
+
+void Round::deal_players()
+{
+    m_human->set_hand(m_deck.draw_set());
+    m_computer->set_hand(m_deck.draw_set());
+}
+
+void Round::clear_table()
+{
+    if (m_table.get_loose_set().get_size() > 0)
+    {
+        for (Card card : m_table.get_loose_set().get_cards())
+        {
+            if (m_human_last)
+            {
+                // Add loose card to human pile
+                m_human->capture_card(card);
+            }
+            else
+            {
+                // Add loose card to computer pile
+                m_computer->capture_card(card);
+            }
+
+            // Remove loose card from table
+            m_table.remove_card(card);
+        }
+    }
 }
 
 void Round::update_scores()

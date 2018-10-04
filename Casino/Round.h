@@ -10,19 +10,7 @@ class Round
 {
 public:
     Round() {}
-    Round(Computer * a_computer, Human * a_human)
-    {
-        m_number = 1;
-        m_computer = a_computer;
-        m_human = a_human;
-
-        m_human->set_hand(m_deck.draw_set());
-        m_computer->set_hand(m_deck.draw_set());
-
-        m_table.set_loose_set(m_deck.draw_set());
-
-        m_human_next = Console::process_coin_toss();
-    }
+    Round(Computer * a_computer, Human * a_human);
     Round(int a_number, Computer * a_computer, Human * a_human,
         Table a_table, Deck a_deck, bool a_human_next)
     {
@@ -42,7 +30,10 @@ private:
     Table m_table;
     Deck m_deck;
     bool m_human_next;
+    bool m_human_last = true;
 
     bool is_over();
+    void deal_players();
+    void clear_table();
     void update_scores();
 };

@@ -10,6 +10,8 @@ void Set::add_card(Card a_card)
 
 void Set::remove_card(Card a_card)
 {
+    m_value -= a_card.get_value();
+
     int index = find(m_cards.begin(), m_cards.end(), a_card) - m_cards.begin();
 
     m_cards.erase(m_cards.begin() + index);

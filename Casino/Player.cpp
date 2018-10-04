@@ -47,6 +47,24 @@ void Player::play(Table & a_table)
     }
 }
 
+void Player::capture_card(Card a_card)
+{
+    m_pile.add_card(a_card);
+}
+
+string Player::ToString()
+{
+    string info;
+
+    info += "\n   Score: " + m_score;
+
+    info += "\n   Hand: " + m_hand.ToString();
+
+    info += "\n   Pile: " + m_pile.ToString();
+
+    return info;
+}
+
 bool Player::make_move(Table & a_table)
 {
     int choice = Console::process_move_menu();
@@ -479,17 +497,4 @@ bool Player::holds_card_of_value(int a_value)
     }
 
     return false;
-}
-
-string Player::ToString()
-{
-    string info;
-
-    info += "\n   Score: " + m_score;
-
-    info += "\n   Hand: " + m_hand.ToString();
-
-    info += "\n   Pile: " + m_pile.ToString();
-
-    return info;
 }

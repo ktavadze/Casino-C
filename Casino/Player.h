@@ -35,6 +35,14 @@ public:
         m_pile = a_pile;
     }
     virtual void play(Table & a_table);
+    virtual void capture_card(Card a_card);
+    string ToString();
+protected:
+    bool m_is_human;
+    int m_score;
+    Set m_hand;
+    Set m_pile;
+
     virtual bool make_move(Table & a_table);
     virtual bool build_move(Table & a_table);
     virtual bool create_build(Table & a_table);
@@ -44,10 +52,4 @@ public:
     virtual bool trail_move(Table & a_table);
     virtual bool can_play(Card a_card, Table a_table);
     virtual bool holds_card_of_value(int a_value);
-    string ToString();
-protected:
-    bool m_is_human;
-    int m_score;
-    Set m_hand;
-    Set m_pile;
 };
