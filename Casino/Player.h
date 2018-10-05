@@ -6,6 +6,14 @@ class Player
 {
 public:
     Player() {}
+    inline bool captured_last()
+    {
+        return m_captured_last;
+    }
+    inline void captured_last(bool a_captured_last)
+    {
+        m_captured_last = a_captured_last;
+    }
     inline bool is_human()
     {
         return m_is_human;
@@ -38,6 +46,7 @@ public:
     virtual void capture_card(Card a_card);
     string ToString();
 protected:
+    bool m_captured_last;
     bool m_is_human;
     int m_score;
     Set m_hand;

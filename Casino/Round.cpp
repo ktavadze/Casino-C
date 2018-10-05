@@ -96,7 +96,7 @@ void Round::clear_table()
     {
         for (Card card : m_table.get_loose_set().get_cards())
         {
-            if (m_human_last)
+            if (m_human->captured_last())
             {
                 // Add loose card to human pile
                 m_human->capture_card(card);

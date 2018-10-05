@@ -30,7 +30,6 @@ private:
     Table m_table;
     Deck m_deck;
     bool m_human_next;
-    bool m_human_last = true;
 
     bool is_over();
     void deal_players();
