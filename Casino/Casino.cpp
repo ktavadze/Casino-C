@@ -11,7 +11,7 @@ using namespace std;
 
 int main()
 {
-    for ( ;; )
+    for (;;)
     {
         int choice = Console::process_main_menu();
 

@@ -9,7 +9,9 @@ class Tournament
 public:
     Tournament()
     {
-        m_round = Round(&m_computer, &m_human);
+        bool won_toss = Console::process_coin_toss();
+
+        m_round = Round(1, &m_computer, &m_human, won_toss);
     }
     Tournament(Computer a_computer, Human a_human, Round a_round)
     {

@@ -1,23 +1,6 @@
 #include "pch.h"
 #include "Round.h"
 
-Round::Round(Computer * a_computer, Human * a_human)
-{
-    m_number = 1;
-
-    m_computer = a_computer;
-    m_human = a_human;
-
-    // Deal players
-    m_human->set_hand(m_deck.draw_set());
-    m_computer->set_hand(m_deck.draw_set());
-
-    // Deal table
-    m_table.set_loose_set(m_deck.draw_set());
-
-    m_human_turn = Console::process_coin_toss();
-}
-
 void Round::start()
 {
     while (!is_over())
