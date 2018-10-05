@@ -95,6 +95,8 @@ void Round::play_turn()
             case 2:
                 if (make_move())
                 {
+                    m_human_turn = false;
+
                     return;
                 }
                 break;
@@ -115,6 +117,8 @@ void Round::play_turn()
             case 2:
                 if (make_move())
                 {
+                    m_human_turn = true;
+
                     return;
                 }
                 break;
@@ -189,16 +193,16 @@ void Round::clear_table()
             if (m_human->captured_last())
             {
                 // Add loose card to human pile
-                m_human->capture_card(card);
+                m_human->add_to_pile(card);
             }
             else
             {
                 // Add loose card to computer pile
-                m_computer->capture_card(card);
+                m_computer->add_to_pile(card);
             }
 
             // Remove loose card from table
-            m_table.remove_card(card);
+            m_table.remove_loose_card(card);
         }
     }
 }

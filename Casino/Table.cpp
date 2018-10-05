@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "Table.h"
 
-void Table::add_card(Card a_card)
+void Table::add_loose_card(Card a_card)
 {
     m_loose_set.add_card(a_card);
 }
 
-void Table::remove_card(Card a_card)
+void Table::remove_loose_card(Card a_card)
 {
     m_loose_set.remove_card(a_card);
 }

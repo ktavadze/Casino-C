@@ -109,7 +109,7 @@ bool Player::capture(Table & a_table)
         m_pile.add_card(card);
 
         // Remove loose card from table
-        a_table.remove_card(card);
+        a_table.remove_loose_card(card);
     }
 
     // Add player card to pile
@@ -158,17 +158,12 @@ bool Player::trail(Table & a_table)
     }
 
     // Add player card to table
-    a_table.add_card(player_card);
+    a_table.add_loose_card(player_card);
 
     // Remove player card from hand
     m_hand.remove_card(player_card);
 
     return true;
-}
-
-void Player::capture_card(Card a_card)
-{
-    m_pile.add_card(a_card);
 }
 
 string Player::ToString()
@@ -236,7 +231,7 @@ bool Player::create_build(Table & a_table)
     // Remove loose set from table
     for (Card loose_card : loose_set.get_cards())
     {
-        a_table.remove_card(loose_card);
+        a_table.remove_loose_card(loose_card);
     }
 
     // Remove player card from hand
@@ -387,7 +382,7 @@ bool Player::extend_build(Table & a_table)
         {
             Card card = selected_set.get_card(i);
 
-            a_table.remove_card(card);
+            a_table.remove_loose_card(card);
         }
     }
 

@@ -23,8 +23,8 @@ public:
     {
         return m_builds;
     }
-    void add_card(Card a_card);
-    void remove_card(Card a_card);
+    void add_loose_card(Card a_card);
+    void remove_loose_card(Card a_card);
     void add_build(Build a_build);
     void remove_build(Build a_build);
     void extend_build(int a_index, Set a_set);

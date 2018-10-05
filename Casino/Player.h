@@ -42,10 +42,13 @@ public:
     {
         m_pile = a_pile;
     }
+    inline void add_to_pile(Card a_card)
+    {
+        m_pile.add_card(a_card);
+    }
     virtual bool build(Table & a_table);
     virtual bool capture(Table & a_table);
     virtual bool trail(Table & a_table);
-    virtual void capture_card(Card a_card);
     string ToString();
 protected:
     bool m_captured_last;
