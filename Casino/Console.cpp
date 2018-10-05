@@ -281,7 +281,9 @@ Set Console::pick_table_set(Table a_table)
 
 void Console::display_message(string a_message)
 {
-    cout << endl << a_message << endl;
+    cout << endl << "**************************************************" << endl;
+    cout << a_message;
+    cout << endl << "**************************************************" << endl;
 }
 
 void Console::display_round_scores(int a_computer_score, int a_human_score)

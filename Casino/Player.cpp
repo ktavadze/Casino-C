@@ -27,7 +27,7 @@ bool Player::capture(Table & a_table)
     // Select table set
     Set table_set = Console::pick_table_set(a_table);
 
-    // Classify selection
+    // Classify
     Set loose_set;
     Set firm_set;
 
@@ -43,82 +43,45 @@ bool Player::capture(Table & a_table)
         }
     }
 
-    // Check loose set
-    if (loose_set.get_size() > 0)
+    // Capture
+    if (can_capture(a_table, player_card, loose_set, firm_set))
     {
-        Set non_matching_set;
-        int non_matching_sum = 0;
+        // Capture firm set
+        for (Build build : a_table.get_builds())
+        {
+            if (firm_set.contains(build.get_sets()))
+            {
+                // Add build to pile
+                for (Set set : build.get_sets())
+                {
+                    m_pile.add_set(set);
+                }
 
+                // Remove build from table
+                a_table.remove_build(build);
+            }
+        }
+
+        // Capture loose set
         for (Card card : loose_set.get_cards())
         {
-            if (card.get_value() != player_card.get_value())
-            {
-                non_matching_set.add_card(card);
-                non_matching_sum += card.get_value();
-            }
+            // Add loose card to pile
+            m_pile.add_card(card);
+
+            // Remove loose card from table
+            a_table.remove_loose_card(card);
         }
 
-        // Check loose sum
-        if (non_matching_set.get_size() > 0 && non_matching_sum != player_card.get_value())
-        {
-            Console::display_message("ERROR: loose set sum mismatch!");
+        // Add player card to pile
+        m_pile.add_card(player_card);
 
-            return false;
-        }
+        // Remove player card from hand
+        m_hand.remove_card(player_card);
+
+        return true;
     }
 
-    // Check firm set
-    if (firm_set.get_size() > 0)
-    {
-        int firm_sum = 0;
-
-        for (Card card : firm_set.get_cards())
-        {
-            firm_sum += card.get_value();
-        }
-
-        // Check firm sum
-        if (firm_sum % player_card.get_value() != 0)
-        {
-            Console::display_message("ERROR: firm set sum mismatch!");
-
-            return false;
-        }
-    }
-
-    // Capture firm set
-    for (Build build : a_table.get_builds())
-    {
-        if (firm_set.contains(build.get_sets()))
-        {
-            // Add build to pile
-            for (Set set : build.get_sets())
-            {
-                m_pile.add_set(set);
-            }
-
-            // Remove build from table
-            a_table.remove_build(build);
-        }
-    }
-
-    // Capture loose set
-    for (Card card : loose_set.get_cards())
-    {
-        // Add loose card to pile
-        m_pile.add_card(card);
-
-        // Remove loose card from table
-        a_table.remove_loose_card(card);
-    }
-
-    // Add player card to pile
-    m_pile.add_card(player_card);
-
-    // Remove player card from hand
-    m_hand.remove_card(player_card);
-
-    return true;
+    return false;
 }
 
 bool Player::trail(Table & a_table)
@@ -128,7 +91,7 @@ bool Player::trail(Table & a_table)
     Card player_card = m_hand.get_card(player_card_index);
 
     // Check player card
-    if (!can_play(player_card, a_table))
+    if (!can_play(a_table, player_card))
     {
         Console::display_message("ERROR: selected card reserved for capture!");
 
@@ -140,7 +103,7 @@ bool Player::trail(Table & a_table)
     {
         if (card.get_value() == player_card.get_value())
         {
-            Console::display_message("ERROR: cannot trail card matching loose card(s)!");
+            Console::display_message("ERROR: must capture matching loose card(s)!");
 
             return false;
         }
@@ -196,7 +159,7 @@ bool Player::create_build(Table & a_table)
     Card player_card = m_hand.get_card(player_card_index);
 
     // Check player card
-    if (can_play(player_card, a_table))
+    if (can_play(a_table, player_card))
     {
         selected_set.add_card(player_card);
     }
@@ -218,7 +181,7 @@ bool Player::create_build(Table & a_table)
     Build build(m_is_human, selected_set);
 
     // Check build value
-    if (!holds_card_of_value(build.get_value()))
+    if (count_cards_held(build.get_value()) == 0)
     {
         Console::display_message("ERROR: no card in hand matching build value!");
 
@@ -257,7 +220,7 @@ bool Player::increase_build(Table & a_table)
     Card player_card = m_hand.get_card(player_card_index);
 
     // Check player card
-    if (can_play(player_card, a_table))
+    if (can_play(a_table, player_card))
     {
         selected_set.add_card(player_card);
     }
@@ -299,7 +262,7 @@ bool Player::increase_build(Table & a_table)
     Build increased_build(m_is_human, selected_set);
 
     // Check build value
-    if (!holds_card_of_value(increased_build.get_value()))
+    if (count_cards_held(increased_build.get_value()) == 0)
     {
         Console::display_message("ERROR: no card in hand matching build value!");
 
@@ -339,7 +302,7 @@ bool Player::extend_build(Table & a_table)
     Card player_card = m_hand.get_card(player_card_index);
 
     // Check player card
-    if (can_play(player_card, a_table))
+    if (can_play(a_table, player_card))
     {
         selected_set.add_card(player_card);
     }
@@ -392,23 +355,13 @@ bool Player::extend_build(Table & a_table)
     return true;
 }
 
-bool Player::can_play(Card a_card, Table a_table)
+bool Player::can_play(Table a_table, Card a_card)
 {
     for (Build build : a_table.get_builds())
     {
         if (build.get_value() == a_card.get_value() && build.is_human() == m_is_human)
         {
-            int count = 0;
-
-            for (Card card : m_hand.get_cards())
-            {
-                if (card.get_value() == a_card.get_value())
-                {
-                    count++;
-                }
-            }
-
-            if (count < 2)
+            if (count_cards_held(a_card.get_value()) < 2)
             {
                 return false;
             }
@@ -418,15 +371,108 @@ bool Player::can_play(Card a_card, Table a_table)
     return true;
 }
 
-bool Player::holds_card_of_value(int a_value)
+bool Player::can_capture(Table a_table, Card a_capture_card, Set a_loose_set, Set a_firm_set)
 {
+    // Check loose set
+    if (a_loose_set.get_size() > 0)
+    {
+        Set non_matching_set;
+
+        for (Card card : a_loose_set.get_cards())
+        {
+            if (card.get_value() != a_capture_card.get_value())
+            {
+                non_matching_set.add_card(card);
+            }
+        }
+
+        // Check loose sum
+        if (non_matching_set.get_size() > 0)
+        {
+            if (non_matching_set.get_value() != a_capture_card.get_value())
+            {
+                Console::display_message("ERROR: cannot capture selected loose card(s)!");
+
+                return false;
+            }
+        }
+    }
+
+    for (Card card : a_table.get_loose_set().get_cards())
+    {
+        if (card.get_value() == a_capture_card.get_value())
+        {
+            if (!a_loose_set.contains(card))
+            {
+                Console::display_message("ERROR: must capture matching loose card(s)!");
+
+                return false;
+            }
+        }
+    }
+
+    // Check firm set
+    if (a_firm_set.get_size() > 0)
+    {
+        int cards_found = 0;
+
+        for (Build build : a_table.get_builds())
+        {
+            if (a_firm_set.contains(build.get_sets()))
+            {
+                if (build.get_value() == a_capture_card.get_value())
+                {
+                    for (Set set : build.get_sets())
+                    {
+                        cards_found += set.get_size();
+                    }
+                }
+                else
+                {
+                    Console::display_message("ERROR: cannot capture selected build(s)!");
+
+                    return false;
+                }
+            }
+        }
+
+        if (a_firm_set.get_size() != cards_found)
+        {
+            Console::display_message("ERROR: cannot capture selected build card(s)!");
+
+            return false;
+        }
+    }
+    else
+    {
+        for (Build build : a_table.get_builds())
+        {
+            if (build.get_value() == a_capture_card.get_value() && build.is_human() == m_is_human)
+            {
+                if (count_cards_held(a_capture_card.get_value()) < 2)
+                {
+                    Console::display_message("ERROR: must capture matching owned build(s)!");
+
+                    return false;
+                }
+            }
+        }
+    }
+
+    return true;
+}
+
+int Player::count_cards_held(int a_value)
+{
+    int count = 0;
+
     for (Card card : m_hand.get_cards())
     {
         if (card.get_value() == a_value)
         {
-            return true;
+            count++;
         }
     }
 
-    return false;
+    return count;
 }
