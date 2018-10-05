@@ -1,50 +1,169 @@
 #include "pch.h"
 #include "Player.h"
 
-void Player::play(Table & a_table)
+bool Player::build(Table & a_table)
 {
-    for ( ;; )
-    {
-        int choice = Console::process_turn_menu(m_is_human);
+    int choice = Console::process_build_menu();
 
-        if (m_is_human)
+    switch (choice)
+    {
+    case 1:
+        return create_build(a_table);
+    case 2:
+        return increase_build(a_table);
+    case 3:
+        return extend_build(a_table);
+    default:
+        return false;
+    }
+}
+
+bool Player::capture(Table & a_table)
+{
+    // Select player card
+    int player_card_index = Console::pick_player_card(m_hand) - 1;
+    Card player_card = m_hand.get_card(player_card_index);
+
+    // Select table set
+    Set table_set = Console::pick_table_set(a_table);
+
+    // Classify selection
+    Set loose_set;
+    Set firm_set;
+
+    for (Card card : table_set.get_cards())
+    {
+        if (a_table.get_loose_set().contains(card))
         {
-            switch (choice)
-            {
-            case 1:
-                // TODO: save game
-                exit(0);
-            case 2:
-                if (make_move(a_table))
-                {
-                    return;
-                }
-                break;
-            case 3:
-                // TODO: ask for help
-                exit(0);
-            case 4:
-                exit(0);
-            }
+            loose_set.add_card(card);
         }
         else
         {
-            switch (choice)
-            {
-            case 1:
-                // TODO: save game
-                exit(0);
-            case 2:
-                if (make_move(a_table))
-                {
-                    return;
-                }
-                break;
-            case 3:
-                exit(0);
-            }
+            firm_set.add_card(card);
         }
     }
+
+    // Check loose set
+    if (loose_set.get_size() > 0)
+    {
+        Set non_matching_set;
+        int non_matching_sum = 0;
+
+        for (Card card : loose_set.get_cards())
+        {
+            if (card.get_value() != player_card.get_value())
+            {
+                non_matching_set.add_card(card);
+                non_matching_sum += card.get_value();
+            }
+        }
+
+        // Check loose sum
+        if (non_matching_set.get_size() > 0 && non_matching_sum != player_card.get_value())
+        {
+            Console::display_message("ERROR: loose set sum mismatch!");
+
+            return false;
+        }
+    }
+
+    // Check firm set
+    if (firm_set.get_size() > 0)
+    {
+        int firm_sum = 0;
+
+        for (Card card : firm_set.get_cards())
+        {
+            firm_sum += card.get_value();
+        }
+
+        // Check firm sum
+        if (firm_sum % player_card.get_value() != 0)
+        {
+            Console::display_message("ERROR: firm set sum mismatch!");
+
+            return false;
+        }
+    }
+
+    // Capture firm set
+    for (Build build : a_table.get_builds())
+    {
+        if (firm_set.contains(build.get_sets()))
+        {
+            // Add build to pile
+            for (Set set : build.get_sets())
+            {
+                m_pile.add_set(set);
+            }
+
+            // Remove build from table
+            a_table.remove_build(build);
+        }
+    }
+
+    // Capture loose set
+    for (Card card : loose_set.get_cards())
+    {
+        // Add loose card to pile
+        m_pile.add_card(card);
+
+        // Remove loose card from table
+        a_table.remove_card(card);
+    }
+
+    // Add player card to pile
+    m_pile.add_card(player_card);
+
+    // Remove player card from hand
+    m_hand.remove_card(player_card);
+
+    return true;
+}
+
+bool Player::trail(Table & a_table)
+{
+    // Select player card
+    int player_card_index = Console::pick_player_card(m_hand) - 1;
+    Card player_card = m_hand.get_card(player_card_index);
+
+    // Check player card
+    if (!can_play(player_card, a_table))
+    {
+        Console::display_message("ERROR: selected card reserved for capture!");
+
+        return false;
+    }
+
+    // Check loose set
+    for (Card card : a_table.get_loose_set().get_cards())
+    {
+        if (card.get_value() == player_card.get_value())
+        {
+            Console::display_message("ERROR: cannot trail card matching loose card(s)!");
+
+            return false;
+        }
+    }
+
+    // Check builds
+    for (Build build : a_table.get_builds())
+    {
+        if (build.is_human() == m_is_human)
+        {
+            Console::display_message("ERROR: cannot trail while owner of build(s)!");
+
+            return false;
+        }
+    }
+
+    // Add player card to table
+    a_table.add_card(player_card);
+
+    // Remove player card from hand
+    m_hand.remove_card(player_card);
+
+    return true;
 }
 
 void Player::capture_card(Card a_card)
@@ -63,40 +182,6 @@ string Player::ToString()
     info += "\n   Pile: " + m_pile.ToString();
 
     return info;
-}
-
-bool Player::make_move(Table & a_table)
-{
-    int choice = Console::process_move_menu();
-
-    switch (choice)
-    {
-    case 1:
-        return build_move(a_table);
-    case 2:
-        return capture_move(a_table);
-    case 3:
-        return trail_move(a_table);
-    default:
-        return false;
-    }
-}
-
-bool Player::build_move(Table & a_table)
-{
-    int choice = Console::process_build_menu();
-
-    switch (choice)
-    {
-    case 1:
-        return create_build(a_table);
-    case 2:
-        return increase_build(a_table);
-    case 3:
-        return extend_build(a_table);
-    default:
-        return false;
-    }
 }
 
 bool Player::create_build(Table & a_table)
@@ -305,154 +390,6 @@ bool Player::extend_build(Table & a_table)
             a_table.remove_card(card);
         }
     }
-
-    // Remove player card from hand
-    m_hand.remove_card(player_card);
-
-    return true;
-}
-
-bool Player::capture_move(Table & a_table)
-{
-    // Select player card
-    int player_card_index = Console::pick_player_card(m_hand) - 1;
-    Card player_card = m_hand.get_card(player_card_index);
-
-    // Select table set
-    Set table_set = Console::pick_table_set(a_table);
-
-    // Classify selection
-    Set loose_set;
-    Set firm_set;
-
-    for (Card card : table_set.get_cards())
-    {
-        if (a_table.get_loose_set().contains(card))
-        {
-            loose_set.add_card(card);
-        }
-        else
-        {
-            firm_set.add_card(card);
-        }
-    }
-
-    // Check loose set
-    if (loose_set.get_size() > 0)
-    {
-        Set non_matching_set;
-        int non_matching_sum = 0;
-
-        for (Card card : loose_set.get_cards())
-        {
-            if (card.get_value() != player_card.get_value())
-            {
-                non_matching_set.add_card(card);
-                non_matching_sum += card.get_value();
-            }
-        }
-
-        // Check loose sum
-        if (non_matching_set.get_size() > 0 && non_matching_sum != player_card.get_value())
-        {
-            Console::display_message("ERROR: loose set sum mismatch!");
-
-            return false;
-        }
-    }
-
-    // Check firm set
-    if (firm_set.get_size() > 0)
-    {
-        int firm_sum = 0;
-
-        for (Card card : firm_set.get_cards())
-        {
-            firm_sum += card.get_value();
-        }
-
-        // Check firm sum
-        if (firm_sum % player_card.get_value() != 0)
-        {
-            Console::display_message("ERROR: firm set sum mismatch!");
-
-            return false;
-        }
-    }
-
-    // Capture firm set
-    for (Build build : a_table.get_builds())
-    {
-        if (firm_set.contains(build.get_sets()))
-        {
-            // Add build to pile
-            for (Set set : build.get_sets())
-            {
-                m_pile.add_set(set);
-            }
-
-            // Remove build from table
-            a_table.remove_build(build);
-        }
-    }
-
-    // Capture loose set
-    for (Card card : loose_set.get_cards())
-    {
-        // Add loose card to pile
-        m_pile.add_card(card);
-
-        // Remove loose card from table
-        a_table.remove_card(card);
-    }
-
-    // Add player card to pile
-    m_pile.add_card(player_card);
-
-    // Remove player card from hand
-    m_hand.remove_card(player_card);
-
-    return true;
-}
-
-bool Player::trail_move(Table & a_table)
-{
-    // Select player card
-    int player_card_index = Console::pick_player_card(m_hand) - 1;
-    Card player_card = m_hand.get_card(player_card_index);
-
-    // Check player card
-    if (!can_play(player_card, a_table))
-    {
-        Console::display_message("ERROR: selected card reserved for capture!");
-
-        return false;
-    }
-
-    // Check loose set
-    for (Card card : a_table.get_loose_set().get_cards())
-    {
-        if (card.get_value() == player_card.get_value())
-        {
-            Console::display_message("ERROR: cannot trail card matching loose card(s)!");
-
-            return false;
-        }
-    }
-
-    // Check builds
-    for (Build build : a_table.get_builds())
-    {
-        if (build.is_human() == m_is_human)
-        {
-            Console::display_message("ERROR: cannot trail while owner of build(s)!");
-
-            return false;
-        }
-    }
-
-    // Add player card to table
-    a_table.add_card(player_card);
 
     // Remove player card from hand
     m_hand.remove_card(player_card);

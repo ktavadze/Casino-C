@@ -8,34 +8,27 @@ Round::Round(Computer * a_computer, Human * a_human)
     m_computer = a_computer;
     m_human = a_human;
 
-    deal_players();
+    // Deal players
+    m_human->set_hand(m_deck.draw_set());
+    m_computer->set_hand(m_deck.draw_set());
 
     // Deal table
     m_table.set_loose_set(m_deck.draw_set());
 
-    m_human_next = Console::process_coin_toss();
+    m_human_turn = Console::process_coin_toss();
 }
 
 void Round::start()
 {
     while (!is_over())
     {
-        Console::display_message(ToString());
-
-        if (m_human_next)
-        {
-            m_human->play(m_table);
-            m_human_next = false;
-        }
-        else
-        {
-            m_computer->play(m_table);
-            m_human_next = true;
-        }
+        play_turn();
 
         if (m_computer->get_hand().get_size() == 0 && m_human->get_hand().get_size() == 0)
         {
-            deal_players();
+            // Deal players
+            m_human->set_hand(m_deck.draw_set());
+            m_computer->set_hand(m_deck.draw_set());
         }
     }
 
@@ -59,7 +52,7 @@ string Round::ToString()
     info += "\nDeck: " + m_deck.ToString() + "\n";
 
     info += "\nNext Player: ";
-    if (m_human_next)
+    if (m_human_turn)
     {
         info += "Human";
     }
@@ -84,10 +77,106 @@ bool Round::is_over()
     return false;
 }
 
-void Round::deal_players()
+void Round::play_turn()
 {
-    m_human->set_hand(m_deck.draw_set());
-    m_computer->set_hand(m_deck.draw_set());
+    for (;;)
+    {
+        Console::display_message(ToString());
+
+        int choice = Console::process_turn_menu(m_human_turn);
+
+        if (m_human_turn)
+        {
+            switch (choice)
+            {
+            case 1:
+                // TODO: save game
+                exit(0);
+            case 2:
+                if (make_move())
+                {
+                    return;
+                }
+                break;
+            case 3:
+                // TODO: ask for help
+                exit(0);
+            case 4:
+                exit(0);
+            }
+        }
+        else
+        {
+            switch (choice)
+            {
+            case 1:
+                // TODO: save game
+                exit(0);
+            case 2:
+                if (make_move())
+                {
+                    return;
+                }
+                break;
+            case 3:
+                exit(0);
+            }
+        }
+    }
+}
+
+bool Round::make_move()
+{
+    int choice = Console::process_move_menu();
+
+    if (m_human_turn)
+    {
+        switch (choice)
+        {
+        case 1:
+            return m_human->build(m_table);
+        case 2:
+        {
+            if (m_human->capture(m_table))
+            {
+                // Update capture status
+                m_human->captured_last(true);
+                m_computer->captured_last(false);
+
+                return true;
+            }
+            return false;
+        }
+        case 3:
+            return m_human->trail(m_table);
+        default:
+            return false;
+        }
+    }
+    else
+    {
+        switch (choice)
+        {
+        case 1:
+            return m_computer->build(m_table);
+        case 2:
+        {
+            if (m_computer->capture(m_table))
+            {
+                // Update capture status
+                m_computer->captured_last(true);
+                m_human->captured_last(false);
+
+                return true;
+            }
+            return false;
+        }
+        case 3:
+            return m_computer->trail(m_table);
+        default:
+            return false;
+        }
+    }
 }
 
 void Round::clear_table()
@@ -96,6 +185,7 @@ void Round::clear_table()
     {
         for (Card card : m_table.get_loose_set().get_cards())
         {
+            // Check capture status
             if (m_human->captured_last())
             {
                 // Add loose card to human pile
