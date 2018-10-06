@@ -315,7 +315,7 @@ void Console::display_tournament_result(int a_computer_score, int a_human_score)
     {
         cout << "it's a tie!";
     }
-    cout << endl;
+    cout << endl << endl;
 }
 
 vector<string> Console::string_to_vector(string a_string, char a_delimiter)
