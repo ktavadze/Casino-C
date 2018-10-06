@@ -27,6 +27,7 @@ public:
     void remove_loose_card(Card a_card);
     void add_build(Build a_build);
     void remove_build(Build a_build);
+    void update_build_owner(int a_index, bool a_is_human);
     void extend_build(int a_index, Set a_set);
     bool contains(Build a_build);
     bool contains(Card a_card);

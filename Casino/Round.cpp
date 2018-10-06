@@ -15,6 +15,10 @@ void Round::start()
         }
     }
 
+    // Clear piles
+    m_human->clear_pile();
+    m_computer->clear_pile();
+
     clear_table();
 
     update_scores();
@@ -31,6 +35,19 @@ string Round::ToString()
     info += "\nHuman:" + m_human->ToString() + "\n";
 
     info += "\nTable: " + m_table.ToString() + "\n";
+
+    for (Build build : m_table.get_builds())
+    {
+        info += "\nBuild Owner: " + build.ToString();
+        if (build.is_human())
+        {
+            info += " Human\n";
+        }
+        else
+        {
+            info += " Computer\n";
+        }
+    }
 
     info += "\nDeck: " + m_deck.ToString() + "\n";
 

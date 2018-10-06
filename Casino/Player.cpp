@@ -333,7 +333,7 @@ bool Player::extend_build(Table & a_table)
     }
 
     // Update build owner
-    selected_build.is_human(m_is_human);
+    a_table.update_build_owner(selected_build_index, m_is_human);
 
     // Extend build
     a_table.extend_build(selected_build_index, selected_set);

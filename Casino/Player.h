@@ -46,6 +46,10 @@ public:
     {
         m_pile.add_card(a_card);
     }
+    inline void clear_pile()
+    {
+        m_pile.reset();
+    }
     virtual bool build(Table & a_table);
     virtual bool capture(Table & a_table);
     virtual bool trail(Table & a_table);

@@ -53,6 +53,7 @@ private:
     bool is_over();
     void play_turn();
     bool make_move();
+    void clear_piles();
     void clear_table();
     void update_scores();
 };

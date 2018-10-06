@@ -29,6 +29,11 @@ void Table::remove_build(Build a_build)
     }
 }
 
+void Table::update_build_owner(int a_index, bool a_is_human)
+{
+    m_builds.at(a_index).is_human(a_is_human);
+}
+
 void Table::extend_build(int a_index, Set a_set)
 {
     m_builds.at(a_index).extend(a_set);
