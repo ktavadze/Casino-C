@@ -28,8 +28,11 @@ Set Deck::draw_set()
 
     for (int i = 0; i < 4; i++)
     {
-        set.add_card(m_cards.back());
-        m_cards.pop_back();
+        if (!is_empty())
+        {
+            set.add_card(m_cards.back());
+            m_cards.pop_back();
+        }
     }
 
     return set;

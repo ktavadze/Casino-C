@@ -133,7 +133,7 @@ string Player::ToString()
 {
     string info;
 
-    info += "\n   Score: " + m_score;
+    info += "\n   Score: " + to_string(m_score);
 
     info += "\n   Hand: " + m_hand.ToString();
 
