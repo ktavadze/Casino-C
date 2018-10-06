@@ -15,13 +15,33 @@ void Round::start()
         }
     }
 
+    // Clear table
+    if (m_table.get_loose_set().get_size() > 0)
+    {
+        for (Card card : m_table.get_loose_set().get_cards())
+        {
+            // Check capture status
+            if (m_human->captured_last())
+            {
+                // Add loose card to human pile
+                m_human->add_to_pile(card);
+            }
+            else
+            {
+                // Add loose card to computer pile
+                m_computer->add_to_pile(card);
+            }
+
+            // Remove loose card from table
+            m_table.remove_loose_card(card);
+        }
+    }
+
+    update_scores();
+
     // Clear piles
     m_human->clear_pile();
     m_computer->clear_pile();
-
-    clear_table();
-
-    update_scores();
 }
 
 string Round::ToString()
@@ -179,30 +199,6 @@ bool Round::make_move()
             return m_computer->trail(m_table);
         default:
             return false;
-        }
-    }
-}
-
-void Round::clear_table()
-{
-    if (m_table.get_loose_set().get_size() > 0)
-    {
-        for (Card card : m_table.get_loose_set().get_cards())
-        {
-            // Check capture status
-            if (m_human->captured_last())
-            {
-                // Add loose card to human pile
-                m_human->add_to_pile(card);
-            }
-            else
-            {
-                // Add loose card to computer pile
-                m_computer->add_to_pile(card);
-            }
-
-            // Remove loose card from table
-            m_table.remove_loose_card(card);
         }
     }
 }
