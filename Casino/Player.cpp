@@ -190,7 +190,7 @@ bool Player::increase_build(Table & a_table)
     Card build_card = m_hand.get_card(build_card_index);
 
     // Increase build
-    if (can_increase_build(a_table, build_card, selected_build))
+    if (can_increase_build(a_table, selected_build, build_card))
     {
         Set build_set;
 
@@ -244,7 +244,7 @@ bool Player::extend_build(Table & a_table)
         loose_set = Console::pick_loose_set(a_table.get_loose_set());
     }
 
-    if (can_extend_build(a_table, build_card, loose_set, selected_build))
+    if (can_extend_build(a_table, selected_build, build_card, loose_set))
     {
         Set build_set;
 
@@ -299,7 +299,7 @@ bool Player::can_create_build(Table a_table, Card a_build_card, Set a_loose_set)
     return true;
 }
 
-bool Player::can_increase_build(Table a_table, Card a_build_card, Build a_selected_build)
+bool Player::can_increase_build(Table a_table, Build a_selected_build, Card a_build_card)
 {
     // Check build card
     if (reserved_for_capture(a_table, a_build_card))
@@ -336,7 +336,7 @@ bool Player::can_increase_build(Table a_table, Card a_build_card, Build a_select
     return true;
 }
 
-bool Player::can_extend_build(Table a_table, Card a_build_card, Set a_loose_set, Build a_selected_build)
+bool Player::can_extend_build(Table a_table, Build a_selected_build, Card a_build_card, Set a_loose_set)
 {
     // Check build card
     if (reserved_for_capture(a_table, a_build_card))
