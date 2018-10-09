@@ -91,7 +91,7 @@ bool Player::trail(Table & a_table)
     Card player_card = m_hand.get_card(player_card_index);
 
     // Check player card
-    if (!can_play(a_table, player_card))
+    if (reserved_for_capture(a_table, player_card))
     {
         Console::display_message("ERROR: selected card reserved for capture!");
 
@@ -159,15 +159,15 @@ bool Player::create_build(Table & a_table)
     Card player_card = m_hand.get_card(player_card_index);
 
     // Check player card
-    if (can_play(a_table, player_card))
-    {
-        selected_set.add_card(player_card);
-    }
-    else
+    if (reserved_for_capture(a_table, player_card))
     {
         Console::display_message("ERROR: selected card reserved for capture!");
 
         return false;
+    }
+    else
+    {
+        selected_set.add_card(player_card);
     }
 
     // Select loose set
@@ -220,15 +220,15 @@ bool Player::increase_build(Table & a_table)
     Card player_card = m_hand.get_card(player_card_index);
 
     // Check player card
-    if (can_play(a_table, player_card))
-    {
-        selected_set.add_card(player_card);
-    }
-    else
+    if (reserved_for_capture(a_table, player_card))
     {
         Console::display_message("ERROR: selected card reserved for capture!");
 
         return false;
+    }
+    else
+    {
+        selected_set.add_card(player_card);
     }
 
     // Select build
@@ -302,15 +302,16 @@ bool Player::extend_build(Table & a_table)
     Card player_card = m_hand.get_card(player_card_index);
 
     // Check player card
-    if (can_play(a_table, player_card))
-    {
-        selected_set.add_card(player_card);
-    }
-    else
+    if (reserved_for_capture(a_table, player_card))
     {
         Console::display_message("ERROR: selected card reserved for capture!");
 
         return false;
+        selected_set.add_card(player_card);
+    }
+    else
+    {
+        selected_set.add_card(player_card);
     }
 
     // Select loose set
@@ -355,7 +356,20 @@ bool Player::extend_build(Table & a_table)
     return true;
 }
 
-bool Player::can_play(Table a_table, Card a_card)
+bool Player::owns_build(Table & a_table)
+{
+    for (Build build : a_table.get_builds())
+    {
+        if (build.is_human() == m_is_human)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool Player::reserved_for_capture(Table a_table, Card a_card)
 {
     for (Build build : a_table.get_builds())
     {
@@ -363,12 +377,12 @@ bool Player::can_play(Table a_table, Card a_card)
         {
             if (count_cards_held(a_card.get_value()) < 2)
             {
-                return false;
+                return true;
             }
         }
     }
 
-    return true;
+    return false;
 }
 
 bool Player::can_capture(Table a_table, Card a_capture_card, Set a_loose_set, Set a_firm_set)
