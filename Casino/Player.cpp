@@ -20,6 +20,14 @@ bool Player::build(Table & a_table)
 
 bool Player::capture(Table & a_table)
 {
+    // Check table
+    if (a_table.get_builds().size() == 0 && a_table.get_loose_set().get_size() == 0)
+    {
+        Console::display_message("ERROR: no cards to capture!");
+
+        return false;
+    }
+
     // Select player card
     int player_card_index = Console::pick_player_card(m_hand) - 1;
     Card player_card = m_hand.get_card(player_card_index);
@@ -127,55 +135,43 @@ bool Player::create_build(Table & a_table)
         return false;
     }
 
-    Set selected_set;
-
-    // Select player card
-    int player_card_index = Console::pick_player_card(m_hand) - 1;
-    Card player_card = m_hand.get_card(player_card_index);
-
-    // Check player card
-    if (reserved_for_capture(a_table, player_card))
-    {
-        Console::display_message("ERROR: selected card reserved for capture!");
-
-        return false;
-    }
-    else
-    {
-        selected_set.add_card(player_card);
-    }
+    // Select build card
+    int build_card_index = Console::pick_player_card(m_hand) - 1;
+    Card build_card = m_hand.get_card(build_card_index);
 
     // Select loose set
     Set loose_set = Console::pick_loose_set(a_table.get_loose_set());
 
-    for (Card card : loose_set.get_cards())
+    // Create build
+    if (can_create_build(a_table, build_card, loose_set))
     {
-        selected_set.add_card(card);
+        Set build_set;
+
+        build_set.add_card(build_card);
+
+        for (Card card : loose_set.get_cards())
+        {
+            build_set.add_card(card);
+        }
+
+        Build build(m_is_human, build_set);
+
+        // Add build to table
+        a_table.add_build(build);
+
+        // Remove loose set from table
+        for (Card card : loose_set.get_cards())
+        {
+            a_table.remove_loose_card(card);
+        }
+
+        // Remove player card from hand
+        m_hand.remove_card(build_card);
+
+        return true;
     }
 
-    Build build(m_is_human, selected_set);
-
-    // Check build value
-    if (count_cards_held(build.get_value()) == 0)
-    {
-        Console::display_message("ERROR: no card in hand matching build value!");
-
-        return false;
-    }
-
-    // Add build to table
-    a_table.add_build(build);
-
-    // Remove loose set from table
-    for (Card loose_card : loose_set.get_cards())
-    {
-        a_table.remove_loose_card(loose_card);
-    }
-
-    // Remove player card from hand
-    m_hand.remove_card(player_card);
-
-    return true;
+    return false;
 }
 
 bool Player::increase_build(Table & a_table)
@@ -358,6 +354,27 @@ bool Player::reserved_for_capture(Table a_table, Card a_card)
     }
 
     return false;
+}
+
+bool Player::can_create_build(Table a_table, Card a_build_card, Set a_loose_set)
+{
+    // Check build card
+    if (reserved_for_capture(a_table, a_build_card))
+    {
+        Console::display_message("ERROR: build card reserved for capture!");
+
+        return false;
+    }
+
+    // Check build value
+    if (count_cards_held(a_build_card.get_value() + a_loose_set.get_value()) == 0)
+    {
+        Console::display_message("ERROR: no card in hand matching build value!");
+
+        return false;
+    }
+
+    return true;
 }
 
 bool Player::can_capture(Table a_table, Card a_capture_card, Set a_loose_set, Set a_firm_set)
