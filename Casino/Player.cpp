@@ -165,7 +165,7 @@ bool Player::create_build(Table & a_table)
             a_table.remove_loose_card(card);
         }
 
-        // Remove player card from hand
+        // Remove build card from hand
         m_hand.remove_card(build_card);
 
         return true;
@@ -184,72 +184,41 @@ bool Player::increase_build(Table & a_table)
         return false;
     }
 
-    Set selected_set;
-
-    // Select player card
-    int player_card_index = Console::pick_player_card(m_hand) - 1;
-    Card player_card = m_hand.get_card(player_card_index);
-
-    // Check player card
-    if (reserved_for_capture(a_table, player_card))
-    {
-        Console::display_message("ERROR: selected card reserved for capture!");
-
-        return false;
-    }
-    else
-    {
-        selected_set.add_card(player_card);
-    }
+    // Select build card
+    int build_card_index = Console::pick_player_card(m_hand) - 1;
+    Card build_card = m_hand.get_card(build_card_index);
 
     // Select build
     int selected_build_index = Console::pick_build(a_table.get_builds()) - 1;
     Build selected_build = a_table.get_builds().at(selected_build_index);
 
-    // Check build owner
-    if (selected_build.is_human() == m_is_human)
+    // Increase build
+    if (can_increase_build(a_table, build_card, selected_build))
     {
-        Console::display_message("ERROR: cannot increase own build!");
+        Set build_set;
 
-        return false;
-    }
+        build_set.add_card(build_card);
 
-    // Check build size
-    if (selected_build.get_sets().size() > 1)
-    {
-        Console::display_message("ERROR: cannot increase multi-builds!");
-
-        return false;
-    }
-
-    for (Set set : selected_build.get_sets())
-    {
-        for (Card card : set.get_cards())
+        for (Set set : selected_build.get_sets())
         {
-            selected_set.add_card(card);
+            build_set.add_set(set);
         }
+
+        Build increased_build(m_is_human, build_set);
+
+        // Add increased build to table
+        a_table.add_build(increased_build);
+
+        // Remove selected build from table
+        a_table.remove_build(selected_build);
+
+        // Remove build card from hand
+        m_hand.remove_card(build_card);
+
+        return true;
     }
 
-    Build increased_build(m_is_human, selected_set);
-
-    // Check build value
-    if (count_cards_held(increased_build.get_value()) == 0)
-    {
-        Console::display_message("ERROR: no card in hand matching build value!");
-
-        return false;
-    }
-
-    // Add increased build to table
-    a_table.add_build(increased_build);
-
-    // Remove selected build from table
-    a_table.remove_build(selected_build);
-
-    // Remove player card from hand
-    m_hand.remove_card(player_card);
-
-    return true;
+    return false;
 }
 
 bool Player::extend_build(Table & a_table)
@@ -339,6 +308,43 @@ bool Player::can_create_build(Table a_table, Card a_build_card, Set a_loose_set)
 
     // Check build value
     if (count_cards_held(a_build_card.get_value() + a_loose_set.get_value()) == 0)
+    {
+        Console::display_message("ERROR: no card in hand matching build value!");
+
+        return false;
+    }
+
+    return true;
+}
+
+bool Player::can_increase_build(Table a_table, Card a_build_card, Build a_selected_build)
+{
+    // Check build card
+    if (reserved_for_capture(a_table, a_build_card))
+    {
+        Console::display_message("ERROR: build card reserved for capture!");
+
+        return false;
+    }
+
+    // Check build owner
+    if (a_selected_build.is_human() == m_is_human)
+    {
+        Console::display_message("ERROR: cannot increase own build!");
+
+        return false;
+    }
+
+    // Check build size
+    if (a_selected_build.get_sets().size() > 1)
+    {
+        Console::display_message("ERROR: cannot increase multi-builds!");
+
+        return false;
+    }
+
+    // Check build value
+    if (count_cards_held(a_build_card.get_value() + a_selected_build.get_value()) == 0)
     {
         Console::display_message("ERROR: no card in hand matching build value!");
 
