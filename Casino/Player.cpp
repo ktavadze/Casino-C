@@ -86,47 +86,22 @@ bool Player::capture(Table & a_table)
 
 bool Player::trail(Table & a_table)
 {
-    // Select player card
-    int player_card_index = Console::pick_player_card(m_hand) - 1;
-    Card player_card = m_hand.get_card(player_card_index);
+    // Select trail card
+    int trail_card_index = Console::pick_player_card(m_hand) - 1;
+    Card trail_card = m_hand.get_card(trail_card_index);
 
-    // Check player card
-    if (reserved_for_capture(a_table, player_card))
+    if (can_trail(a_table, trail_card))
     {
-        Console::display_message("ERROR: selected card reserved for capture!");
+        // Add trail card to table
+        a_table.add_loose_card(trail_card);
 
-        return false;
+        // Remove trail card from hand
+        m_hand.remove_card(trail_card);
+
+        return true;
     }
 
-    // Check loose set
-    for (Card card : a_table.get_loose_set().get_cards())
-    {
-        if (card.get_value() == player_card.get_value())
-        {
-            Console::display_message("ERROR: must capture matching loose card(s)!");
-
-            return false;
-        }
-    }
-
-    // Check builds
-    for (Build build : a_table.get_builds())
-    {
-        if (build.is_human() == m_is_human)
-        {
-            Console::display_message("ERROR: cannot trail while owner of build(s)!");
-
-            return false;
-        }
-    }
-
-    // Add player card to table
-    a_table.add_loose_card(player_card);
-
-    // Remove player card from hand
-    m_hand.remove_card(player_card);
-
-    return true;
+    return false;
 }
 
 string Player::ToString()
@@ -356,7 +331,7 @@ bool Player::extend_build(Table & a_table)
     return true;
 }
 
-bool Player::owns_build(Table & a_table)
+bool Player::owns_build(Table a_table)
 {
     for (Build build : a_table.get_builds())
     {
@@ -470,6 +445,38 @@ bool Player::can_capture(Table a_table, Card a_capture_card, Set a_loose_set, Se
                     return false;
                 }
             }
+        }
+    }
+
+    return true;
+}
+
+bool Player::can_trail(Table a_table, Card a_trail_card)
+{
+    // Check trail card
+    if (reserved_for_capture(a_table, a_trail_card))
+    {
+        Console::display_message("ERROR: trail card reserved for capture!");
+
+        return false;
+    }
+
+    // Check builds
+    if (owns_build(a_table))
+    {
+        Console::display_message("ERROR: cannot trail while owner of build(s)!");
+
+        return false;
+    }
+
+    // Check loose set
+    for (Card card : a_table.get_loose_set().get_cards())
+    {
+        if (card.get_value() == a_trail_card.get_value())
+        {
+            Console::display_message("ERROR: must capture matching loose card(s)!");
+
+            return false;
         }
     }
 
