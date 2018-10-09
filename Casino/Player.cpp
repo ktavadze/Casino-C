@@ -327,35 +327,6 @@ bool Player::extend_build(Table & a_table)
     return true;
 }
 
-bool Player::owns_build(Table a_table)
-{
-    for (Build build : a_table.get_builds())
-    {
-        if (build.is_human() == m_is_human)
-        {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-bool Player::reserved_for_capture(Table a_table, Card a_card)
-{
-    for (Build build : a_table.get_builds())
-    {
-        if (build.get_value() == a_card.get_value() && build.is_human() == m_is_human)
-        {
-            if (count_cards_held(a_card.get_value()) < 2)
-            {
-                return true;
-            }
-        }
-    }
-
-    return false;
-}
-
 bool Player::can_create_build(Table a_table, Card a_build_card, Set a_loose_set)
 {
     // Check build card
@@ -498,6 +469,35 @@ bool Player::can_trail(Table a_table, Card a_trail_card)
     }
 
     return true;
+}
+
+bool Player::reserved_for_capture(Table a_table, Card a_card)
+{
+    for (Build build : a_table.get_builds())
+    {
+        if (build.get_value() == a_card.get_value() && build.is_human() == m_is_human)
+        {
+            if (count_cards_held(a_card.get_value()) < 2)
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+bool Player::owns_build(Table a_table)
+{
+    for (Build build : a_table.get_builds())
+    {
+        if (build.is_human() == m_is_human)
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 int Player::count_cards_held(int a_value)
