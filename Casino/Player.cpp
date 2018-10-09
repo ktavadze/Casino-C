@@ -149,10 +149,7 @@ bool Player::create_build(Table & a_table)
 
         build_set.add_card(build_card);
 
-        for (Card card : loose_set.get_cards())
-        {
-            build_set.add_card(card);
-        }
+        build_set.add_set(loose_set);
 
         Build build(m_is_human, build_set);
 
@@ -184,13 +181,13 @@ bool Player::increase_build(Table & a_table)
         return false;
     }
 
-    // Select build card
-    int build_card_index = Console::pick_player_card(m_hand) - 1;
-    Card build_card = m_hand.get_card(build_card_index);
-
     // Select build
     int selected_build_index = Console::pick_build(a_table.get_builds()) - 1;
     Build selected_build = a_table.get_builds().at(selected_build_index);
+
+    // Select build card
+    int build_card_index = Console::pick_player_card(m_hand) - 1;
+    Card build_card = m_hand.get_card(build_card_index);
 
     // Increase build
     if (can_increase_build(a_table, build_card, selected_build))
@@ -231,69 +228,54 @@ bool Player::extend_build(Table & a_table)
         return false;
     }
 
-    Set selected_set;
-
     // Select build
     int selected_build_index = Console::pick_build(a_table.get_builds()) - 1;
     Build selected_build = a_table.get_builds().at(selected_build_index);
 
-    // Select player card
-    int player_card_index = Console::pick_player_card(m_hand) - 1;
-    Card player_card = m_hand.get_card(player_card_index);
-
-    // Check player card
-    if (reserved_for_capture(a_table, player_card))
-    {
-        Console::display_message("ERROR: selected card reserved for capture!");
-
-        return false;
-        selected_set.add_card(player_card);
-    }
-    else
-    {
-        selected_set.add_card(player_card);
-    }
+    // Select build card
+    int build_card_index = Console::pick_player_card(m_hand) - 1;
+    Card build_card = m_hand.get_card(build_card_index);
 
     // Select loose set
-    if (selected_build.get_value() != player_card.get_value())
-    {
-        Set loose_set = Console::pick_loose_set(a_table.get_loose_set());
+    Set loose_set;
 
-        for (Card card : loose_set.get_cards())
+    if (selected_build.get_value() != build_card.get_value())
+    {
+        loose_set = Console::pick_loose_set(a_table.get_loose_set());
+    }
+
+    if (can_extend_build(a_table, build_card, loose_set, selected_build))
+    {
+        Set build_set;
+
+        build_set.add_card(build_card);
+
+        build_set.add_set(loose_set);
+
+        // Update build owner
+        a_table.update_build_owner(selected_build_index, m_is_human);
+
+        // Extend build
+        a_table.extend_build(selected_build_index, build_set);
+
+        // Remove loose set from table
+        if (build_set.get_size() > 1)
         {
-            selected_set.add_card(card);
+            for (int i = 1; i < build_set.get_size(); i++)
+            {
+                Card card = build_set.get_card(i);
+
+                a_table.remove_loose_card(card);
+            }
         }
+
+        // Remove build card from hand
+        m_hand.remove_card(build_card);
+
+        return true;
     }
 
-    // Check build value
-    if (selected_build.get_value() != selected_set.get_value())
-    {
-        Console::display_message("ERROR: selected sum mismatch!");
-
-        return false;
-    }
-
-    // Update build owner
-    a_table.update_build_owner(selected_build_index, m_is_human);
-
-    // Extend build
-    a_table.extend_build(selected_build_index, selected_set);
-
-    // Remove loose set from table
-    if (selected_set.get_size() > 1)
-    {
-        for (int i = 1; i < selected_set.get_size(); i++)
-        {
-            Card card = selected_set.get_card(i);
-
-            a_table.remove_loose_card(card);
-        }
-    }
-
-    // Remove player card from hand
-    m_hand.remove_card(player_card);
-
-    return true;
+    return false;
 }
 
 bool Player::can_create_build(Table a_table, Card a_build_card, Set a_loose_set)
@@ -347,6 +329,27 @@ bool Player::can_increase_build(Table a_table, Card a_build_card, Build a_select
     if (count_cards_held(a_build_card.get_value() + a_selected_build.get_value()) == 0)
     {
         Console::display_message("ERROR: no card in hand matching build value!");
+
+        return false;
+    }
+
+    return true;
+}
+
+bool Player::can_extend_build(Table a_table, Card a_build_card, Set a_loose_set, Build a_selected_build)
+{
+    // Check build card
+    if (reserved_for_capture(a_table, a_build_card))
+    {
+        Console::display_message("ERROR: build card reserved for capture!");
+
+        return false;
+    }
+
+    // Check build value
+    if (a_build_card.get_value() + a_loose_set.get_value() != a_selected_build.get_value())
+    {
+        Console::display_message("ERROR: build sum mismatch!");
 
         return false;
     }
