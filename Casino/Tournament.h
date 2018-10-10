@@ -11,7 +11,18 @@ public:
     {
         bool won_toss = Console::process_coin_toss();
 
-        m_round = Round(1, &m_computer, &m_human, won_toss);
+        if (won_toss)
+        {
+            m_human.is_next(true);
+            m_computer.is_next(false);
+        }
+        else
+        {
+            m_human.is_next(false);
+            m_computer.is_next(true);
+        }
+
+        m_round = Round(1, &m_computer, &m_human);
     }
     Tournament(Computer a_computer, Human a_human, Round a_round)
     {

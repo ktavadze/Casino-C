@@ -72,7 +72,7 @@ string Round::ToString()
     info += "\nDeck: " + m_deck.ToString() + "\n";
 
     info += "\nNext Player: ";
-    if (m_human_turn)
+    if (m_human->is_next())
     {
         info += "Human";
     }
@@ -103,9 +103,9 @@ void Round::play_turn()
     {
         Console::display_message(ToString());
 
-        int choice = Console::process_turn_menu(m_human_turn);
+        int choice = Console::process_turn_menu(m_human->is_next());
 
-        if (m_human_turn)
+        if (m_human->is_next())
         {
             switch (choice)
             {
@@ -115,7 +115,8 @@ void Round::play_turn()
             case 2:
                 if (make_move())
                 {
-                    m_human_turn = false;
+                    m_human->is_next(false);
+                    m_computer->is_next(true);
 
                     return;
                 }
@@ -137,7 +138,8 @@ void Round::play_turn()
             case 2:
                 if (make_move())
                 {
-                    m_human_turn = true;
+                    m_human->is_next(true);
+                    m_computer->is_next(false);
 
                     return;
                 }
@@ -153,7 +155,7 @@ bool Round::make_move()
 {
     int choice = Console::process_move_menu();
 
-    if (m_human_turn)
+    if (m_human->is_next())
     {
         switch (choice)
         {

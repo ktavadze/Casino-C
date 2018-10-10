@@ -6,6 +6,18 @@ class Player
 {
 public:
     Player() {}
+    inline bool is_human()
+    {
+        return m_is_human;
+    }
+    inline bool is_next()
+    {
+        return m_is_next;
+    }
+    inline void is_next(bool a_is_next)
+    {
+        m_is_next = a_is_next;
+    }
     inline bool captured_last()
     {
         return m_captured_last;
@@ -13,10 +25,6 @@ public:
     inline void captured_last(bool a_captured_last)
     {
         m_captured_last = a_captured_last;
-    }
-    inline bool is_human()
-    {
-        return m_is_human;
     }
     inline int get_score()
     {
@@ -55,8 +63,9 @@ public:
     virtual bool trail(Table & a_table);
     string ToString();
 protected:
-    bool m_captured_last;
     bool m_is_human;
+    bool m_is_next;
+    bool m_captured_last;
     int m_score;
     Set m_hand;
     Set m_pile;
