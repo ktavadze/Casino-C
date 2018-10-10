@@ -1,6 +1,35 @@
 #include "pch.h"
 #include "Player.h"
 
+int Player::make_move(Table & a_table)
+{
+    int choice = Console::process_move_menu();
+
+    switch (choice)
+    {
+    case 1:
+        if (build(a_table))
+        {
+            return 0;
+        }
+        break;
+    case 2:
+        if (capture(a_table))
+        {
+            return 1;
+        }
+        break;
+    case 3:
+        if (trail(a_table))
+        {
+            return 0;
+        }
+        break;
+    }
+
+    return -1;
+}
+
 bool Player::build(Table & a_table)
 {
     int choice = Console::process_build_menu();

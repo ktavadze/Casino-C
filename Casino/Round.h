@@ -46,7 +46,7 @@ private:
     Deck m_deck;
 
     bool is_over();
-    void play_turn();
+    void start_turn();
     bool make_move();
     void update_scores();
 };

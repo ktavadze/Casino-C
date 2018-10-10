@@ -58,6 +58,7 @@ public:
     {
         m_pile.reset();
     }
+    virtual int make_move(Table & a_table);
     virtual bool build(Table & a_table);
     virtual bool capture(Table & a_table);
     virtual bool trail(Table & a_table);

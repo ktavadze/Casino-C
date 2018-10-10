@@ -5,7 +5,7 @@ void Round::start()
 {
     while (!is_over())
     {
-        play_turn();
+        start_turn();
 
         if (m_computer->get_hand().get_size() == 0 && m_human->get_hand().get_size() == 0)
         {
@@ -97,7 +97,7 @@ bool Round::is_over()
     return false;
 }
 
-void Round::play_turn()
+void Round::start_turn()
 {
     for (;;)
     {
@@ -153,52 +153,32 @@ void Round::play_turn()
 
 bool Round::make_move()
 {
-    int choice = Console::process_move_menu();
-
     if (m_human->is_next())
     {
-        switch (choice)
+        int move_code = m_human->make_move(m_table);
+
+        switch (move_code)
         {
         case 1:
-            return m_human->build(m_table);
-        case 2:
-        {
-            if (m_human->capture(m_table))
-            {
-                // Update capture status
-                m_human->captured_last(true);
-                m_computer->captured_last(false);
-
-                return true;
-            }
-            return false;
-        }
-        case 3:
-            return m_human->trail(m_table);
+            m_human->captured_last(true);
+            m_computer->captured_last(false);
+        case 0:
+            return true;
         default:
             return false;
         }
     }
     else
     {
-        switch (choice)
+        int move_code = m_computer->make_move(m_table);
+
+        switch (move_code)
         {
         case 1:
-            return m_computer->build(m_table);
-        case 2:
-        {
-            if (m_computer->capture(m_table))
-            {
-                // Update capture status
-                m_computer->captured_last(true);
-                m_human->captured_last(false);
-
-                return true;
-            }
-            return false;
-        }
-        case 3:
-            return m_computer->trail(m_table);
+            m_human->captured_last(false);
+            m_computer->captured_last(true);
+        case 0:
+            return true;
         default:
             return false;
         }
