@@ -391,25 +391,22 @@ bool Player::can_capture(Table a_table, Card a_capture_card, Set a_loose_set, Se
     // Check loose set
     if (a_loose_set.get_size() > 0)
     {
-        Set non_matching_set;
+        int sum = 0;
 
         for (Card card : a_loose_set.get_cards())
         {
             if (card.get_value() != a_capture_card.get_value())
             {
-                non_matching_set.add_card(card);
+                sum += card.get_value();
             }
         }
 
         // Check loose sum
-        if (non_matching_set.get_size() > 0)
+        if (sum != 0 && sum != a_capture_card.get_value())
         {
-            if (non_matching_set.get_value() != a_capture_card.get_value())
-            {
-                Console::display_message("ERROR: cannot capture selected loose card(s)!");
+            Console::display_message("ERROR: cannot capture selected loose card(s)!");
 
-                return false;
-            }
+            return false;
         }
     }
 
@@ -429,33 +426,43 @@ bool Player::can_capture(Table a_table, Card a_capture_card, Set a_loose_set, Se
     // Check firm set
     if (a_firm_set.get_size() > 0)
     {
+        int matching_builds = 0;
+        int captured_builds = 0;
         int cards_found = 0;
 
         for (Build build : a_table.get_builds())
         {
-            if (a_firm_set.contains(build.get_sets()))
+            if (build.get_value() == a_capture_card.get_value() && build.is_human() == m_is_human)
             {
-                if (build.get_value() == a_capture_card.get_value())
+                matching_builds++;
+
+                if (a_firm_set.contains(build.get_sets()))
                 {
+                    captured_builds++;
+
                     for (Set set : build.get_sets())
                     {
                         cards_found += set.get_size();
                     }
                 }
-                else
-                {
-                    Console::display_message("ERROR: cannot capture selected build(s)!");
-
-                    return false;
-                }
             }
         }
 
-        if (a_firm_set.get_size() != cards_found)
+        if (cards_found != a_firm_set.get_size())
         {
             Console::display_message("ERROR: cannot capture selected build card(s)!");
 
             return false;
+        }
+
+        if (matching_builds != captured_builds)
+        {
+            if (count_cards_held(a_capture_card.get_value()) < 2)
+            {
+                Console::display_message("ERROR: must capture matching owned build(s)!");
+
+                return false;
+            }
         }
     }
     else
