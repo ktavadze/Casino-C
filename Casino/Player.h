@@ -58,10 +58,7 @@ public:
     {
         m_pile.reset();
     }
-    virtual int make_move(Table & a_table);
-    virtual bool build(Table & a_table);
-    virtual bool capture(Table & a_table);
-    virtual bool trail(Table & a_table);
+    virtual int make_move(Table & a_table) { return 0; }
     string ToString();
 protected:
     bool m_is_human;
@@ -71,9 +68,6 @@ protected:
     Set m_hand;
     Set m_pile;
 
-    virtual bool create_build(Table & a_table);
-    virtual bool increase_build(Table & a_table);
-    virtual bool extend_build(Table & a_table);
     virtual bool can_create_build(Table a_table, Card a_build_card, Set a_loose_set);
     virtual bool can_increase_build(Table a_table, Build a_selected_build, Card a_build_card);
     virtual bool can_extend_build(Table a_table, Build a_selected_build, Card a_build_card, Set a_loose_set);

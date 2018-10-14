@@ -19,4 +19,12 @@ public:
         m_hand = a_hand;
         m_pile = a_pile;
     }
+    virtual int make_move(Table & a_table);
+    bool build(Table & a_table);
+    bool capture(Table & a_table);
+    bool trail(Table & a_table);
+private:
+    bool create_build(Table & a_table);
+    bool increase_build(Table & a_table);
+    bool extend_build(Table & a_table);
 };

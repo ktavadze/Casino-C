@@ -19,4 +19,5 @@ public:
         m_hand = a_hand;
         m_pile = a_pile;
     }
+    virtual int make_move(Table & a_table);
 };
