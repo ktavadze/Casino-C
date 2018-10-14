@@ -164,7 +164,7 @@ bool Player::can_capture(Table a_table, Card a_capture_card, Set a_loose_set, Se
 
         if (matching_builds != captured_builds)
         {
-            if (count_cards_held(a_capture_card.get_value()) < 2)
+            if (reserved_for_capture(a_table, a_capture_card))
             {
                 Console::display_message("ERROR: must capture matching owned build(s)!");
 
@@ -178,7 +178,7 @@ bool Player::can_capture(Table a_table, Card a_capture_card, Set a_loose_set, Se
         {
             if (build.get_value() == a_capture_card.get_value() && build.is_human() == m_is_human)
             {
-                if (count_cards_held(a_capture_card.get_value()) < 2)
+                if (reserved_for_capture(a_table, a_capture_card))
                 {
                     Console::display_message("ERROR: must capture matching owned build(s)!");
 
