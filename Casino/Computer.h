@@ -22,6 +22,7 @@ public:
     virtual int make_move(Table & a_table);
 private:
     bool can_capture(Table a_table);
-    vector<Set> generate_loose_sets(Set a_loose_set);
     bool vector_contains_set(vector<Set> a_vector, Set a_set);
+
+    vector<Set> generate_loose_sets(Set a_loose_set);
 };

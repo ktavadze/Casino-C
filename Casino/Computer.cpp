@@ -72,6 +72,19 @@ bool Computer::can_capture(Table a_table)
     return false;
 }
 
+bool Computer::vector_contains_set(vector<Set> a_vector, Set a_set)
+{
+    for (Set set : a_vector)
+    {
+        if (set.equals(a_set))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 vector<Set> Computer::generate_loose_sets(Set a_loose_set)
 {
     vector<Set> loose_sets;
@@ -128,17 +141,4 @@ vector<Set> Computer::generate_loose_sets(Set a_loose_set)
     }
 
     return loose_sets;
-}
-
-bool Computer::vector_contains_set(vector<Set> a_vector, Set a_set)
-{
-    for (Set set : a_vector)
-    {
-        if (set.equals(a_set))
-        {
-            return true;
-        }
-    }
-
-    return false;
 }
