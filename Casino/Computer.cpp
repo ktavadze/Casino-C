@@ -25,6 +25,55 @@ int Computer::make_move(Table & a_table)
     return 0;
 }
 
+void Computer::process_capture(Table & a_table)
+{
+    vector<Build> matching_builds;
+    vector<Set> matching_loose_sets;
+    vector<Card> matching_loose_cards;
+
+    // Check builds
+    if (!a_table.get_builds().empty())
+    {
+        // Check for matching builds
+        for (Build build : a_table.get_builds())
+        {
+            if (count_cards_held(build.get_value()) > 0)
+            {
+                matching_builds.push_back(build);
+            }
+        }
+    }
+
+    // Check loose set
+    if (a_table.get_loose_set().get_size() > 0)
+    {
+        Set loose_set = a_table.get_loose_set();
+
+        // Check for matching cards
+        for (Card card : loose_set.get_cards())
+        {
+            if (count_cards_held(card.get_value()) > 0)
+            {
+                matching_loose_cards.push_back(card);
+            }
+        }
+
+        // Check for matching sets
+        if (loose_set.get_size() > 1)
+        {
+            vector<Set> loose_sets = generate_loose_sets(loose_set);
+
+            for (Set set : loose_sets)
+            {
+                if (count_cards_held(set.get_value()) > 0)
+                {
+                    matching_loose_sets.push_back(set);
+                }
+            }
+        }
+    }
+}
+
 bool Computer::can_capture(Table a_table)
 {
     // Check builds
