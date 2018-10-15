@@ -20,11 +20,11 @@ public:
         m_pile = a_pile;
     }
     virtual int make_move(Table & a_table);
-    bool build(Table & a_table);
-    bool capture(Table & a_table);
-    bool trail(Table & a_table);
 private:
-    bool create_build(Table & a_table);
-    bool increase_build(Table & a_table);
-    bool extend_build(Table & a_table);
+    bool process_build(Table & a_table);
+    bool process_build_create(Table & a_table);
+    bool process_build_increase(Table & a_table);
+    bool process_build_extend(Table & a_table);
+    bool process_capture(Table & a_table);
+    bool process_trail(Table & a_table);
 };

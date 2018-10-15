@@ -8,19 +8,19 @@ int Human::make_move(Table & a_table)
     switch (choice)
     {
     case 1:
-        if (build(a_table))
+        if (process_build(a_table))
         {
             return 0;
         }
         break;
     case 2:
-        if (capture(a_table))
+        if (process_capture(a_table))
         {
             return 1;
         }
         break;
     case 3:
-        if (trail(a_table))
+        if (process_trail(a_table))
         {
             return 0;
         }
@@ -30,24 +30,177 @@ int Human::make_move(Table & a_table)
     return -1;
 }
 
-bool Human::build(Table & a_table)
+bool Human::process_build(Table & a_table)
 {
     int choice = Console::process_build_menu();
 
     switch (choice)
     {
     case 1:
-        return create_build(a_table);
+        return process_build_create(a_table);
     case 2:
-        return increase_build(a_table);
+        return process_build_increase(a_table);
     case 3:
-        return extend_build(a_table);
+        return process_build_extend(a_table);
     default:
         return false;
     }
 }
 
-bool Human::capture(Table & a_table)
+bool Human::process_build_create(Table & a_table)
+{
+    // Check loose set
+    if (a_table.get_loose_set().get_size() == 0)
+    {
+        Console::display_message("ERROR: no loose cards to build with!");
+
+        return false;
+    }
+
+    // Select build card
+    int build_card_index = Console::pick_player_card(m_hand) - 1;
+    Card build_card = m_hand.get_card(build_card_index);
+
+    // Select loose set
+    Set loose_set = Console::pick_loose_set(a_table.get_loose_set());
+
+    // Create build
+    if (can_create_build(a_table, build_card, loose_set))
+    {
+        Set build_set;
+
+        build_set.add_card(build_card);
+
+        build_set.add_set(loose_set);
+
+        Build build(m_is_human, build_set);
+
+        // Add build to table
+        a_table.add_build(build);
+
+        // Remove loose set from table
+        for (Card card : loose_set.get_cards())
+        {
+            a_table.remove_loose_card(card);
+        }
+
+        // Remove build card from hand
+        m_hand.remove_card(build_card);
+
+        return true;
+    }
+
+    return false;
+}
+
+bool Human::process_build_increase(Table & a_table)
+{
+    // Check builds
+    if (a_table.get_builds().size() == 0)
+    {
+        Console::display_message("ERROR: no builds to increase!");
+
+        return false;
+    }
+
+    // Select build
+    int selected_build_index = Console::pick_build(a_table.get_builds()) - 1;
+    Build selected_build = a_table.get_builds().at(selected_build_index);
+
+    // Select build card
+    int build_card_index = Console::pick_player_card(m_hand) - 1;
+    Card build_card = m_hand.get_card(build_card_index);
+
+    // Increase build
+    if (can_increase_build(a_table, selected_build, build_card))
+    {
+        Set build_set;
+
+        build_set.add_card(build_card);
+
+        for (Set set : selected_build.get_sets())
+        {
+            build_set.add_set(set);
+        }
+
+        Build increased_build(m_is_human, build_set);
+
+        // Add increased build to table
+        a_table.add_build(increased_build);
+
+        // Remove selected build from table
+        a_table.remove_build(selected_build);
+
+        // Remove build card from hand
+        m_hand.remove_card(build_card);
+
+        return true;
+    }
+
+    return false;
+}
+
+bool Human::process_build_extend(Table & a_table)
+{
+    // Check builds
+    if (a_table.get_builds().size() == 0)
+    {
+        Console::display_message("ERROR: no builds to extend!");
+
+        return false;
+    }
+
+    // Select build
+    int selected_build_index = Console::pick_build(a_table.get_builds()) - 1;
+    Build selected_build = a_table.get_builds().at(selected_build_index);
+
+    // Select build card
+    int build_card_index = Console::pick_player_card(m_hand) - 1;
+    Card build_card = m_hand.get_card(build_card_index);
+
+    // Select loose set
+    Set loose_set;
+
+    if (selected_build.get_value() != build_card.get_value())
+    {
+        loose_set = Console::pick_loose_set(a_table.get_loose_set());
+    }
+
+    if (can_extend_build(a_table, selected_build, build_card, loose_set))
+    {
+        Set build_set;
+
+        build_set.add_card(build_card);
+
+        build_set.add_set(loose_set);
+
+        // Update build owner
+        a_table.update_build_owner(selected_build_index, m_is_human);
+
+        // Extend build
+        a_table.extend_build(selected_build_index, build_set);
+
+        // Remove loose set from table
+        if (build_set.get_size() > 1)
+        {
+            for (int i = 1; i < build_set.get_size(); i++)
+            {
+                Card card = build_set.get_card(i);
+
+                a_table.remove_loose_card(card);
+            }
+        }
+
+        // Remove build card from hand
+        m_hand.remove_card(build_card);
+
+        return true;
+    }
+
+    return false;
+}
+
+bool Human::process_capture(Table & a_table)
 {
     // Check table
     if (a_table.get_builds().empty() && a_table.get_loose_set().get_size() == 0)
@@ -121,7 +274,7 @@ bool Human::capture(Table & a_table)
     return false;
 }
 
-bool Human::trail(Table & a_table)
+bool Human::process_trail(Table & a_table)
 {
     // Select trail card
     int trail_card_index = Console::pick_player_card(m_hand) - 1;
@@ -134,159 +287,6 @@ bool Human::trail(Table & a_table)
 
         // Remove trail card from hand
         m_hand.remove_card(trail_card);
-
-        return true;
-    }
-
-    return false;
-}
-
-bool Human::create_build(Table & a_table)
-{
-    // Check loose set
-    if (a_table.get_loose_set().get_size() == 0)
-    {
-        Console::display_message("ERROR: no loose cards to build with!");
-
-        return false;
-    }
-
-    // Select build card
-    int build_card_index = Console::pick_player_card(m_hand) - 1;
-    Card build_card = m_hand.get_card(build_card_index);
-
-    // Select loose set
-    Set loose_set = Console::pick_loose_set(a_table.get_loose_set());
-
-    // Create build
-    if (can_create_build(a_table, build_card, loose_set))
-    {
-        Set build_set;
-
-        build_set.add_card(build_card);
-
-        build_set.add_set(loose_set);
-
-        Build build(m_is_human, build_set);
-
-        // Add build to table
-        a_table.add_build(build);
-
-        // Remove loose set from table
-        for (Card card : loose_set.get_cards())
-        {
-            a_table.remove_loose_card(card);
-        }
-
-        // Remove build card from hand
-        m_hand.remove_card(build_card);
-
-        return true;
-    }
-
-    return false;
-}
-
-bool Human::increase_build(Table & a_table)
-{
-    // Check builds
-    if (a_table.get_builds().size() == 0)
-    {
-        Console::display_message("ERROR: no builds to increase!");
-
-        return false;
-    }
-
-    // Select build
-    int selected_build_index = Console::pick_build(a_table.get_builds()) - 1;
-    Build selected_build = a_table.get_builds().at(selected_build_index);
-
-    // Select build card
-    int build_card_index = Console::pick_player_card(m_hand) - 1;
-    Card build_card = m_hand.get_card(build_card_index);
-
-    // Increase build
-    if (can_increase_build(a_table, selected_build, build_card))
-    {
-        Set build_set;
-
-        build_set.add_card(build_card);
-
-        for (Set set : selected_build.get_sets())
-        {
-            build_set.add_set(set);
-        }
-
-        Build increased_build(m_is_human, build_set);
-
-        // Add increased build to table
-        a_table.add_build(increased_build);
-
-        // Remove selected build from table
-        a_table.remove_build(selected_build);
-
-        // Remove build card from hand
-        m_hand.remove_card(build_card);
-
-        return true;
-    }
-
-    return false;
-}
-
-bool Human::extend_build(Table & a_table)
-{
-    // Check builds
-    if (a_table.get_builds().size() == 0)
-    {
-        Console::display_message("ERROR: no builds to extend!");
-
-        return false;
-    }
-
-    // Select build
-    int selected_build_index = Console::pick_build(a_table.get_builds()) - 1;
-    Build selected_build = a_table.get_builds().at(selected_build_index);
-
-    // Select build card
-    int build_card_index = Console::pick_player_card(m_hand) - 1;
-    Card build_card = m_hand.get_card(build_card_index);
-
-    // Select loose set
-    Set loose_set;
-
-    if (selected_build.get_value() != build_card.get_value())
-    {
-        loose_set = Console::pick_loose_set(a_table.get_loose_set());
-    }
-
-    if (can_extend_build(a_table, selected_build, build_card, loose_set))
-    {
-        Set build_set;
-
-        build_set.add_card(build_card);
-
-        build_set.add_set(loose_set);
-
-        // Update build owner
-        a_table.update_build_owner(selected_build_index, m_is_human);
-
-        // Extend build
-        a_table.extend_build(selected_build_index, build_set);
-
-        // Remove loose set from table
-        if (build_set.get_size() > 1)
-        {
-            for (int i = 1; i < build_set.get_size(); i++)
-            {
-                Card card = build_set.get_card(i);
-
-                a_table.remove_loose_card(card);
-            }
-        }
-
-        // Remove build card from hand
-        m_hand.remove_card(build_card);
 
         return true;
     }
