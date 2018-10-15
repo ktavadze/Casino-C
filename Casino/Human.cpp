@@ -210,9 +210,9 @@ bool Human::process_capture(Table & a_table)
         return false;
     }
 
-    // Select player card
-    int player_card_index = Console::pick_player_card(m_hand) - 1;
-    Card player_card = m_hand.get_card(player_card_index);
+    // Select capture card
+    int capture_card_index = Console::pick_player_card(m_hand) - 1;
+    Card capture_card = m_hand.get_card(capture_card_index);
 
     // Select table set
     Set table_set = Console::pick_table_set(a_table);
@@ -234,7 +234,7 @@ bool Human::process_capture(Table & a_table)
     }
 
     // Capture
-    if (can_capture(a_table, player_card, loose_set, firm_set))
+    if (can_capture(a_table, capture_card, loose_set, firm_set))
     {
         // Capture firm set
         for (Build build : a_table.get_builds())
@@ -262,11 +262,11 @@ bool Human::process_capture(Table & a_table)
             a_table.remove_loose_card(card);
         }
 
-        // Add player card to pile
-        m_pile.add_card(player_card);
+        // Add capture card to pile
+        m_pile.add_card(capture_card);
 
-        // Remove player card from hand
-        m_hand.remove_card(player_card);
+        // Remove capture card from hand
+        m_hand.remove_card(capture_card);
 
         return true;
     }
