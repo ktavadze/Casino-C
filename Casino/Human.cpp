@@ -50,7 +50,7 @@ bool Human::build(Table & a_table)
 bool Human::capture(Table & a_table)
 {
     // Check table
-    if (a_table.get_builds().size() == 0 && a_table.get_loose_set().get_size() == 0)
+    if (a_table.get_builds().empty() && a_table.get_loose_set().get_size() == 0)
     {
         Console::display_message("ERROR: no cards to capture!");
 
