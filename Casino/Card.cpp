@@ -54,19 +54,19 @@ Card::Card(string a_name)
 
     if (a_name == "DX")
     {
-        m_weight += 4;
+        m_weight += 8;
     }
     else if (a_name == "S2" || a_name == "SA")
     {
-        m_weight += 3;
+        m_weight += 6;
     }
     else if (a_name[1] == 'A')
     {
-        m_weight += 2;
+        m_weight += 4;
     }
     else if (a_name[0] == 'S')
     {
-        m_weight += 1;
+        m_weight += 2;
     }
 }
 
