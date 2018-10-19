@@ -27,22 +27,9 @@ int Computer::make_move(Table & a_table)
 
 void Computer::process_capture(Table & a_table)
 {
-    vector<Build> matching_builds;
-    vector<Set> matching_loose_sets;
     vector<Card> matching_loose_cards;
-
-    // Check builds
-    if (!a_table.get_builds().empty())
-    {
-        // Check for matching builds
-        for (Build build : a_table.get_builds())
-        {
-            if (count_cards_held(build.get_value()) > 0)
-            {
-                matching_builds.push_back(build);
-            }
-        }
-    }
+    vector<Set> matching_loose_sets;
+    vector<Build> matching_builds;
 
     // Check loose set
     if (a_table.get_loose_set().get_size() > 0)
@@ -69,6 +56,19 @@ void Computer::process_capture(Table & a_table)
                 {
                     matching_loose_sets.push_back(set);
                 }
+            }
+        }
+    }
+
+    // Check builds
+    if (!a_table.get_builds().empty())
+    {
+        // Check for matching builds
+        for (Build build : a_table.get_builds())
+        {
+            if (count_cards_held(build.get_value()) > 0)
+            {
+                matching_builds.push_back(build);
             }
         }
     }
