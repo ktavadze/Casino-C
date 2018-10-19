@@ -84,19 +84,6 @@ void Computer::process_capture(Table & a_table)
 
 bool Computer::can_capture(Table a_table)
 {
-    // Check builds
-    if (!a_table.get_builds().empty())
-    {
-        // Check for matching builds
-        for (Build build : a_table.get_builds())
-        {
-            if (count_cards_held(build.get_value()) > 0)
-            {
-                return true;
-            }
-        }
-    }
-
     // Check loose set
     if (a_table.get_loose_set().get_size() > 0)
     {
@@ -122,6 +109,19 @@ bool Computer::can_capture(Table a_table)
                 {
                     return true;
                 }
+            }
+        }
+    }
+
+    // Check builds
+    if (!a_table.get_builds().empty())
+    {
+        // Check for matching builds
+        for (Build build : a_table.get_builds())
+        {
+            if (count_cards_held(build.get_value()) > 0)
+            {
+                return true;
             }
         }
     }
