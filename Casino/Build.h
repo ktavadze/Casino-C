@@ -12,6 +12,8 @@ public:
 
         m_value = a_set.get_value();
 
+        m_weight = a_set.get_weight();
+
         m_sets.push_back(a_set);
     }
     inline bool is_human()
@@ -26,12 +28,16 @@ public:
     {
         return m_value;
     }
+    inline int get_weight()
+    {
+        return m_weight;
+    }
     inline vector<Set> get_sets()
     {
         return m_sets;
     }
-    bool increase(Card a_card);
-    bool extend(Set a_set);
+    void increase(Card a_card);
+    void extend(Set a_set);
     bool equals(Build a_build);
     bool contains(Set a_set);
     bool contains(Card a_card);
@@ -39,5 +45,6 @@ public:
 private:
     bool m_is_human;
     int m_value;
+    int m_weight;
     vector<Set> m_sets;
 };

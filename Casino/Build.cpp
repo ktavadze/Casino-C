@@ -1,30 +1,20 @@
 #include "pch.h"
 #include "Build.h"
 
-bool Build::increase(Card a_card)
+void Build::increase(Card a_card)
 {
-    if (m_sets.size() == 1)
-    {
-        m_value += a_card.get_value();
+    m_value += a_card.get_value();
 
-        m_sets[0].add_card(a_card);
+    m_weight += a_card.get_weight();
 
-        return true;
-    }
-
-    return false;
+    m_sets[0].add_card(a_card);
 }
 
-bool Build::extend(Set a_set)
+void Build::extend(Set a_set)
 {
-    if (m_value == a_set.get_value())
-    {
-        m_sets.push_back(a_set);
+    m_weight += a_set.get_weight();
 
-        return true;
-    }
-
-    return false;
+    m_sets.push_back(a_set);
 }
 
 bool Build::equals(Build a_build)

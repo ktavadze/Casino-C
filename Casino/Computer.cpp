@@ -6,6 +6,8 @@ int Computer::make_move(Table & a_table)
     if (can_capture(a_table))
     {
         Console::display_message("Can capture!");
+
+        process_capture(a_table);
     }
 
     for (Card card : m_hand.get_cards())
@@ -41,6 +43,8 @@ void Computer::process_capture(Table & a_table)
         {
             if (count_cards_held(card.get_value()) > 0)
             {
+                cout << endl << card.get_name() << " for " << card.get_weight();
+
                 matching_loose_cards.push_back(card);
             }
         }
@@ -54,6 +58,8 @@ void Computer::process_capture(Table & a_table)
             {
                 if (count_cards_held(set.get_value()) > 0)
                 {
+                    cout << endl << set.ToString() << " for " << set.get_weight();
+
                     matching_loose_sets.push_back(set);
                 }
             }
@@ -68,6 +74,8 @@ void Computer::process_capture(Table & a_table)
         {
             if (count_cards_held(build.get_value()) > 0)
             {
+                cout << endl << build.ToString() << " for " << build.get_weight();
+
                 matching_builds.push_back(build);
             }
         }

@@ -4,6 +4,8 @@
 Card::Card(string a_name)
 {
     m_name = a_name;
+
+    // Assign value
     switch (a_name[1])
     {
     case '2':
@@ -45,6 +47,26 @@ Card::Card(string a_name)
     case 'A':
         m_value = 1;
         break;
+    }
+
+    // Assign weight
+    m_weight = 1;
+
+    if (a_name == "DX")
+    {
+        m_weight += 4;
+    }
+    else if (a_name == "S2" || a_name == "SA")
+    {
+        m_weight += 3;
+    }
+    else if (a_name[1] == 'A')
+    {
+        m_weight += 2;
+    }
+    else if (a_name[0] == 'S')
+    {
+        m_weight += 1;
     }
 }
 

@@ -15,9 +15,9 @@ public:
     {
         return m_value;
     }
-    inline int set_value(int a_value)
+    inline int get_weight()
     {
-        m_value = a_value;
+        return m_weight;
     }
     inline bool operator==(const Card a_card) const
     {
@@ -28,4 +28,5 @@ public:
 private:
     string m_name;
     int m_value;
+    int m_weight;
 };
