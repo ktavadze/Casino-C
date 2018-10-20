@@ -1,19 +1,40 @@
 #include "pch.h"
 #include "Build.h"
 
+int Build::get_value()
+{
+    int value = 0;
+
+    if (!m_sets.empty())
+    {
+        for (Card card : m_sets[0].get_cards())
+        {
+            value += card.get_value();
+        }
+    }
+
+    return value;
+}
+
+int Build::get_weight()
+{
+    int weight = 0;
+
+    for (Set set : m_sets)
+    {
+        weight += set.get_weight();
+    }
+
+    return weight;
+}
+
 void Build::increase(Card a_card)
 {
-    m_value += a_card.get_value();
-
-    m_weight += a_card.get_weight();
-
     m_sets[0].add_card(a_card);
 }
 
 void Build::extend(Set a_set)
 {
-    m_weight += a_set.get_weight();
-
     m_sets.push_back(a_set);
 }
 

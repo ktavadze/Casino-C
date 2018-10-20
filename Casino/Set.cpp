@@ -1,21 +1,37 @@
 #include "pch.h"
 #include "Set.h"
 
+int Set::get_value()
+{
+    int value = 0;
+
+    for (Card card : m_cards)
+    {
+        value += card.get_value();
+    }
+
+    return value;
+}
+
+int Set::get_weight()
+{
+    int weight = 0;
+
+    for (Card card : m_cards)
+    {
+        weight += card.get_weight();
+    }
+
+    return weight;
+}
+
 void Set::add_card(Card a_card)
 {
-    m_value += a_card.get_value();
-
-    m_weight += a_card.get_weight();
-
     m_cards.push_back(a_card);
 }
 
 void Set::remove_card(Card a_card)
 {
-    m_value -= a_card.get_value();
-
-    m_weight -= a_card.get_weight();
-
     int index = find(m_cards.begin(), m_cards.end(), a_card) - m_cards.begin();
 
     m_cards.erase(m_cards.begin() + index);
@@ -26,6 +42,14 @@ void Set::add_set(Set a_set)
     for (Card card : a_set.get_cards())
     {
         add_card(card);
+    }
+}
+
+void Set::remove_set(Set a_set)
+{
+    for (Card card : a_set.get_cards())
+    {
+        remove_card(card);
     }
 }
 

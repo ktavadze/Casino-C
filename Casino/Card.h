@@ -5,7 +5,12 @@ using namespace std;
 class Card
 {
 public:
-    Card() {}
+    Card()
+    {
+        m_name = "UN";
+        m_value = 0;
+        m_weight = 0;
+    }
     Card(string a_name);
     inline string get_name()
     {
