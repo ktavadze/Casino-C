@@ -29,56 +29,128 @@ int Computer::make_move(Table & a_table)
 
 void Computer::process_capture(Table & a_table)
 {
-    vector<Card> matching_loose_cards;
-    vector<Set> matching_loose_sets;
-    vector<Build> matching_builds;
+    // Find all capture options
+    vector<vector<Card>> capturable_loose_cards;
+    vector<vector<Set>> capturable_loose_sets;
+    vector<vector<Build>> capturable_builds;
 
-    // Check loose set
-    if (a_table.get_loose_set().get_size() > 0)
+    Set table_loose_set = a_table.get_loose_set();
+    vector<Set> table_loose_sets = generate_loose_sets(table_loose_set);
+
+    for (Card player_card : m_hand.get_cards())
     {
-        Set loose_set = a_table.get_loose_set();
+        vector<Card> matching_loose_cards;
+        vector<Set> matching_loose_sets;
+        vector<Build> matching_builds;
 
-        // Check for matching cards
-        for (Card card : loose_set.get_cards())
+        // Check loose set
+        if (table_loose_set.get_size() > 0)
         {
-            if (count_cards_held(card.get_value()) > 0)
+            // Check for matching cards
+            for (Card card : table_loose_set.get_cards())
             {
-                cout << endl << card.get_name() << " for " << card.get_weight();
-
-                matching_loose_cards.push_back(card);
-            }
-        }
-
-        // Check for matching sets
-        if (loose_set.get_size() > 1)
-        {
-            vector<Set> loose_sets = generate_loose_sets(loose_set);
-
-            for (Set set : loose_sets)
-            {
-                if (count_cards_held(set.get_value()) > 0)
+                if (card.get_value() == player_card.get_value())
                 {
-                    cout << endl << set.ToString() << " for " << set.get_weight();
+                    cout << endl << card.get_name() << " for " << card.get_weight();
 
-                    matching_loose_sets.push_back(set);
+                    matching_loose_cards.push_back(card);
+                }
+            }
+
+            // Check for matching sets
+            if (table_loose_set.get_size() > 1)
+            {
+                for (Set set : table_loose_sets)
+                {
+                    if (set.get_value() == player_card.get_value())
+                    {
+                        cout << endl << set.ToString() << " for " << set.get_weight();
+
+                        matching_loose_sets.push_back(set);
+                    }
                 }
             }
         }
-    }
 
-    // Check builds
-    if (!a_table.get_builds().empty())
-    {
-        // Check for matching builds
-        for (Build build : a_table.get_builds())
+        // Check builds
+        if (!a_table.get_builds().empty())
         {
-            if (count_cards_held(build.get_value()) > 0)
+            // Check for matching builds
+            for (Build build : a_table.get_builds())
             {
-                cout << endl << build.ToString() << " for " << build.get_weight();
+                if (build.get_value() == player_card.get_value())
+                {
+                    cout << endl << build.ToString() << " for " << build.get_weight();
 
-                matching_builds.push_back(build);
+                    matching_builds.push_back(build);
+                }
             }
         }
+
+        capturable_loose_cards.push_back(matching_loose_cards);
+        capturable_loose_sets.push_back(matching_loose_sets);
+        capturable_builds.push_back(matching_builds);
+    }
+
+    // Find best capturable loose sets
+    vector<Set> best_capturable_loose_sets;
+
+    for (int i = 0; i < m_hand.get_size(); i++)
+    {
+        Set best_matching_loose_set;
+
+        for (Set set : capturable_loose_sets.at(i))
+        {
+            if (set.get_weight() > best_matching_loose_set.get_weight())
+            {
+                best_matching_loose_set = set;
+            }
+        }
+
+        best_capturable_loose_sets.push_back(best_matching_loose_set);
+    }
+
+    // Find best capture option
+    int best_option_index = 0;
+    int max_capture_weight = 0;
+
+    for (int i = 0; i < m_hand.get_size(); i++)
+    {
+        int weight = m_hand.get_card(i).get_weight();
+
+        for (Card card : capturable_loose_cards.at(i))
+        {
+            weight += card.get_weight();
+        }
+
+        for (Build build : capturable_builds.at(i))
+        {
+            weight += build.get_weight();
+        }
+
+        weight += best_capturable_loose_sets.at(i).get_weight();
+
+        if (weight > max_capture_weight)
+        {
+            best_option_index = i;
+            max_capture_weight = weight;
+        }
+    }
+
+    cout << "\n\nWith " << m_hand.get_card(best_option_index).get_name();
+    cout << " for " << m_hand.get_card(best_option_index).get_weight();
+    for (Card card : capturable_loose_cards.at(best_option_index))
+    {
+        cout << endl << card.get_name() << " for " << card.get_weight();
+    }
+    if (best_capturable_loose_sets.at(best_option_index).get_size() > 0)
+    {
+        cout << endl << best_capturable_loose_sets.at(best_option_index).ToString();
+        cout << " for " << best_capturable_loose_sets.at(best_option_index).get_weight();
+    }
+    for (Build build : capturable_builds.at(best_option_index))
+    {
+        cout << endl << build.ToString() << " for " << build.get_weight();
     }
 }
 
