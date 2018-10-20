@@ -14,11 +14,8 @@ int Computer::make_move(Table & a_table)
         {
             if (can_trail(a_table, card))
             {
-                // Add trail card to table
-                a_table.add_loose_card(card);
-
-                // Remove trail card from hand
-                m_hand.remove_card(card);
+                // Trail player card
+                trail_player_card(a_table, card);
 
                 return 0;
             }
@@ -131,6 +128,11 @@ void Computer::process_capture(Table & a_table)
 
         weight += best_capturable_loose_sets.at(i).get_weight();
 
+        if (weight == m_hand.get_card(i).get_weight())
+        {
+            weight = 0;
+        }
+
         if (weight > max_capture_weight)
         {
             best_option_index = i;
@@ -144,14 +146,17 @@ void Computer::process_capture(Table & a_table)
     Set target_loose_set = best_capturable_loose_sets.at(best_option_index);
     vector<Build> target_builds = capturable_builds.at(best_option_index);
 
-    // Add capture card to pile
-    m_pile.add_card(capture_card);
-
-    // Remove capture card from hand
-    m_hand.remove_card(capture_card);
+    // Capture player card
+    capture_player_card(capture_card);
 
     // Capture loose cards
     for (Card card : target_loose_cards)
+    {
+        capture_loose_card(a_table, card);
+    }
+
+    // Capture loose set
+    for (Card card : target_loose_set.get_cards())
     {
         capture_loose_card(a_table, card);
     }

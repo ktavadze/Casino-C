@@ -14,6 +14,15 @@ string Player::ToString()
     return info;
 }
 
+void Player::capture_player_card(Card a_card)
+{
+    // Add capture card to pile
+    m_pile.add_card(a_card);
+
+    // Remove capture card from hand
+    m_hand.remove_card(a_card);
+}
+
 void Player::capture_loose_card(Table & a_table, Card a_card)
 {
     // Add loose card to pile
@@ -33,6 +42,15 @@ void Player::capture_build(Table & a_table, Build a_build)
 
     // Remove build from table
     a_table.remove_build(a_build);
+}
+
+void Player::trail_player_card(Table & a_table, Card a_card)
+{
+    // Add trail card to table
+    a_table.add_loose_card(a_card);
+
+    // Remove trail card from hand
+    m_hand.remove_card(a_card);
 }
 
 bool Player::can_create_build(Table a_table, Card a_build_card, Set a_loose_set)

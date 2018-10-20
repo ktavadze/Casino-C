@@ -251,11 +251,8 @@ bool Human::process_capture(Table & a_table)
             capture_loose_card(a_table, card);
         }
 
-        // Add capture card to pile
-        m_pile.add_card(capture_card);
-
-        // Remove capture card from hand
-        m_hand.remove_card(capture_card);
+        // Capture player card
+        capture_player_card(capture_card);
 
         return true;
     }
@@ -271,11 +268,8 @@ bool Human::process_trail(Table & a_table)
 
     if (can_trail(a_table, trail_card))
     {
-        // Add trail card to table
-        a_table.add_loose_card(trail_card);
-
-        // Remove trail card from hand
-        m_hand.remove_card(trail_card);
+        // Trail player card
+        trail_player_card(a_table, trail_card);
 
         return true;
     }
