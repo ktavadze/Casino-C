@@ -14,6 +14,27 @@ string Player::ToString()
     return info;
 }
 
+void Player::capture_loose_card(Table & a_table, Card a_card)
+{
+    // Add loose card to pile
+    m_pile.add_card(a_card);
+
+    // Remove loose card from table
+    a_table.remove_loose_card(a_card);
+}
+
+void Player::capture_build(Table & a_table, Build a_build)
+{
+    // Add build to pile
+    for (Set set : a_build.get_sets())
+    {
+        m_pile.add_set(set);
+    }
+
+    // Remove build from table
+    a_table.remove_build(a_build);
+}
+
 bool Player::can_create_build(Table a_table, Card a_build_card, Set a_loose_set)
 {
     // Check build card

@@ -241,25 +241,14 @@ bool Human::process_capture(Table & a_table)
         {
             if (firm_set.contains(build.get_sets()))
             {
-                // Add build to pile
-                for (Set set : build.get_sets())
-                {
-                    m_pile.add_set(set);
-                }
-
-                // Remove build from table
-                a_table.remove_build(build);
+                capture_build(a_table, build);
             }
         }
 
         // Capture loose set
         for (Card card : loose_set.get_cards())
         {
-            // Add loose card to pile
-            m_pile.add_card(card);
-
-            // Remove loose card from table
-            a_table.remove_loose_card(card);
+            capture_loose_card(a_table, card);
         }
 
         // Add capture card to pile

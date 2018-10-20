@@ -68,6 +68,8 @@ protected:
     Set m_hand;
     Set m_pile;
 
+    void capture_loose_card(Table & a_table, Card a_card);
+    void capture_build(Table & a_table, Build a_build);
     virtual bool can_create_build(Table a_table, Card a_build_card, Set a_loose_set);
     virtual bool can_increase_build(Table a_table, Build a_selected_build, Card a_build_card);
     virtual bool can_extend_build(Table a_table, Build a_selected_build, Card a_build_card, Set a_loose_set);
