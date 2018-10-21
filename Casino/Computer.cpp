@@ -30,6 +30,7 @@ int Computer::make_move(Table & a_table)
 
 void Computer::process_build(Table & a_table)
 {
+    // Find possible builds
     vector<Build> possible_builds;
 
     Set table_loose_set = a_table.get_loose_set();
@@ -39,6 +40,7 @@ void Computer::process_build(Table & a_table)
     {
         if (!reserved_for_capture(a_table, player_card))
         {
+            // Find possible simple builds
             for (Card loose_card : table_loose_set.get_cards())
             {
                 if (count_cards_held(loose_card.get_value() + player_card.get_value()) > 0)
@@ -53,6 +55,7 @@ void Computer::process_build(Table & a_table)
                 }
             }
 
+            // Find possible compund builds
             for (Set loose_set : table_loose_sets)
             {
                 if (count_cards_held(loose_set.get_value() + player_card.get_value()) > 0)
@@ -67,6 +70,7 @@ void Computer::process_build(Table & a_table)
                 }
             }
 
+            // Find possible increased builds
             for (Build build : a_table.get_builds())
             {
                 if (build.is_human() != m_is_human && build.get_sets().size() == 1)
@@ -88,7 +92,7 @@ void Computer::process_build(Table & a_table)
 
     for (Build build : possible_builds)
     {
-        cout << endl << build.ToString();
+        cout << endl << build.ToString() << " for " << build.get_weight();
     }
 }
 
@@ -220,6 +224,7 @@ bool Computer::can_build(Table a_table)
     {
         if (!reserved_for_capture(a_table, player_card))
         {
+            // Check for possible simple builds
             for (Card loose_card : table_loose_set.get_cards())
             {
                 if (count_cards_held(loose_card.get_value() + player_card.get_value()) > 0)
@@ -228,6 +233,7 @@ bool Computer::can_build(Table a_table)
                 }
             }
 
+            // Check for possible compound builds
             for (Set loose_set : table_loose_sets)
             {
                 if (count_cards_held(loose_set.get_value() + player_card.get_value()) > 0)
@@ -236,6 +242,7 @@ bool Computer::can_build(Table a_table)
                 }
             }
 
+            // Check for possible increased builds
             for (Build build : a_table.get_builds())
             {
                 if (build.is_human() != m_is_human && build.get_sets().size() == 1)
@@ -259,7 +266,7 @@ bool Computer::can_capture(Table a_table)
     {
         Set table_loose_set = a_table.get_loose_set();
 
-        // Check for matching cards
+        // Check for matching loose cards
         for (Card card : table_loose_set.get_cards())
         {
             if (count_cards_held(card.get_value()) > 0)
@@ -268,7 +275,7 @@ bool Computer::can_capture(Table a_table)
             }
         }
 
-        // Check for matching sets
+        // Check for matching loose sets
         if (table_loose_set.get_size() > 1)
         {
             vector<Set> table_loose_sets = generate_set_combinations(table_loose_set);
