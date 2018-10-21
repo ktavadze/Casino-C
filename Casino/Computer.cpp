@@ -6,6 +6,8 @@ int Computer::make_move(Table & a_table)
     if (can_build(a_table))
     {
         process_build(a_table);
+
+        return 0;
     }
 
     if (can_capture(a_table))
@@ -69,31 +71,25 @@ void Computer::process_build(Table & a_table)
                     possible_builds.push_back(build);
                 }
             }
-
-            // Find possible increased builds
-            for (Build build : a_table.get_builds())
-            {
-                if (build.is_human() != m_is_human && build.get_sets().size() == 1)
-                {
-                    if (count_cards_held(build.get_value() + player_card.get_value()) > 0)
-                    {
-                        Set build_set;
-                        build_set.add_card(player_card);
-                        build_set.add_set(build.get_sets().at(0));
-
-                        Build increased_build(m_is_human, build_set);
-
-                        possible_builds.push_back(increased_build);
-                    }
-                }
-            }
         }
     }
 
+    // Find best possible build
+    Build best_possible_build;
+
     for (Build build : possible_builds)
     {
+        if (build.get_weight() > best_possible_build.get_weight())
+        {
+            best_possible_build = build;
+        }
+
         cout << endl << build.ToString() << " for " << build.get_weight();
     }
+
+    create_build(a_table, best_possible_build);
+
+    cout << "\n\nBuilding: " << best_possible_build.ToString() << " for " << best_possible_build.get_weight();
 }
 
 void Computer::process_capture(Table & a_table)
@@ -191,6 +187,26 @@ void Computer::process_capture(Table & a_table)
     cout << "\n\nCapturing: " << best_capture_set.ToString() << " for " << best_capture_set.get_weight();
 }
 
+void Computer::create_build(Table & a_table, Build a_build)
+{
+    Set build_set = a_build.get_sets().at(0);
+
+    // Remove player card from hand
+    m_hand.remove_card(build_set.get_card(0));
+
+    // Remove loose set from table
+    for (Card card : a_table.get_loose_set().get_cards())
+    {
+        if (build_set.contains(card))
+        {
+            a_table.remove_loose_card(card);
+        }
+    }
+
+    // Add build to table
+    a_table.add_build(a_build);
+}
+
 void Computer::capture(Table & a_table, Set a_capture_set)
 {
     // Capture player card
@@ -239,18 +255,6 @@ bool Computer::can_build(Table a_table)
                 if (count_cards_held(loose_set.get_value() + player_card.get_value()) > 0)
                 {
                     return true;
-                }
-            }
-
-            // Check for possible increased builds
-            for (Build build : a_table.get_builds())
-            {
-                if (build.is_human() != m_is_human && build.get_sets().size() == 1)
-                {
-                    if (count_cards_held(build.get_value() + player_card.get_value()) > 0)
-                    {
-                        return true;
-                    }
                 }
             }
         }
