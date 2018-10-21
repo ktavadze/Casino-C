@@ -94,10 +94,8 @@ void Computer::process_build(Table & a_table)
 
 void Computer::process_capture(Table & a_table)
 {
-    // Find all capture options
-    vector<Set> capturable_loose_cards;
-    vector<vector<Set>> capturable_loose_sets;
-    vector<vector<Build>> capturable_builds;
+    // Find possible capture sets
+    vector<Set> possible_capture_sets;
 
     Set table_loose_set = a_table.get_loose_set();
     vector<Set> table_loose_sets = generate_set_combinations(table_loose_set);
@@ -105,33 +103,32 @@ void Computer::process_capture(Table & a_table)
     for (Card player_card : m_hand.get_cards())
     {
         Set matching_loose_cards;
-        vector<Set> matching_loose_sets;
+        Set best_matching_loose_set;
         vector<Build> matching_builds;
 
         // Check loose set
         if (table_loose_set.get_size() > 0)
         {
-            // Check for matching cards
+            // Find all matching loose cards
             for (Card card : table_loose_set.get_cards())
             {
                 if (card.get_value() == player_card.get_value())
                 {
-                    cout << endl << card.get_name() << " for " << card.get_weight();
-
                     matching_loose_cards.add_card(card);
                 }
             }
 
-            // Check for matching sets
+            // Find best matching loose set
             if (table_loose_set.get_size() > 1)
             {
                 for (Set set : table_loose_sets)
                 {
                     if (set.get_value() == player_card.get_value())
                     {
-                        cout << endl << set.ToString() << " for " << set.get_weight();
-
-                        matching_loose_sets.push_back(set);
+                        if (set.get_weight() > best_matching_loose_set.get_weight())
+                        {
+                            best_matching_loose_set = set;
+                        }
                     }
                 }
             }
@@ -140,109 +137,77 @@ void Computer::process_capture(Table & a_table)
         // Check builds
         if (!a_table.get_builds().empty())
         {
-            // Check for matching builds
+            // Find all matching builds
             for (Build build : a_table.get_builds())
             {
                 if (build.get_value() == player_card.get_value())
                 {
-                    cout << endl << build.ToString() << " for " << build.get_weight();
-
                     matching_builds.push_back(build);
                 }
             }
         }
 
-        capturable_loose_cards.push_back(matching_loose_cards);
-        capturable_loose_sets.push_back(matching_loose_sets);
-        capturable_builds.push_back(matching_builds);
-    }
+        // Construct capture set
+        Set best_capturable_set;
 
-    // Find best capturable loose sets
-    vector<Set> best_capturable_loose_sets;
+        best_capturable_set.add_card(player_card);
+        best_capturable_set.add_set(matching_loose_cards);
+        best_capturable_set.add_set(best_matching_loose_set);
 
-    for (int i = 0; i < m_hand.get_size(); i++)
-    {
-        Set best_matching_loose_set;
-
-        for (Set set : capturable_loose_sets.at(i))
+        for (Build build : matching_builds)
         {
-            if (set.get_weight() > best_matching_loose_set.get_weight())
+            for (Set set : build.get_sets())
             {
-                best_matching_loose_set = set;
+                best_capturable_set.add_set(set);
             }
         }
 
-        best_capturable_loose_sets.push_back(best_matching_loose_set);
+        // Save capture set
+        if (best_capturable_set.get_size() > 1)
+        {
+            possible_capture_sets.push_back(best_capturable_set);
+        }
     }
 
-    // Find best capture option
-    int best_option_index = 0;
-    int max_capture_weight = 0;
+    // Find best capture set
+    Set best_capture_set;
 
-    for (int i = 0; i < m_hand.get_size(); i++)
+    for (Set set : possible_capture_sets)
     {
-        int weight = 0;
-
-        for (Card card : capturable_loose_cards.at(i).get_cards())
+        if (set.get_weight() > best_capture_set.get_weight())
         {
-            weight += card.get_weight();
+            best_capture_set = set;
         }
 
-        for (Build build : capturable_builds.at(i))
-        {
-            weight += build.get_weight();
-        }
-
-        weight += best_capturable_loose_sets.at(i).get_weight();
-
-        if (weight > 0)
-        {
-            weight += m_hand.get_card(i).get_weight();
-        }
-
-        if (weight > max_capture_weight)
-        {
-            best_option_index = i;
-            max_capture_weight = weight;
-        }
+        cout << endl << set.ToString() << " for " << set.get_weight();
     }
 
-    // Capture
-    Card capture_card = m_hand.get_card(best_option_index);
-    Set target_loose_set = capturable_loose_cards.at(best_option_index);
-    target_loose_set.add_set(best_capturable_loose_sets.at(best_option_index));
-    vector<Build> target_builds = capturable_builds.at(best_option_index);
+    capture(a_table, best_capture_set);
 
-    capture(a_table, capture_card, target_loose_set, target_builds);
-
-    cout << "\n\nCapturing with " << capture_card.get_name();
-    cout << " for " << capture_card.get_weight();
-    if (target_loose_set.get_size() > 0)
-    {
-        cout << endl << target_loose_set.ToString();
-        cout << " for " << target_loose_set.get_weight();
-    }
-    for (Build build : target_builds)
-    {
-        cout << endl << build.ToString() << " for " << build.get_weight();
-    }
+    cout << "\n\nCapturing: " << best_capture_set.ToString() << " for " << best_capture_set.get_weight();
 }
 
-void Computer::capture(Table & a_table, Card a_capture_card, Set a_loose_set, vector<Build> a_builds)
+void Computer::capture(Table & a_table, Set a_capture_set)
 {
     // Capture player card
-    capture_player_card(a_capture_card);
+    capture_player_card(a_capture_set.get_card(0));
 
     // Capture loose set
-    for (Card card : a_loose_set.get_cards())
+    for (Card card : a_table.get_loose_set().get_cards())
     {
-        capture_loose_card(a_table, card);
+        if (a_capture_set.contains(card))
+        {
+            capture_loose_card(a_table, card);
+        }
     }
 
     // Capture builds
-    for (Build build : a_builds)
+    for (Build build : a_table.get_builds())
     {
-        capture_build(a_table, build);
+        if (a_capture_set.contains(build.get_sets()))
+        {
+            capture_build(a_table, build);
+        }
     }
 }
 
@@ -292,10 +257,10 @@ bool Computer::can_capture(Table a_table)
     // Check loose set
     if (a_table.get_loose_set().get_size() > 0)
     {
-        Set loose_set = a_table.get_loose_set();
+        Set table_loose_set = a_table.get_loose_set();
 
         // Check for matching cards
-        for (Card card : loose_set.get_cards())
+        for (Card card : table_loose_set.get_cards())
         {
             if (count_cards_held(card.get_value()) > 0)
             {
@@ -304,11 +269,11 @@ bool Computer::can_capture(Table a_table)
         }
 
         // Check for matching sets
-        if (loose_set.get_size() > 1)
+        if (table_loose_set.get_size() > 1)
         {
-            vector<Set> loose_sets = generate_set_combinations(loose_set);
+            vector<Set> table_loose_sets = generate_set_combinations(table_loose_set);
 
-            for (Set set : loose_sets)
+            for (Set set : table_loose_sets)
             {
                 if (count_cards_held(set.get_value()) > 0)
                 {

@@ -23,7 +23,7 @@ public:
 private:
     void process_build(Table & a_table);
     void process_capture(Table & a_table);
-    void capture(Table & a_table, Card a_capture_card, Set a_loose_set, vector<Build> a_builds);
+    void capture(Table & a_table, Set a_capture_set);
 
     bool can_build(Table a_table);
     bool can_capture(Table a_table);
