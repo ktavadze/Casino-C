@@ -21,10 +21,13 @@ public:
     }
     virtual int make_move(Table & a_table);
 private:
+    void process_build(Table & a_table);
     void process_capture(Table & a_table);
     void capture(Table & a_table, Card a_capture_card, Set a_loose_set, vector<Build> a_builds);
-    bool can_capture(Table a_table);
-    bool vector_contains_set(vector<Set> a_vector, Set a_set);
 
-    vector<Set> generate_loose_sets(Set a_loose_set);
+    bool can_build(Table a_table);
+    bool can_capture(Table a_table);
+
+    bool vector_contains_set(vector<Set> a_vector, Set a_set);
+    vector<Set> generate_set_combinations(Set a_set);
 };

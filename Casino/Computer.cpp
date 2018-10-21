@@ -3,24 +3,70 @@
 
 int Computer::make_move(Table & a_table)
 {
+    if (can_build(a_table))
+    {
+        process_build(a_table);
+    }
+
     if (can_capture(a_table))
     {
         process_capture(a_table);
-    }
-    else {
-        for (Card card : m_hand.get_cards())
-        {
-            if (can_trail(a_table, card))
-            {
-                // Trail player card
-                trail_player_card(a_table, card);
 
-                return 0;
-            }
+        return 1;
+    }
+
+    for (Card card : m_hand.get_cards())
+    {
+        if (can_trail(a_table, card))
+        {
+            trail_player_card(a_table, card);
+
+            return 0;
         }
     }
 
     return 0;
+}
+
+void Computer::process_build(Table & a_table)
+{
+    Set table_loose_set = a_table.get_loose_set();
+    vector<Set> table_loose_sets = generate_set_combinations(table_loose_set);
+
+    for (Card player_card : m_hand.get_cards())
+    {
+        if (!reserved_for_capture(a_table, player_card))
+        {
+            for (Card loose_card : table_loose_set.get_cards())
+            {
+                if (count_cards_held(loose_card.get_value() + player_card.get_value()) > 0)
+                {
+                    cout << endl << player_card.get_name() << " + " << loose_card.get_name();
+                }
+            }
+
+            for (Set loose_set : table_loose_sets)
+            {
+                if (count_cards_held(loose_set.get_value() + player_card.get_value()) > 0)
+                {
+                    cout << endl << player_card.get_name() << " + " << loose_set.ToString();
+                }
+            }
+
+            for (Build build : a_table.get_builds())
+            {
+                if (build.is_human() != m_is_human && build.get_sets().size() == 1)
+                {
+                    if (count_cards_held(build.get_value() + player_card.get_value()) > 0)
+                    {
+                        cout << endl << player_card.get_name() << " + " << build.ToString();
+                    }
+                }
+            }
+        }
+    }
+
+    return;
 }
 
 void Computer::process_capture(Table & a_table)
@@ -31,7 +77,7 @@ void Computer::process_capture(Table & a_table)
     vector<vector<Build>> capturable_builds;
 
     Set table_loose_set = a_table.get_loose_set();
-    vector<Set> table_loose_sets = generate_loose_sets(table_loose_set);
+    vector<Set> table_loose_sets = generate_set_combinations(table_loose_set);
 
     for (Card player_card : m_hand.get_cards())
     {
@@ -177,6 +223,47 @@ void Computer::capture(Table & a_table, Card a_capture_card, Set a_loose_set, ve
     }
 }
 
+bool Computer::can_build(Table a_table)
+{
+    Set table_loose_set = a_table.get_loose_set();
+    vector<Set> table_loose_sets = generate_set_combinations(table_loose_set);
+
+    for (Card player_card : m_hand.get_cards())
+    {
+        if (!reserved_for_capture(a_table, player_card))
+        {
+            for (Card loose_card : table_loose_set.get_cards())
+            {
+                if (count_cards_held(loose_card.get_value() + player_card.get_value()) > 0)
+                {
+                    return true;
+                }
+            }
+
+            for (Set loose_set : table_loose_sets)
+            {
+                if (count_cards_held(loose_set.get_value() + player_card.get_value()) > 0)
+                {
+                    return true;
+                }
+            }
+
+            for (Build build : a_table.get_builds())
+            {
+                if (build.is_human() != m_is_human && build.get_sets().size() == 1)
+                {
+                    if (count_cards_held(build.get_value() + player_card.get_value()) > 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
 bool Computer::can_capture(Table a_table)
 {
     // Check loose set
@@ -196,7 +283,7 @@ bool Computer::can_capture(Table a_table)
         // Check for matching sets
         if (loose_set.get_size() > 1)
         {
-            vector<Set> loose_sets = generate_loose_sets(loose_set);
+            vector<Set> loose_sets = generate_set_combinations(loose_set);
 
             for (Set set : loose_sets)
             {
@@ -237,7 +324,7 @@ bool Computer::vector_contains_set(vector<Set> a_vector, Set a_set)
     return false;
 }
 
-vector<Set> Computer::generate_loose_sets(Set a_loose_set)
+vector<Set> Computer::generate_set_combinations(Set a_loose_set)
 {
     vector<Set> loose_sets;
 
