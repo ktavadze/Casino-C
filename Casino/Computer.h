@@ -22,7 +22,6 @@ public:
     virtual int make_move(Table & a_table);
 private:
     void process_capture(Table & a_table);
-
     bool can_capture(Table a_table);
     bool vector_contains_set(vector<Set> a_vector, Set a_set);
 
