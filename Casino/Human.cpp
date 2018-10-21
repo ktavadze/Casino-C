@@ -236,23 +236,7 @@ bool Human::process_capture(Table & a_table)
     // Capture
     if (can_capture(a_table, capture_card, loose_set, firm_set))
     {
-        // Capture firm set
-        for (Build build : a_table.get_builds())
-        {
-            if (firm_set.contains(build.get_sets()))
-            {
-                capture_build(a_table, build);
-            }
-        }
-
-        // Capture loose set
-        for (Card card : loose_set.get_cards())
-        {
-            capture_loose_card(a_table, card);
-        }
-
-        // Capture player card
-        capture_player_card(capture_card);
+        capture(a_table, capture_card, loose_set, firm_set);
 
         return true;
     }
@@ -275,4 +259,25 @@ bool Human::process_trail(Table & a_table)
     }
 
     return false;
+}
+
+void Human::capture(Table & a_table, Card a_capture_card, Set a_loose_set, Set a_firm_set)
+{
+    // Capture player card
+    capture_player_card(a_capture_card);
+
+    // Capture loose set
+    for (Card card : a_loose_set.get_cards())
+    {
+        capture_loose_card(a_table, card);
+    }
+
+    // Capture firm set
+    for (Build build : a_table.get_builds())
+    {
+        if (a_firm_set.contains(build.get_sets()))
+        {
+            capture_build(a_table, build);
+        }
+    }
 }

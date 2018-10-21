@@ -140,40 +140,14 @@ void Computer::process_capture(Table & a_table)
 
     // Capture
     Card capture_card = m_hand.get_card(best_option_index);
-    Set target_loose_cards = capturable_loose_cards.at(best_option_index);
-    Set target_loose_set = best_capturable_loose_sets.at(best_option_index);
+    Set target_loose_set = capturable_loose_cards.at(best_option_index);
+    target_loose_set.add_set(best_capturable_loose_sets.at(best_option_index));
     vector<Build> target_builds = capturable_builds.at(best_option_index);
 
-    // Capture player card
-    capture_player_card(capture_card);
+    capture(a_table, capture_card, target_loose_set, target_builds);
 
-    // Capture loose cards
-    for (Card card : target_loose_cards.get_cards())
-    {
-        capture_loose_card(a_table, card);
-    }
-
-    // Capture loose set
-    for (Card card : target_loose_set.get_cards())
-    {
-        capture_loose_card(a_table, card);
-    }
-
-    // Capture builds
-    for (Build build : target_builds)
-    {
-        capture_build(a_table, build);
-    }
-
-    cout << "\n\nWith " << capture_card.get_name();
+    cout << "\n\nCapturing with " << capture_card.get_name();
     cout << " for " << capture_card.get_weight();
-    if (target_loose_cards.get_size() > 0)
-    {
-        for (Card card : target_loose_cards.get_cards())
-        {
-            cout << endl << card.get_name() << " for " << card.get_weight();
-        }
-    }
     if (target_loose_set.get_size() > 0)
     {
         cout << endl << target_loose_set.ToString();
@@ -182,6 +156,24 @@ void Computer::process_capture(Table & a_table)
     for (Build build : target_builds)
     {
         cout << endl << build.ToString() << " for " << build.get_weight();
+    }
+}
+
+void Computer::capture(Table & a_table, Card a_capture_card, Set a_loose_set, vector<Build> a_builds)
+{
+    // Capture player card
+    capture_player_card(a_capture_card);
+
+    // Capture loose set
+    for (Card card : a_loose_set.get_cards())
+    {
+        capture_loose_card(a_table, card);
+    }
+
+    // Capture builds
+    for (Build build : a_builds)
+    {
+        capture_build(a_table, build);
     }
 }
 

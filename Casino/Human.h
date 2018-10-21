@@ -27,4 +27,5 @@ private:
     bool process_build_extend(Table & a_table);
     bool process_capture(Table & a_table);
     bool process_trail(Table & a_table);
+    void capture(Table & a_table, Card a_capture_card, Set a_loose_set, Set a_firm_set);
 };
