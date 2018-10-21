@@ -30,6 +30,8 @@ int Computer::make_move(Table & a_table)
 
 void Computer::process_build(Table & a_table)
 {
+    vector<Build> possible_builds;
+
     Set table_loose_set = a_table.get_loose_set();
     vector<Set> table_loose_sets = generate_set_combinations(table_loose_set);
 
@@ -41,7 +43,13 @@ void Computer::process_build(Table & a_table)
             {
                 if (count_cards_held(loose_card.get_value() + player_card.get_value()) > 0)
                 {
-                    cout << endl << player_card.get_name() << " + " << loose_card.get_name();
+                    Set build_set;
+                    build_set.add_card(player_card);
+                    build_set.add_card(loose_card);
+
+                    Build build(m_is_human, build_set);
+
+                    possible_builds.push_back(build);
                 }
             }
 
@@ -49,7 +57,13 @@ void Computer::process_build(Table & a_table)
             {
                 if (count_cards_held(loose_set.get_value() + player_card.get_value()) > 0)
                 {
-                    cout << endl << player_card.get_name() << " + " << loose_set.ToString();
+                    Set build_set;
+                    build_set.add_card(player_card);
+                    build_set.add_set(loose_set);
+
+                    Build build(m_is_human, build_set);
+
+                    possible_builds.push_back(build);
                 }
             }
 
@@ -59,14 +73,23 @@ void Computer::process_build(Table & a_table)
                 {
                     if (count_cards_held(build.get_value() + player_card.get_value()) > 0)
                     {
-                        cout << endl << player_card.get_name() << " + " << build.ToString();
+                        Set build_set;
+                        build_set.add_card(player_card);
+                        build_set.add_set(build.get_sets().at(0));
+
+                        Build increased_build(m_is_human, build_set);
+
+                        possible_builds.push_back(increased_build);
                     }
                 }
             }
         }
     }
 
-    return;
+    for (Build build : possible_builds)
+    {
+        cout << endl << build.ToString();
+    }
 }
 
 void Computer::process_capture(Table & a_table)
