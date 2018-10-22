@@ -110,8 +110,8 @@ void Round::start_turn()
             switch (choice)
             {
             case 1:
-                // TODO: save game
-                exit(0);
+                Serialization::save_game(ToString());
+                break;
             case 2:
                 if (make_move())
                 {
@@ -133,8 +133,8 @@ void Round::start_turn()
             switch (choice)
             {
             case 1:
-                // TODO: save game
-                exit(0);
+                Serialization::save_game(ToString());
+                break;
             case 2:
                 if (make_move())
                 {

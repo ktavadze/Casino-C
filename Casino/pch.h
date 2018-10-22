@@ -6,5 +6,6 @@
 #include <string>
 #include <vector>
 #include "Console.h"
+#include "Serialization.h"
 
 #endif //PCH_H
