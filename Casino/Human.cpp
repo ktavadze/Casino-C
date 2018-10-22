@@ -30,6 +30,21 @@ int Human::make_move(Table & a_table)
     return -1;
 }
 
+void Human::ask_for_help(Table a_table)
+{
+    if (can_build(a_table))
+    {
+        find_best_build(a_table);
+    }
+    else if (can_capture(a_table))
+    {
+        find_best_capture_set(a_table);
+    }
+    else {
+        find_best_trail_card(a_table);
+    }
+}
+
 bool Human::process_build(Table & a_table)
 {
     int choice = Console::process_build_menu();
@@ -199,7 +214,7 @@ bool Human::process_capture(Table & a_table)
     }
 
     // Capture
-    if (can_capture(a_table, capture_card, loose_set, firm_set))
+    if (can_capture_selection(a_table, capture_card, loose_set, firm_set))
     {
         capture(a_table, capture_card, loose_set, firm_set);
 
@@ -308,7 +323,7 @@ bool Human::can_extend_build(Table a_table, Build a_selected_build, Card a_build
     return true;
 }
 
-bool Human::can_capture(Table a_table, Card a_capture_card, Set a_loose_set, Set a_firm_set)
+bool Human::can_capture_selection(Table a_table, Card a_capture_card, Set a_loose_set, Set a_firm_set)
 {
     // Check loose set
     if (a_loose_set.get_size() > 0)

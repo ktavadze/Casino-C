@@ -27,6 +27,4 @@ private:
     void create_build(Table & a_table, Build a_build);
     void capture(Table & a_table, Set a_capture_set);
     void trail(Table & a_table, Card a_trail_card);
-    bool can_build(Table a_table);
-    bool can_capture(Table a_table);
 };

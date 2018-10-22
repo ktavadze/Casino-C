@@ -35,6 +35,85 @@ void Player::capture_build(Table & a_table, Build a_build)
     a_table.remove_build(a_build);
 }
 
+bool Player::can_build(Table a_table)
+{
+    Set table_loose_set = a_table.get_loose_set();
+    vector<Set> table_loose_sets = generate_set_combinations(table_loose_set);
+
+    for (Card player_card : m_hand.get_cards())
+    {
+        if (!reserved_for_capture(a_table, player_card))
+        {
+            // Check for possible simple builds
+            for (Card loose_card : table_loose_set.get_cards())
+            {
+                if (count_cards_held(loose_card.get_value() + player_card.get_value()) > 0)
+                {
+                    return true;
+                }
+            }
+
+            // Check for possible compound builds
+            for (Set loose_set : table_loose_sets)
+            {
+                if (count_cards_held(loose_set.get_value() + player_card.get_value()) > 0)
+                {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+bool Player::can_capture(Table a_table)
+{
+    // Check loose set
+    if (a_table.get_loose_set().get_size() > 0)
+    {
+        Set table_loose_set = a_table.get_loose_set();
+
+        // Check for matching loose cards
+        for (Card card : table_loose_set.get_cards())
+        {
+            if (count_cards_held(card.get_value()) > 0)
+            {
+                return true;
+            }
+        }
+
+        // Check for matching loose sets
+        if (table_loose_set.get_size() > 1)
+        {
+            vector<Set> table_loose_sets = generate_set_combinations(table_loose_set);
+
+            for (Set set : table_loose_sets)
+            {
+                if (count_cards_held(set.get_value()) > 0)
+                {
+                    return true;
+                }
+            }
+        }
+    }
+
+    // Check builds
+    if (!a_table.get_builds().empty())
+    {
+        // Check for matching builds
+        for (Build build : a_table.get_builds())
+        {
+            if (count_cards_held(build.get_value()) > 0)
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 bool Player::reserved_for_capture(Table a_table, Card a_card)
 {
     for (Build build : a_table.get_builds())

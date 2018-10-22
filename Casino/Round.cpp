@@ -122,8 +122,8 @@ void Round::start_turn()
                 }
                 break;
             case 3:
-                // TODO: ask for help
-                exit(0);
+                m_human->ask_for_help(m_table);
+                break;
             case 4:
                 exit(0);
             }

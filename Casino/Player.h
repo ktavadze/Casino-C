@@ -70,6 +70,8 @@ protected:
 
     void capture_loose_card(Table & a_table, Card a_card);
     void capture_build(Table & a_table, Build a_build);
+    bool can_build(Table a_table);
+    bool can_capture(Table a_table);
     bool reserved_for_capture(Table a_table, Card a_card);
     bool owns_build(Table a_table);
     int count_cards_held(int a_value);
