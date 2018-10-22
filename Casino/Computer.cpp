@@ -184,16 +184,13 @@ void Computer::process_trail(Table & a_table)
 
     for (Card card : m_hand.get_cards())
     {
-        if (can_trail(a_table, card))
+        if (best_trail_card.get_weight() == 0)
         {
-            if (best_trail_card.get_weight() == 0)
-            {
-                best_trail_card = card;
-            }
-            else if (card.get_weight() < best_trail_card.get_weight())
-            {
-                best_trail_card = card;
-            }
+            best_trail_card = card;
+        }
+        else if (card.get_weight() < best_trail_card.get_weight())
+        {
+            best_trail_card = card;
         }
     }
 

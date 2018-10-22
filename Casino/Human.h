@@ -27,5 +27,10 @@ private:
     bool process_build_extend(Table & a_table);
     bool process_capture(Table & a_table);
     bool process_trail(Table & a_table);
+    bool can_create_build(Table a_table, Card a_build_card, Set a_loose_set);
+    bool can_increase_build(Table a_table, Build a_selected_build, Card a_build_card);
+    bool can_extend_build(Table a_table, Build a_selected_build, Card a_build_card, Set a_loose_set);
+    bool can_capture(Table a_table, Card a_capture_card, Set a_loose_set, Set a_firm_set);
+    bool can_trail(Table a_table, Card a_trail_card);
     void capture(Table & a_table, Card a_capture_card, Set a_loose_set, Set a_firm_set);
 };

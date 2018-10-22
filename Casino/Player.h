@@ -72,11 +72,6 @@ protected:
     void capture_loose_card(Table & a_table, Card a_card);
     void capture_build(Table & a_table, Build a_build);
     void trail_player_card(Table & a_table, Card a_card);
-    virtual bool can_create_build(Table a_table, Card a_build_card, Set a_loose_set);
-    virtual bool can_increase_build(Table a_table, Build a_selected_build, Card a_build_card);
-    virtual bool can_extend_build(Table a_table, Build a_selected_build, Card a_build_card, Set a_loose_set);
-    virtual bool can_capture(Table a_table, Card a_capture_card, Set a_loose_set, Set a_firm_set);
-    virtual bool can_trail(Table a_table, Card a_trail_card);
     virtual bool reserved_for_capture(Table a_table, Card a_card);
     virtual bool owns_build(Table a_table);
     virtual int count_cards_held(int a_value);
