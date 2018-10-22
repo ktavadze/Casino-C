@@ -68,21 +68,15 @@ bool Human::process_build_create(Table & a_table)
     if (can_create_build(a_table, build_card, loose_set))
     {
         Set build_set;
-
         build_set.add_card(build_card);
-
         build_set.add_set(loose_set);
 
         Build build(m_is_human, build_set);
 
-        // Add build to table
         a_table.add_build(build);
 
         // Remove loose set from table
-        for (Card card : loose_set.get_cards())
-        {
-            a_table.remove_loose_card(card);
-        }
+        a_table.remove_loose_set(loose_set);
 
         // Remove build card from hand
         m_hand.remove_card(build_card);
@@ -114,22 +108,7 @@ bool Human::process_build_increase(Table & a_table)
     // Increase build
     if (can_increase_build(a_table, selected_build, build_card))
     {
-        Set build_set;
-
-        build_set.add_card(build_card);
-
-        for (Set set : selected_build.get_sets())
-        {
-            build_set.add_set(set);
-        }
-
-        Build increased_build(m_is_human, build_set);
-
-        // Add increased build to table
-        a_table.add_build(increased_build);
-
-        // Remove selected build from table
-        a_table.remove_build(selected_build);
+        a_table.increase_build(build_card_index, build_card, m_is_human);
 
         // Remove build card from hand
         m_hand.remove_card(build_card);
@@ -169,27 +148,13 @@ bool Human::process_build_extend(Table & a_table)
     if (can_extend_build(a_table, selected_build, build_card, loose_set))
     {
         Set build_set;
-
         build_set.add_card(build_card);
-
         build_set.add_set(loose_set);
 
-        // Update build owner
-        a_table.update_build_owner(selected_build_index, m_is_human);
-
-        // Extend build
-        a_table.extend_build(selected_build_index, build_set);
+        a_table.extend_build(selected_build_index, build_set, m_is_human);
 
         // Remove loose set from table
-        if (build_set.get_size() > 1)
-        {
-            for (int i = 1; i < build_set.get_size(); i++)
-            {
-                Card card = build_set.get_card(i);
-
-                a_table.remove_loose_card(card);
-            }
-        }
+        a_table.remove_loose_set(loose_set);
 
         // Remove build card from hand
         m_hand.remove_card(build_card);
@@ -380,20 +345,24 @@ bool Human::can_capture(Table a_table, Card a_capture_card, Set a_loose_set, Set
     // Check firm set
     if (a_firm_set.get_size() > 0)
     {
-        int matching_builds = 0;
-        int captured_builds = 0;
         int cards_found = 0;
 
         for (Build build : a_table.get_builds())
         {
-            if (build.get_value() == a_capture_card.get_value() && build.is_human() == m_is_human)
+            if (build.get_value() == a_capture_card.get_value())
             {
-                matching_builds++;
+                if (build.is_human() == m_is_human && !a_firm_set.contains(build.get_sets()))
+                {
+                    if (count_cards_held(a_capture_card.get_value()) < 2)
+                    {
+                        Console::display_message("ERROR: must capture matching owned build(s)!");
+
+                        return false;
+                    }
+                }
 
                 if (a_firm_set.contains(build.get_sets()))
                 {
-                    captured_builds++;
-
                     for (Set set : build.get_sets())
                     {
                         cards_found += set.get_size();
@@ -407,16 +376,6 @@ bool Human::can_capture(Table a_table, Card a_capture_card, Set a_loose_set, Set
             Console::display_message("ERROR: cannot capture selected build card(s)!");
 
             return false;
-        }
-
-        if (matching_builds != captured_builds)
-        {
-            if (count_cards_held(a_capture_card.get_value()) < 2)
-            {
-                Console::display_message("ERROR: must capture matching owned build(s)!");
-
-                return false;
-            }
         }
     }
     else

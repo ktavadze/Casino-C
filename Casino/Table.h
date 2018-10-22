@@ -25,10 +25,11 @@ public:
     }
     void add_loose_card(Card a_card);
     void remove_loose_card(Card a_card);
+    void remove_loose_set(Set a_set);
     void add_build(Build a_build);
     void remove_build(Build a_build);
-    void update_build_owner(int a_index, bool a_is_human);
-    void extend_build(int a_index, Set a_set);
+    void increase_build(int a_index, Card a_card, bool a_is_human);
+    void extend_build(int a_index, Set a_set, bool a_is_human);
     bool contains(Build a_build);
     bool contains(Card a_card);
     string ToString();

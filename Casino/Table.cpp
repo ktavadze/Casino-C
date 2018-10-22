@@ -11,6 +11,11 @@ void Table::remove_loose_card(Card a_card)
     m_loose_set.remove_card(a_card);
 }
 
+void Table::remove_loose_set(Set a_set)
+{
+    m_loose_set.remove_set(a_set);
+}
+
 void Table::add_build(Build a_build)
 {
     m_builds.push_back(a_build);
@@ -29,14 +34,16 @@ void Table::remove_build(Build a_build)
     }
 }
 
-void Table::update_build_owner(int a_index, bool a_is_human)
+void Table::increase_build(int a_index, Card a_card, bool a_is_human)
 {
+    m_builds.at(a_index).increase(a_card);
     m_builds.at(a_index).is_human(a_is_human);
 }
 
-void Table::extend_build(int a_index, Set a_set)
+void Table::extend_build(int a_index, Set a_set, bool a_is_human)
 {
     m_builds.at(a_index).extend(a_set);
+    m_builds.at(a_index).is_human(a_is_human);
 }
 
 bool Table::contains(Build a_build)
