@@ -6,25 +6,15 @@ int Computer::make_move(Table & a_table)
     if (can_build(a_table))
     {
         process_build(a_table);
-
-        return 0;
     }
-
-    if (can_capture(a_table))
+    else if (can_capture(a_table))
     {
         process_capture(a_table);
 
         return 1;
     }
-
-    for (Card card : m_hand.get_cards())
-    {
-        if (can_trail(a_table, card))
-        {
-            trail_player_card(a_table, card);
-
-            return 0;
-        }
+    else {
+        process_trail(a_table);
     }
 
     return 0;
@@ -187,6 +177,31 @@ void Computer::process_capture(Table & a_table)
     cout << "\n\nCapturing: " << best_capture_set.ToString() << " for " << best_capture_set.get_weight();
 }
 
+void Computer::process_trail(Table & a_table)
+{
+    // Find best trail card
+    Card best_trail_card;
+
+    for (Card card : m_hand.get_cards())
+    {
+        if (can_trail(a_table, card))
+        {
+            if (best_trail_card.get_weight() == 0)
+            {
+                best_trail_card = card;
+            }
+            else if (card.get_weight() < best_trail_card.get_weight())
+            {
+                best_trail_card = card;
+            }
+        }
+    }
+
+    trail_player_card(a_table, best_trail_card);
+
+    cout << "\n\nTrailing: " << best_trail_card.get_name() << " for " << best_trail_card.get_weight();
+}
+
 void Computer::create_build(Table & a_table, Build a_build)
 {
     Set build_set = a_build.get_sets().at(0);
@@ -328,21 +343,24 @@ vector<Set> Computer::generate_set_combinations(Set a_loose_set)
     vector<Set> loose_sets;
 
     // Generate doubles
-    for (int i = 0; i < a_loose_set.get_size(); i++)
+    if (a_loose_set.get_size() > 1)
     {
-        for (int j = 0; j < a_loose_set.get_size(); j++)
+        for (int i = 0; i < a_loose_set.get_size(); i++)
         {
-            if (i != j)
+            for (int j = 0; j < a_loose_set.get_size(); j++)
             {
-                Set set;
-                set.add_card(a_loose_set.get_card(i));
-                set.add_card(a_loose_set.get_card(j));
-
-                if (set.get_value() < 14)
+                if (i != j)
                 {
-                    if (!vector_contains_set(loose_sets, set))
+                    Set set;
+                    set.add_card(a_loose_set.get_card(i));
+                    set.add_card(a_loose_set.get_card(j));
+
+                    if (set.get_value() < 14)
                     {
-                        loose_sets.push_back(set);
+                        if (!vector_contains_set(loose_sets, set))
+                        {
+                            loose_sets.push_back(set);
+                        }
                     }
                 }
             }

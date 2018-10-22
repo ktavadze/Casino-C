@@ -23,6 +23,7 @@ public:
 private:
     void process_build(Table & a_table);
     void process_capture(Table & a_table);
+    void process_trail(Table & a_table);
     void create_build(Table & a_table, Build a_build);
     void capture(Table & a_table, Set a_capture_set);
 
