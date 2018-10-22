@@ -217,8 +217,11 @@ bool Human::process_trail(Table & a_table)
 
     if (can_trail(a_table, trail_card))
     {
-        // Trail player card
-        trail_player_card(a_table, trail_card);
+        // Add trail card to table
+        a_table.add_loose_card(trail_card);
+
+        // Remove trail card from hand
+        m_hand.remove_card(trail_card);
 
         return true;
     }
@@ -431,8 +434,11 @@ bool Human::can_trail(Table a_table, Card a_trail_card)
 
 void Human::capture(Table & a_table, Card a_capture_card, Set a_loose_set, Set a_firm_set)
 {
-    // Capture player card
-    capture_player_card(a_capture_card);
+    // Add capture card to pile
+    m_pile.add_card(a_capture_card);
+
+    // Remove capture card from hand
+    m_hand.remove_card(a_capture_card);
 
     // Capture loose set
     for (Card card : a_loose_set.get_cards())

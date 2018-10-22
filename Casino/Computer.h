@@ -26,10 +26,9 @@ private:
     void process_trail(Table & a_table);
     void create_build(Table & a_table, Build a_build);
     void capture(Table & a_table, Set a_capture_set);
-
+    void trail(Table & a_table, Card a_trail_card);
     bool can_build(Table a_table);
     bool can_capture(Table a_table);
-
     bool vector_contains_set(vector<Set> a_vector, Set a_set);
     vector<Set> generate_set_combinations(Set a_set);
 };

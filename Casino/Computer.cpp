@@ -194,7 +194,7 @@ void Computer::process_trail(Table & a_table)
         }
     }
 
-    trail_player_card(a_table, best_trail_card);
+    trail(a_table, best_trail_card);
 
     cout << "\n\nTrailing: " << best_trail_card.get_name() << " for " << best_trail_card.get_weight();
 }
@@ -221,8 +221,11 @@ void Computer::create_build(Table & a_table, Build a_build)
 
 void Computer::capture(Table & a_table, Set a_capture_set)
 {
-    // Capture player card
-    capture_player_card(a_capture_set.get_card(0));
+    // Remove capture card from hand
+    m_hand.remove_card(a_capture_set.get_card(0));
+
+    // Add capture card to pile
+    m_pile.add_card(a_capture_set.get_card(0));
 
     // Capture loose set
     for (Card card : a_table.get_loose_set().get_cards())
@@ -241,6 +244,15 @@ void Computer::capture(Table & a_table, Set a_capture_set)
             capture_build(a_table, build);
         }
     }
+}
+
+void Computer::trail(Table & a_table, Card a_trail_card)
+{
+    // Remove trail card from hand
+    m_hand.remove_card(a_trail_card);
+
+    // Add trail card to table
+    a_table.add_loose_card(a_trail_card);
 }
 
 bool Computer::can_build(Table a_table)
