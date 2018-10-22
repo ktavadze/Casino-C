@@ -73,4 +73,11 @@ protected:
     bool reserved_for_capture(Table a_table, Card a_card);
     bool owns_build(Table a_table);
     int count_cards_held(int a_value);
+
+    Build find_best_build(Table a_table);
+    Set find_best_capture_set(Table a_table);
+    Card find_best_trail_card(Table a_table);
+
+    vector<Set> generate_set_combinations(Set a_set);
+    bool vector_contains_set(vector<Set> a_vector, Set a_set);
 };

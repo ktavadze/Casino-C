@@ -29,6 +29,4 @@ private:
     void trail(Table & a_table, Card a_trail_card);
     bool can_build(Table a_table);
     bool can_capture(Table a_table);
-    bool vector_contains_set(vector<Set> a_vector, Set a_set);
-    vector<Set> generate_set_combinations(Set a_set);
 };
