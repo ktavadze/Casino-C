@@ -119,14 +119,17 @@ Tournament Serialization::load_game()
             }
 
             if (line.find("Deck") != string::npos) {
-                int index = line.find(": ");
-                string deck_string = line.substr(index + 2);
-
-                vector<string> deck_tokens = tokenize_set(deck_string);
-
-                for (string token : deck_tokens)
+                if (line.length() > 6)
                 {
-                    deck_cards.push_back(Card(token));
+                    int index = line.find(": ");
+                    string deck_string = line.substr(index + 2);
+
+                    vector<string> deck_tokens = tokenize_set(deck_string);
+
+                    for (string token : deck_tokens)
+                    {
+                        deck_cards.push_back(Card(token));
+                    }
                 }
             }
 
