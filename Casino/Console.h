@@ -15,6 +15,7 @@ public:
     static int process_turn_menu(bool a_is_human);
     static int process_move_menu();
     static int process_build_menu();
+    static string process_file_menu();
     static int pick_player_card(Set a_hand);
     static int pick_build(vector<Build> a_builds);
     static Set pick_loose_set(Set a_set);

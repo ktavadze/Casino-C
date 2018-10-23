@@ -137,6 +137,17 @@ int Console::process_build_menu()
     return choice;
 }
 
+string Console::process_file_menu()
+{
+    string name;
+
+    cout << endl << "***LOAD MENU***" << endl;
+    cout << "Enter file name: ";
+    cin >> name;
+
+    return name;
+}
+
 int Console::pick_player_card(Set a_hand)
 {
     int size = a_hand.get_size();

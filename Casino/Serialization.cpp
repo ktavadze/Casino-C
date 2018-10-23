@@ -3,13 +3,13 @@
 #include <algorithm>
 #include <stack>
 
-void Serialization::save_game(string m_state)
+void Serialization::save_game(string a_name, string a_state)
 {
-    ofstream outfile("../Data/data.txt");
+    ofstream outfile("../Data/" + a_name);
 
     if (outfile)
     {
-        outfile << m_state;
+        outfile << a_state;
         outfile.close();
         exit(0);
     }
@@ -19,9 +19,9 @@ void Serialization::save_game(string m_state)
     }
 }
 
-void Serialization::load_game(Tournament & a_tournament)
+bool Serialization::load_game(string a_name, Tournament & a_tournament)
 {
-    ifstream infile("../Data/data.txt");
+    ifstream infile("../Data/" + a_name);
 
     if (infile.is_open()) {
         int round_number = 0;
@@ -216,9 +216,13 @@ void Serialization::load_game(Tournament & a_tournament)
         infile.close();
 
         a_tournament = Tournament(computer, human, round);
+
+        return true;
     }
     else {
         Console::display_message("ERROR: cannot load game!");
+
+        return false;
     }
 }
 

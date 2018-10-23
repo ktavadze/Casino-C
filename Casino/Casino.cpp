@@ -31,9 +31,12 @@ int main()
         {
             Tournament tournament;
 
-            Serialization::load_game(tournament);
+            string name = Console::process_file_menu();
 
-            tournament.start();
+            if (Serialization::load_game(name, tournament))
+            {
+                tournament.start();
+            }
 
             break;
         }

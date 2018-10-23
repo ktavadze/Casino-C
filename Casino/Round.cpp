@@ -119,8 +119,11 @@ void Round::start_turn(Computer & a_computer, Human & a_human)
             switch (choice)
             {
             case 1:
-                Serialization::save_game(ToString(a_computer, a_human));
+            {
+                string name = Console::process_file_menu();
+                Serialization::save_game(name, ToString(a_computer, a_human));
                 break;
+            }
             case 2:
                 if (make_move(a_computer, a_human))
                 {
@@ -142,8 +145,11 @@ void Round::start_turn(Computer & a_computer, Human & a_human)
             switch (choice)
             {
             case 1:
-                Serialization::save_game(ToString(a_computer, a_human));
+            {
+                string name = Console::process_file_menu();
+                Serialization::save_game(name, ToString(a_computer, a_human));
                 break;
+            }
             case 2:
                 if (make_move(a_computer, a_human))
                 {

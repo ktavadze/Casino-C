@@ -13,8 +13,8 @@ using namespace std;
 class Serialization
 {
 public:
-    static void save_game(string m_state);
-    static void load_game(Tournament & a_tournament);
+    static void save_game(string a_name, string a_state);
+    static bool load_game(string a_name, Tournament & a_tournament);
 private:
     static vector<string> tokenize_set(string a_string);
     static vector<string> tokenize_builds(string a_string);
