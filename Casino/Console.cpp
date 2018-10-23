@@ -65,6 +65,31 @@ bool Console::process_coin_toss()
     return false;
 }
 
+bool Console::process_deck_seed()
+{
+    int choice;
+
+    do
+    {
+        cout << endl << "***DECK SEED***" << endl;
+        cout << "1. Yes" << endl;
+        cout << "2. No" << endl;
+
+        cin >> choice;
+        cin.clear();
+        cin.ignore(1000, '\n');
+    } while (choice != 1 && choice != 2);
+
+    if (choice == 1)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 int Console::process_turn_menu(bool a_is_human)
 {
     int choice;
