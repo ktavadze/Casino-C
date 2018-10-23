@@ -5,14 +5,23 @@ void Round::start(Computer & a_computer, Human & a_human)
 {
     while (!is_over(a_computer, a_human))
     {
-        start_turn(a_computer, a_human);
-
         if (a_computer.get_hand().get_size() == 0 && a_human.get_hand().get_size() == 0)
         {
             // Deal players
             a_human.set_hand(m_deck.draw_set());
             a_computer.set_hand(m_deck.draw_set());
+
+            if (a_computer.get_pile().get_size() == 0 && a_human.get_pile().get_size() == 0)
+            {
+                if (m_table.get_loose_set().get_size() == 0 && m_table.get_builds().empty())
+                {
+                    // Deal table
+                    m_table.set_loose_set(m_deck.draw_set());
+                }
+            }
         }
+
+        start_turn(a_computer, a_human);
     }
 
     // Clear table
