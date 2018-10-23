@@ -287,5 +287,6 @@ void Round::update_scores(Computer & a_computer, Human & a_human)
     a_computer.set_score(a_computer.get_score() + computer_score);
     a_human.set_score(a_human.get_score() + human_score);
 
-    Console::display_round_scores(computer_score, human_score);
+    Console::display_round_results(computer_pile, human_pile, computer_spades, human_spades,
+        computer_score, human_score);
 }

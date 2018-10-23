@@ -286,11 +286,20 @@ void Console::display_message(string a_message)
     cout << endl << "**************************************************" << endl;
 }
 
-void Console::display_round_scores(int a_computer_score, int a_human_score)
+void Console::display_round_results(Set a_computer_pile, Set a_human_pile,
+    int a_computer_spades, int a_human_spades, int a_computer_score, int a_human_score)
 {
-    cout << endl << "***ROUND SCORES***" << endl;
-    cout << "Computer: " << a_computer_score << endl;
-    cout << "Human: " << a_human_score << endl;
+    cout << endl << "***ROUND RESULTS***" << endl;
+    cout << "Computer: " << endl;
+    cout << "   Pile: " << a_computer_pile.ToString() << endl;
+    cout << "   Size: " << a_computer_pile.get_size() << endl;
+    cout << "   Spades: " << a_computer_spades << endl;
+    cout << "   Score: +" << a_computer_score << endl;
+    cout << "Human: " << endl;
+    cout << "   Pile: " << a_human_pile.ToString() << endl;
+    cout << "   Size: " << a_human_pile.get_size() << endl;
+    cout << "   Spades: " << a_human_spades << endl;
+    cout << "   Score: +" << a_human_score << endl;
 }
 
 void Console::display_tournament_scores(int a_computer_score, int a_human_score)
@@ -302,18 +311,18 @@ void Console::display_tournament_scores(int a_computer_score, int a_human_score)
 
 void Console::display_tournament_result(int a_computer_score, int a_human_score)
 {
-    cout << endl << "RESULT: ";
+    cout << endl << "***FINAL RESULT***" << endl;
     if (a_computer_score > a_human_score)
     {
-        cout << "computer wins!";
+        cout << "COMPUTER WINS!";
     }
     else if (a_computer_score < a_human_score)
     {
-        cout << "human wins!";
+        cout << "HUMAN WINS!";
     }
     else
     {
-        cout << "it's a tie!";
+        cout << "IT'S A TIE!";
     }
     cout << endl << endl;
 }

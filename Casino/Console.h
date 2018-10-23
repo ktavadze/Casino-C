@@ -20,7 +20,8 @@ public:
     static Set pick_loose_set(Set a_set);
     static Set pick_table_set(Table a_table);
     static void display_message(string a_message);
-    static void display_round_scores(int a_computer_score, int a_human_score);
+    static void display_round_results(Set a_computer_pile, Set a_human_pile,
+        int a_computer_spades, int a_human_spades, int a_computer_score, int a_human_score);
     static void display_tournament_scores(int a_computer_score, int a_human_score);
     static void display_tournament_result(int a_computer_score, int a_human_score);
 private:
