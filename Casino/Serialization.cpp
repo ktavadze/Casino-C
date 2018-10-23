@@ -203,16 +203,24 @@ Tournament Serialization::load_game()
         for (Card card : deck_cards) {
             cout << " " << card.get_name();
         }
-        cout << "\nHuman next: " << human_is_next << endl << endl;
+        cout << "\nHuman next: " << human_is_next << endl;
 
         Computer computer(human_is_next, computer_score, computer_hand, computer_pile);
         Human human(!human_is_next, human_score, human_hand, human_pile);
 
+        cout << "\nPLAYERS";
+        cout << computer.ToString();
+        cout << human.ToString();
+
         Table table(loose_set, builds);
         Deck deck(deck_cards);
+
+        cout << "\nTABLE: " << table.ToString();
+        cout << "\nDECK: " << deck.ToString();
+
         Round round(round_number, &computer, &human);
 
-        cout << round.ToString();
+        cout << endl << endl << round.ToString();
 
         infile.close();
 
