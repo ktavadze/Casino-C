@@ -35,6 +35,11 @@ void Build::increase(Card a_card)
 
 void Build::extend(Set a_set)
 {
+    if (m_sets.empty())
+    {
+        m_value = a_set.get_value();
+    }
+
     m_sets.push_back(a_set);
 }
 

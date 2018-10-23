@@ -1,8 +1,8 @@
 /***********************************************************
 * Name: Konstantine Tavadze                                *
-* Project: Casino - Milestone 2                            *
+* Project: Casino                                          *
 * Class: OPL                                               *
-* Date: 9/25/18                                            *
+* Date: 10/24/18                                           *
 ***********************************************************/
 #include "pch.h"
 #include "Tournament.h"
@@ -26,8 +26,13 @@ int main()
             break;
         }
         case 2:
-            // TODO: load
+        {
+            Tournament tournament = Serialization::load_game();
+
+            tournament.start();
+
             break;
+        }
         case 3:
             return 0;
         }
