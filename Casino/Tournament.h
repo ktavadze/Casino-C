@@ -7,6 +7,7 @@ using namespace std;
 class Tournament
 {
 public:
+    Tournament() {}
     Tournament(bool a_human_turn)
     {
         m_computer.is_next(!a_human_turn);

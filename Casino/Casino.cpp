@@ -29,7 +29,9 @@ int main()
         }
         case 2:
         {
-            Tournament tournament = Serialization::load_game();
+            Tournament tournament;
+
+            Serialization::load_game(tournament);
 
             tournament.start();
 

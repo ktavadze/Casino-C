@@ -19,7 +19,7 @@ void Serialization::save_game(string m_state)
     }
 }
 
-Tournament Serialization::load_game()
+void Serialization::load_game(Tournament & a_tournament)
 {
     ifstream infile("../Data/data.txt");
 
@@ -224,12 +224,10 @@ Tournament Serialization::load_game()
 
         infile.close();
 
-        return Tournament(computer, human, round);
+        a_tournament = Tournament(computer, human, round);
     }
     else {
         Console::display_message("ERROR: cannot load game!");
-
-        return Tournament(true);
     }
 }
 
