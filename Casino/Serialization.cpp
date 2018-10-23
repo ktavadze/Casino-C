@@ -89,7 +89,7 @@ bool Serialization::load_game(string a_name, Tournament & a_tournament)
                     player_number++;
                 }
                 else {
-                    if (line.length() > 0) {
+                    if (line.length() > 9) {
                         string human_pile_string = line.substr(index + 2);
 
                         vector<string> human_pile_tokens = tokenize_set(human_pile_string);
