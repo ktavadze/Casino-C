@@ -95,16 +95,20 @@ Tournament Serialization::load_game()
             }
 
             if (line.find("Table") != string::npos) {
-                int startBuildIndex = line.find(":");
-                int endBuildIndex = line.find_last_of(']');
-                int startLooseCardIndex = endBuildIndex + 2;
+                int startLooseCardIndex = 7;
 
-                string buildString = line.substr(startBuildIndex + 3, endBuildIndex - startBuildIndex - 2);
+                if (line.find("[")) {
+                    int startBuildIndex = line.find(":");
+                    int endBuildIndex = line.find_last_of("]");
+                    startLooseCardIndex = endBuildIndex + 2;
 
-                vector<string> serializedBuilds = tokenize_builds(buildString);
+                    string buildString = line.substr(startBuildIndex + 3, endBuildIndex - startBuildIndex - 2);
 
-                for (string buildStr : serializedBuilds) {
-                    builds.push_back(generate_build(buildStr));
+                    vector<string> serializedBuilds = tokenize_builds(buildString);
+
+                    for (string buildStr : serializedBuilds) {
+                        builds.push_back(generate_build(buildStr));
+                    }
                 }
 
                 string looseCardStrings = line.substr(startLooseCardIndex);
