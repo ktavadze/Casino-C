@@ -1,4 +1,5 @@
 /.vs/*
+/Data/*
 /Debug/*
 /Casino/Debug/*
 /Casino/Casino.vcxproj
