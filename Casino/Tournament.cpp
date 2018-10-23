@@ -3,7 +3,6 @@
 
 void Tournament::start()
 {
-    Console::display_message(m_round.ToString(m_computer, m_human));
     while (!is_over())
     {
         m_round.start(m_computer, m_human);

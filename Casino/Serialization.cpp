@@ -208,15 +208,8 @@ void Serialization::load_game(Tournament & a_tournament)
         Computer computer(!human_is_next, computer_score, computer_hand, computer_pile);
         Human human(human_is_next, human_score, human_hand, human_pile);
 
-        cout << "\nPLAYERS";
-        cout << computer.ToString();
-        cout << human.ToString();
-
         Table table(loose_set, builds);
         Deck deck(deck_cards);
-
-        cout << "\nTABLE: " << table.ToString();
-        cout << "\nDECK: " << deck.ToString();
 
         Round round(round_number, table, deck);
 
