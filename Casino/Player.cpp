@@ -211,11 +211,11 @@ Build Player::find_best_build(Table a_table)
         {
             best_build = build;
         }
-
-        cout << endl << build.ToString() << " for " << build.get_weight();
     }
 
-    cout << "\n\nBuild: " << best_build.ToString() << " for " << best_build.get_weight();
+    cout << "\nWith " << best_build.get_sets().at(0).get_card(0).get_name();
+    cout << " build " << best_build.ToString() << endl;
+    cout << "Heuristic: " << best_build.get_weight() << endl;
 
     return best_build;
 }
@@ -304,11 +304,11 @@ Set Player::find_best_capture_set(Table a_table)
         {
             best_capture_set = set;
         }
-
-        cout << endl << set.ToString() << " for " << set.get_weight();
     }
 
-    cout << "\n\nCapture: " << best_capture_set.ToString() << " for " << best_capture_set.get_weight();
+    cout << "\nWith " << best_capture_set.get_card(0).get_name();
+    cout << " capture " << best_capture_set.ToString() << endl;
+    cout << "Heuristic: " << best_capture_set.get_weight() << endl;
 
     return best_capture_set;
 }
@@ -330,7 +330,8 @@ Card Player::find_best_trail_card(Table a_table)
         }
     }
 
-    cout << "\n\nTrail: " << best_trail_card.get_name() << " for " << best_trail_card.get_weight();
+    cout << "\nTrail with " << best_trail_card.get_name() << endl;
+    cout << "Heuristic: " << best_trail_card.get_weight() << endl;
 
     return best_trail_card;
 }

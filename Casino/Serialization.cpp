@@ -187,23 +187,23 @@ void Serialization::load_game(Tournament & a_tournament)
             }
         }
 
-        cout << "\nRound number: " << round_number << endl;
-        cout << "Computer score: " << computer_score << endl;
-        cout << "Computer hand: " << computer_hand.ToString() << endl;
-        cout << "Computer pile: " << computer_pile.ToString() << endl;
-        cout << "Human score: " << human_score << endl;
-        cout << "Human hand: " << human_hand.ToString() << endl;
-        cout << "Human pile: " << human_pile.ToString() << endl;
-        cout << "Loose set: " << loose_set.ToString() << endl;
-        cout << "Builds:";
-        for (Build build : builds) {
-            cout << " " << build.ToString();
-        }
-        cout << "\nDeck:";
-        for (Card card : deck_cards) {
-            cout << " " << card.get_name();
-        }
-        cout << "\nHuman next: " << human_is_next << endl;
+        //cout << "\nRound number: " << round_number << endl;
+        //cout << "Computer score: " << computer_score << endl;
+        //cout << "Computer hand: " << computer_hand.ToString() << endl;
+        //cout << "Computer pile: " << computer_pile.ToString() << endl;
+        //cout << "Human score: " << human_score << endl;
+        //cout << "Human hand: " << human_hand.ToString() << endl;
+        //cout << "Human pile: " << human_pile.ToString() << endl;
+        //cout << "Loose set: " << loose_set.ToString() << endl;
+        //cout << "Builds:";
+        //for (Build build : builds) {
+        //    cout << " " << build.ToString();
+        //}
+        //cout << "\nDeck:";
+        //for (Card card : deck_cards) {
+        //    cout << " " << card.get_name();
+        //}
+        //cout << "\nHuman next: " << human_is_next << endl;
 
         Computer computer(!human_is_next, computer_score, computer_hand, computer_pile);
         Human human(human_is_next, human_score, human_hand, human_pile);
@@ -212,8 +212,6 @@ void Serialization::load_game(Tournament & a_tournament)
         Deck deck(deck_cards);
 
         Round round(round_number, table, deck);
-
-        cout << endl << endl << round.ToString(computer, human);
 
         infile.close();
 

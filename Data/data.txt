@@ -8,7 +8,7 @@ Computer:
 Human:
    Score: 15
    Hand: C6 H5 D9
-   Pile: HX SX H7 C8 HJ CX C2 S6 H6 D8 SJ CQ DQ HA H2 D3 C7 CJ D2 S2
+   Pile: SX H7 C8 HJ CX C2 S6 H6 D8 SJ CQ DQ HA H2 D3 C7 CJ D2 S2
 
 Table: C3 D4 HK
 
