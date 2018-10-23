@@ -71,6 +71,7 @@ protected:
     void capture_loose_card(Table & a_table, Card a_card);
     void capture_build(Table & a_table, Build a_build);
     bool can_increase(Table a_table);
+    bool can_extend(Table a_table);
     bool can_build(Table a_table);
     bool can_capture(Table a_table);
     bool reserved_for_capture(Table a_table, Card a_card);
@@ -78,6 +79,7 @@ protected:
     int count_cards_held(int a_value);
 
     Build find_best_increase(Table a_table);
+    Build find_best_extend(Table a_table);
     Build find_best_build(Table a_table);
     Set find_best_capture_set(Table a_table);
     Card find_best_trail_card(Table a_table);

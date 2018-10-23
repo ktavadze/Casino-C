@@ -36,6 +36,10 @@ void Human::ask_for_help(Table a_table)
     {
         find_best_increase(a_table);
     }
+    else if (can_extend(a_table))
+    {
+        find_best_extend(a_table);
+    }
     else if (can_build(a_table))
     {
         find_best_build(a_table);

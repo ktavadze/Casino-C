@@ -22,10 +22,12 @@ public:
     virtual int make_move(Table & a_table);
 private:
     void process_increase(Table & a_table);
+    void process_extend(Table & a_table);
     void process_build(Table & a_table);
     void process_capture(Table & a_table);
     void process_trail(Table & a_table);
     void increase_build(Table & a_table, Build a_build);
+    void extend_build(Table & a_table, Build a_build);
     void create_build(Table & a_table, Build a_build);
     void capture(Table & a_table, Set a_capture_set);
     void trail(Table & a_table, Card a_trail_card);

@@ -7,6 +7,10 @@ int Computer::make_move(Table & a_table)
     {
         process_increase(a_table);
     }
+    else if (can_extend(a_table))
+    {
+        process_extend(a_table);
+    }
     else if (can_build(a_table))
     {
         process_build(a_table);
@@ -29,6 +33,13 @@ void Computer::process_increase(Table & a_table)
     Build best_build = find_best_increase(a_table);
 
     increase_build(a_table, best_build);
+}
+
+void Computer::process_extend(Table & a_table)
+{
+    Build best_build = find_best_extend(a_table);
+
+    extend_build(a_table, best_build);
 }
 
 void Computer::process_build(Table & a_table)
@@ -67,6 +78,35 @@ void Computer::increase_build(Table & a_table, Build a_build)
         if (build_set.contains(build.get_sets()))
         {
             a_table.increase_build(i, build_set.get_card(0), m_is_human);
+        }
+    }
+}
+
+void Computer::extend_build(Table & a_table, Build a_build)
+{
+    Set build_set = a_build.get_sets().at(a_build.get_sets().size() - 1);
+
+    // Remove player card from hand
+    m_hand.remove_card(build_set.get_card(0));
+
+    Set extended_set;
+
+    for (Build build : a_table.get_builds())
+    {
+        for (Set set : build.get_sets())
+        {
+            extended_set.add_set(set);
+        }
+    }
+
+    // Extend build
+    for (unsigned int i = 0; i < a_table.get_builds().size(); i++)
+    {
+        Build build = a_table.get_builds().at(i);
+
+        if (extended_set.contains(build.get_sets()))
+        {
+            a_table.extend_build(i, build_set, m_is_human);
         }
     }
 }

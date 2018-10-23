@@ -61,6 +61,58 @@ bool Player::can_increase(Table a_table)
     return false;
 }
 
+bool Player::can_extend(Table a_table)
+{
+    Set table_loose_set = a_table.get_loose_set();
+    vector<Set> table_loose_sets = generate_set_combinations(table_loose_set);
+
+    for (Card player_card : m_hand.get_cards())
+    {
+        if (!reserved_for_capture(a_table, player_card))
+        {
+            // Find all simple builds
+            for (Card loose_card : table_loose_set.get_cards())
+            {
+                if (count_cards_held(loose_card.get_value() + player_card.get_value()) > 0)
+                {
+                    Set build_set;
+                    build_set.add_card(player_card);
+                    build_set.add_card(loose_card);
+
+                    for (Build table_build : a_table.get_builds())
+                    {
+                        if (table_build.get_value() == build_set.get_value())
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            // Find all compund builds
+            for (Set loose_set : table_loose_sets)
+            {
+                if (count_cards_held(loose_set.get_value() + player_card.get_value()) > 0)
+                {
+                    Set build_set;
+                    build_set.add_card(player_card);
+                    build_set.add_set(loose_set);
+
+                    for (Build table_build : a_table.get_builds())
+                    {
+                        if (table_build.get_value() == build_set.get_value())
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
 bool Player::can_build(Table a_table)
 {
     Set table_loose_set = a_table.get_loose_set();
@@ -229,6 +281,82 @@ Build Player::find_best_increase(Table a_table)
 
     cout << "\nWith " << best_build.get_sets().at(0).get_card(0).get_name();
     cout << " increase " << best_build.ToString() << endl;
+    cout << "Heuristic: " << best_build.get_weight() << endl;
+
+    return best_build;
+}
+
+Build Player::find_best_extend(Table a_table)
+{
+    // Find possible builds
+    vector<Build> possible_builds;
+
+    Set table_loose_set = a_table.get_loose_set();
+    vector<Set> table_loose_sets = generate_set_combinations(table_loose_set);
+
+    for (Card player_card : m_hand.get_cards())
+    {
+        if (!reserved_for_capture(a_table, player_card))
+        {
+            // Find all simple builds
+            for (Card loose_card : table_loose_set.get_cards())
+            {
+                if (count_cards_held(loose_card.get_value() + player_card.get_value()) > 0)
+                {
+                    Set build_set;
+                    build_set.add_card(player_card);
+                    build_set.add_card(loose_card);
+
+                    for (Build table_build : a_table.get_builds())
+                    {
+                        if (table_build.get_value() == build_set.get_value())
+                        {
+                            table_build.extend(build_set);
+                            table_build.is_human(m_is_human);
+
+                            possible_builds.push_back(table_build);
+                        }
+                    }
+                }
+            }
+
+            // Find all compund builds
+            for (Set loose_set : table_loose_sets)
+            {
+                if (count_cards_held(loose_set.get_value() + player_card.get_value()) > 0)
+                {
+                    Set build_set;
+                    build_set.add_card(player_card);
+                    build_set.add_set(loose_set);
+
+                    for (Build table_build : a_table.get_builds())
+                    {
+                        if (table_build.get_value() == build_set.get_value())
+                        {
+                            table_build.extend(build_set);
+                            table_build.is_human(m_is_human);
+
+                            possible_builds.push_back(table_build);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Find best build
+    Build best_build;
+
+    for (Build build : possible_builds)
+    {
+        if (build.get_weight() > best_build.get_weight())
+        {
+            best_build = build;
+        }
+    }
+
+    cout << "\nWith " << best_build.get_sets().at(0).get_card(0).get_name();
+    cout << " extend " << best_build.ToString() << endl;
     cout << "Heuristic: " << best_build.get_weight() << endl;
 
     return best_build;
