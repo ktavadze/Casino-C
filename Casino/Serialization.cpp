@@ -217,7 +217,7 @@ Tournament Serialization::load_game()
     else {
         Console::display_message("ERROR: cannot load game!");
 
-        return Tournament();
+        return Tournament(true);
     }
 }
 

@@ -19,7 +19,9 @@ int main()
         {
         case 1:
         {
-            Tournament tournament;
+            bool won_toss = Console::process_coin_toss();
+
+            Tournament tournament(won_toss);
 
             tournament.start();
 

@@ -7,21 +7,10 @@ using namespace std;
 class Tournament
 {
 public:
-    Tournament()
+    Tournament(bool a_human_turn)
     {
-        bool won_toss = Console::process_coin_toss();
-
-        if (won_toss)
-        {
-            m_human.is_next(true);
-            m_computer.is_next(false);
-        }
-        else
-        {
-            m_human.is_next(false);
-            m_computer.is_next(true);
-        }
-
+        m_computer.is_next(!a_human_turn);
+        m_human.is_next(a_human_turn);
         m_round = Round(1, &m_computer, &m_human);
     }
     Tournament(Computer a_computer, Human a_human, Round a_round)
