@@ -11,7 +11,7 @@ public:
     {
         m_computer.is_next(!a_human_turn);
         m_human.is_next(a_human_turn);
-        m_round = Round(1, &m_computer, &m_human);
+        m_round = Round(1);
     }
     Tournament(Computer a_computer, Human a_human, Round a_round)
     {

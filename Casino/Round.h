@@ -10,43 +10,28 @@ class Round
 {
 public:
     Round() {}
-    Round(int a_number, Computer * a_computer, Human * a_human)
+    Round(int a_number)
     {
         m_number = a_number;
-
-        m_computer = a_computer;
-        m_human = a_human;
-
-        // Deal players
-        m_human->set_hand(m_deck.draw_set());
-        m_computer->set_hand(m_deck.draw_set());
-
-        // Deal table
-        m_table.set_loose_set(m_deck.draw_set());
     }
-    Round(int a_number, Computer * a_computer, Human * a_human,
-        Table a_table, Deck a_deck)
+    Round(int a_number, Table a_table, Deck a_deck)
     {
         m_number = a_number;
-        m_computer = a_computer;
-        m_human = a_human;
         m_table = a_table;
         m_deck = a_deck;
     }
     inline int get_number() {
         return m_number;
     }
-    void start();
-    string ToString();
+    void start(Computer & a_computer, Human & a_human);
+    string ToString(Computer a_computer, Human a_human);
 private:
     int m_number;
-    Computer * m_computer;
-    Human * m_human;
     Table m_table;
     Deck m_deck;
 
-    bool is_over();
-    void start_turn();
-    bool make_move();
-    void update_scores();
+    bool is_over(Computer a_computer, Human a_human);
+    void start_turn(Computer & a_computer, Human & a_human);
+    bool make_move(Computer & a_computer, Human & a_human);
+    void update_scores(Computer & a_computer, Human & a_human);
 };

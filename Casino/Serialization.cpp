@@ -218,9 +218,9 @@ Tournament Serialization::load_game()
         cout << "\nTABLE: " << table.ToString();
         cout << "\nDECK: " << deck.ToString();
 
-        Round round(round_number, &computer, &human, table, deck);
+        Round round(round_number, table, deck);
 
-        cout << endl << endl << round.ToString();
+        cout << endl << endl << round.ToString(computer, human);
 
         infile.close();
 

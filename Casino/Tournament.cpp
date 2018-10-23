@@ -3,9 +3,10 @@
 
 void Tournament::start()
 {
+    Console::display_message(m_round.ToString(m_computer, m_human));
     while (!is_over())
     {
-        m_round.start();
+        m_round.start(m_computer, m_human);
 
         Console::display_tournament_scores(m_computer.get_score(), m_human.get_score());
 
@@ -24,7 +25,7 @@ void Tournament::start()
                 m_computer.is_next(true);
             }
 
-            m_round = Round(round_number, &m_computer, &m_human);
+            m_round = Round(round_number);
         }
     }
 

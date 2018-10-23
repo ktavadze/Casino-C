@@ -1,17 +1,17 @@
 #include "pch.h"
 #include "Round.h"
 
-void Round::start()
+void Round::start(Computer & a_computer, Human & a_human)
 {
-    while (!is_over())
+    while (!is_over(a_computer, a_human))
     {
-        start_turn();
+        start_turn(a_computer, a_human);
 
-        if (m_computer->get_hand().get_size() == 0 && m_human->get_hand().get_size() == 0)
+        if (a_computer.get_hand().get_size() == 0 && a_human.get_hand().get_size() == 0)
         {
             // Deal players
-            m_human->set_hand(m_deck.draw_set());
-            m_computer->set_hand(m_deck.draw_set());
+            a_human.set_hand(m_deck.draw_set());
+            a_computer.set_hand(m_deck.draw_set());
         }
     }
 
@@ -21,15 +21,15 @@ void Round::start()
         for (Card card : m_table.get_loose_set().get_cards())
         {
             // Check capture status
-            if (m_human->captured_last())
+            if (a_human.captured_last())
             {
                 // Add loose card to human pile
-                m_human->add_to_pile(card);
+                a_human.add_to_pile(card);
             }
             else
             {
                 // Add loose card to computer pile
-                m_computer->add_to_pile(card);
+                a_computer.add_to_pile(card);
             }
 
             // Remove loose card from table
@@ -37,22 +37,22 @@ void Round::start()
         }
     }
 
-    update_scores();
+    update_scores(a_computer, a_human);
 
     // Clear piles
-    m_human->clear_pile();
-    m_computer->clear_pile();
+    a_human.clear_pile();
+    a_computer.clear_pile();
 }
 
-string Round::ToString()
+string Round::ToString(Computer a_computer, Human a_human)
 {
     string info;
 
     info += "Round: " + to_string(m_number) + "\n";
 
-    info += "\nComputer:" + m_computer->ToString() + "\n";
+    info += "\nComputer:" + a_computer.ToString() + "\n";
 
-    info += "\nHuman:" + m_human->ToString() + "\n";
+    info += "\nHuman:" + a_human.ToString() + "\n";
 
     info += "\nTable: " + m_table.ToString() + "\n";
 
@@ -72,7 +72,7 @@ string Round::ToString()
     info += "\nDeck: " + m_deck.ToString() + "\n";
 
     info += "\nNext Player: ";
-    if (m_human->is_next())
+    if (a_human.is_next())
     {
         info += "Human";
     }
@@ -84,11 +84,11 @@ string Round::ToString()
     return info;
 }
 
-bool Round::is_over()
+bool Round::is_over(Computer a_computer, Human a_human)
 {
     if (m_deck.is_empty())
     {
-        if (m_computer->get_hand().get_size() == 0 && m_human->get_hand().get_size() == 0)
+        if (a_computer.get_hand().get_size() == 0 && a_human.get_hand().get_size() == 0)
         {
             return true;
         }
@@ -97,32 +97,32 @@ bool Round::is_over()
     return false;
 }
 
-void Round::start_turn()
+void Round::start_turn(Computer & a_computer, Human & a_human)
 {
     for (;;)
     {
-        Console::display_message(ToString());
+        Console::display_message(ToString(a_computer, a_human));
 
-        int choice = Console::process_turn_menu(m_human->is_next());
+        int choice = Console::process_turn_menu(a_human.is_next());
 
-        if (m_human->is_next())
+        if (a_human.is_next())
         {
             switch (choice)
             {
             case 1:
-                Serialization::save_game(ToString());
+                Serialization::save_game(ToString(a_computer, a_human));
                 break;
             case 2:
-                if (make_move())
+                if (make_move(a_computer, a_human))
                 {
-                    m_human->is_next(false);
-                    m_computer->is_next(true);
+                    a_human.is_next(false);
+                    a_computer.is_next(true);
 
                     return;
                 }
                 break;
             case 3:
-                m_human->ask_for_help(m_table);
+                a_human.ask_for_help(m_table);
                 break;
             case 4:
                 exit(0);
@@ -133,13 +133,13 @@ void Round::start_turn()
             switch (choice)
             {
             case 1:
-                Serialization::save_game(ToString());
+                Serialization::save_game(ToString(a_computer, a_human));
                 break;
             case 2:
-                if (make_move())
+                if (make_move(a_computer, a_human))
                 {
-                    m_human->is_next(true);
-                    m_computer->is_next(false);
+                    a_human.is_next(true);
+                    a_computer.is_next(false);
 
                     return;
                 }
@@ -151,17 +151,17 @@ void Round::start_turn()
     }
 }
 
-bool Round::make_move()
+bool Round::make_move(Computer & a_computer, Human & a_human)
 {
-    if (m_human->is_next())
+    if (a_human.is_next())
     {
-        int move_code = m_human->make_move(m_table);
+        int move_code = a_human.make_move(m_table);
 
         switch (move_code)
         {
         case 1:
-            m_human->captured_last(true);
-            m_computer->captured_last(false);
+            a_human.captured_last(true);
+            a_computer.captured_last(false);
         case 0:
             return true;
         default:
@@ -170,13 +170,13 @@ bool Round::make_move()
     }
     else
     {
-        int move_code = m_computer->make_move(m_table);
+        int move_code = a_computer.make_move(m_table);
 
         switch (move_code)
         {
         case 1:
-            m_human->captured_last(false);
-            m_computer->captured_last(true);
+            a_human.captured_last(false);
+            a_computer.captured_last(true);
         case 0:
             return true;
         default:
@@ -185,13 +185,13 @@ bool Round::make_move()
     }
 }
 
-void Round::update_scores()
+void Round::update_scores(Computer & a_computer, Human & a_human)
 {
     int computer_score = 0;
     int human_score = 0;
 
-    Set computer_pile = m_computer->get_pile();
-    Set human_pile = m_human->get_pile();
+    Set computer_pile = a_computer.get_pile();
+    Set human_pile = a_human.get_pile();
 
     // Check pile sizes
     if (computer_pile.get_size() > human_pile.get_size())
@@ -275,8 +275,8 @@ void Round::update_scores()
     }
 
     // Update scores
-    m_computer->set_score(m_computer->get_score() + computer_score);
-    m_human->set_score(m_human->get_score() + human_score);
+    a_computer.set_score(a_computer.get_score() + computer_score);
+    a_human.set_score(a_human.get_score() + human_score);
 
     Console::display_round_scores(computer_score, human_score);
 }
