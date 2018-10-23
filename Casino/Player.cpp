@@ -35,6 +35,32 @@ void Player::capture_build(Table & a_table, Build a_build)
     a_table.remove_build(a_build);
 }
 
+bool Player::can_increase(Table a_table)
+{
+    Set table_loose_set = a_table.get_loose_set();
+    vector<Set> table_loose_sets = generate_set_combinations(table_loose_set);
+
+    for (Card player_card : m_hand.get_cards())
+    {
+        if (!reserved_for_capture(a_table, player_card))
+        {
+            // Check for possible increased builds
+            for (Build build : a_table.get_builds())
+            {
+                if (build.is_human() != m_is_human && build.get_sets().size() == 1)
+                {
+                    if (count_cards_held(build.get_value() + player_card.get_value()) > 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
 bool Player::can_build(Table a_table)
 {
     Set table_loose_set = a_table.get_loose_set();
@@ -156,6 +182,56 @@ int Player::count_cards_held(int a_value)
     }
 
     return count;
+}
+
+Build Player::find_best_increase(Table a_table)
+{
+    // Find possible builds
+    vector<Build> possible_builds;
+
+    Set table_loose_set = a_table.get_loose_set();
+    vector<Set> table_loose_sets = generate_set_combinations(table_loose_set);
+
+    for (Card player_card : m_hand.get_cards())
+    {
+        if (!reserved_for_capture(a_table, player_card))
+        {
+            // Find possible increased builds
+            for (Build build : a_table.get_builds())
+            {
+                if (build.is_human() != m_is_human && build.get_sets().size() == 1)
+                {
+                    if (count_cards_held(build.get_value() + player_card.get_value()) > 0)
+                    {
+                        Set build_set;
+                        build_set.add_card(player_card);
+                        build_set.add_set(build.get_sets().at(0));
+
+                        Build increased_build(m_is_human, build_set);
+
+                        possible_builds.push_back(increased_build);
+                    }
+                }
+            }
+        }
+    }
+
+    // Find best build
+    Build best_build;
+
+    for (Build build : possible_builds)
+    {
+        if (build.get_weight() > best_build.get_weight())
+        {
+            best_build = build;
+        }
+    }
+
+    cout << "\nWith " << best_build.get_sets().at(0).get_card(0).get_name();
+    cout << " increase " << best_build.ToString() << endl;
+    cout << "Heuristic: " << best_build.get_weight() << endl;
+
+    return best_build;
 }
 
 Build Player::find_best_build(Table a_table)

@@ -32,7 +32,11 @@ int Human::make_move(Table & a_table)
 
 void Human::ask_for_help(Table a_table)
 {
-    if (can_build(a_table))
+    if (can_increase(a_table))
+    {
+        find_best_increase(a_table);
+    }
+    else if (can_build(a_table))
     {
         find_best_build(a_table);
     }
