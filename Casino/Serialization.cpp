@@ -56,48 +56,53 @@ Tournament Serialization::load_game()
             }
 
             if (line.find("Hand") != string::npos) {
-                int index = line.find(": ");
-                if (player_number == 0) {
-                    string computer_hand_string = line.substr(index + 2);
+                if (line.length() > 9) {
+                    int index = line.find(": ");
+                    if (player_number == 0) {
+                        string computer_hand_string = line.substr(index + 2);
 
-                    vector<string> computer_hand_tokens = tokenize_set(computer_hand_string);
+                        vector<string> computer_hand_tokens = tokenize_set(computer_hand_string);
 
-                    computer_hand = generate_set(computer_hand_tokens);
+                        computer_hand = generate_set(computer_hand_tokens);
+                    }
+                    else {
+                        string human_hand_string = line.substr(index + 2);
 
-                }
-                else {
-                    string human_hand_string = line.substr(index + 2);
+                        vector<string> human_hand_tokens = tokenize_set(human_hand_string);
 
-                    vector<string> human_hand_tokens = tokenize_set(human_hand_string);
-
-                    human_hand = generate_set(human_hand_tokens);
+                        human_hand = generate_set(human_hand_tokens);
+                    }
                 }
             }
 
             if (line.find("Pile") != string::npos) {
                 int index = line.find(": ");
                 if (player_number == 0) {
-                    string computer_pile_string = line.substr(index + 2);
+                    if (line.length() > 9) {
+                        string computer_pile_string = line.substr(index + 2);
 
-                    vector<string> computer_pile_tokens = tokenize_set(computer_pile_string);
+                        vector<string> computer_pile_tokens = tokenize_set(computer_pile_string);
 
-                    computer_pile = generate_set(computer_pile_tokens);
+                        computer_pile = generate_set(computer_pile_tokens);
+                    }
 
                     player_number++;
                 }
                 else {
-                    string human_pile_string = line.substr(index + 2);
+                    if (line.length() > 0) {
+                        string human_pile_string = line.substr(index + 2);
 
-                    vector<string> human_pile_tokens = tokenize_set(human_pile_string);
+                        vector<string> human_pile_tokens = tokenize_set(human_pile_string);
 
-                    human_pile = generate_set(human_pile_tokens);
+                        human_pile = generate_set(human_pile_tokens);
+                    }
                 }
             }
 
             if (line.find("Table") != string::npos) {
                 int startLooseCardIndex = 7;
 
-                if (line.find("[")) {
+                if (line.find("[") != string::npos) {
                     int startBuildIndex = line.find(":");
                     int endBuildIndex = line.find_last_of("]");
                     startLooseCardIndex = endBuildIndex + 2;
@@ -119,8 +124,7 @@ Tournament Serialization::load_game()
             }
 
             if (line.find("Deck") != string::npos) {
-                if (line.length() > 6)
-                {
+                if (line.length() > 6) {
                     int index = line.find(": ");
                     string deck_string = line.substr(index + 2);
 
