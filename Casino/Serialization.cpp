@@ -184,9 +184,9 @@ Tournament Serialization::load_game()
         cout << "Human hand: " << human_hand.ToString() << endl;
         cout << "Human pile: " << human_pile.ToString() << endl;
         cout << "Loose set: " << loose_set.ToString() << endl;
-        cout << "Builds: ";
+        cout << "Builds:";
         for (Build build : builds) {
-            cout << build.ToString();
+            cout << " " << build.ToString();
         }
         cout << "\nDeck:";
         for (Card card : deck_cards) {
