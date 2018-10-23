@@ -205,8 +205,8 @@ Tournament Serialization::load_game()
         }
         cout << "\nHuman next: " << human_is_next << endl;
 
-        Computer computer(human_is_next, computer_score, computer_hand, computer_pile);
-        Human human(!human_is_next, human_score, human_hand, human_pile);
+        Computer computer(!human_is_next, computer_score, computer_hand, computer_pile);
+        Human human(human_is_next, human_score, human_hand, human_pile);
 
         cout << "\nPLAYERS";
         cout << computer.ToString();
