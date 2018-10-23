@@ -43,18 +43,15 @@ Tournament Serialization::load_game()
             if (line.find("Round") != string::npos) {
                 int index = line.find(": ");
                 round_number = stoi(line.substr(index + 2));
-                cout << "Round Number: " << round_number << endl;
             }
 
             if (line.find("Score") != string::npos) {
                 int index = line.find(": ");
                 if (player_number == 0) {
                     computer_score = stoi(line.substr(index + 2));
-                    cout << "Computer Score: " << computer_score << endl;
                 }
                 else {
                     human_score = stoi(line.substr(index + 2));
-                    cout << "Human Score: " << human_score << endl;
                 }
             }
 
@@ -62,7 +59,6 @@ Tournament Serialization::load_game()
                 int index = line.find(": ");
                 if (player_number == 0) {
                     string computer_hand_string = line.substr(index + 2);
-                    cout << "Computer Hand: " << computer_hand_string << endl;
 
                     vector<string> computer_hand_tokens = tokenize_set(computer_hand_string);
 
@@ -71,7 +67,6 @@ Tournament Serialization::load_game()
                 }
                 else {
                     string human_hand_string = line.substr(index + 2);
-                    cout << "Human Hand: " << human_hand_string << endl;
 
                     vector<string> human_hand_tokens = tokenize_set(human_hand_string);
 
@@ -83,7 +78,6 @@ Tournament Serialization::load_game()
                 int index = line.find(": ");
                 if (player_number == 0) {
                     string computer_pile_string = line.substr(index + 2);
-                    cout << "Computer Pile: " << computer_pile_string << endl;
 
                     vector<string> computer_pile_tokens = tokenize_set(computer_pile_string);
 
@@ -93,7 +87,6 @@ Tournament Serialization::load_game()
                 }
                 else {
                     string human_pile_string = line.substr(index + 2);
-                    cout << "Human Pile: " << human_pile_string << endl;
 
                     vector<string> human_pile_tokens = tokenize_set(human_pile_string);
 
@@ -107,7 +100,6 @@ Tournament Serialization::load_game()
                 int startLooseCardIndex = endBuildIndex + 2;
 
                 string buildString = line.substr(startBuildIndex + 3, endBuildIndex - startBuildIndex - 2);
-                cout << buildString << endl;
 
                 vector<string> serializedBuilds = tokenize_builds(buildString);
 
@@ -116,7 +108,6 @@ Tournament Serialization::load_game()
                 }
 
                 string looseCardStrings = line.substr(startLooseCardIndex);
-                cout << "Loose Cards: " << looseCardStrings << endl;
 
                 vector<string> cardSerialData = tokenize_set(looseCardStrings);
 
@@ -126,7 +117,6 @@ Tournament Serialization::load_game()
             if (line.find("Deck") != string::npos) {
                 int index = line.find(": ");
                 string deck_string = line.substr(index + 2);
-                cout << "Deck: " << deck_string << endl;
 
                 vector<string> deck_tokens = tokenize_set(deck_string);
 
@@ -139,7 +129,6 @@ Tournament Serialization::load_game()
             if (line.find("Next Player") != string::npos) {
                 int index = line.find(": ");
                 string next_player = line.substr(index + 2);
-                cout << "Next Player: " << next_player << endl;
 
                 if (next_player == "Computer")
                 {
@@ -186,6 +175,24 @@ Tournament Serialization::load_game()
                 }
             }
         }
+
+        cout << "\nRound number: " << round_number << endl;
+        cout << "Computer score: " << computer_score << endl;
+        cout << "Computer hand: " << computer_hand.ToString() << endl;
+        cout << "Computer pile: " << computer_pile.ToString() << endl;
+        cout << "Human score: " << human_score << endl;
+        cout << "Human hand: " << human_hand.ToString() << endl;
+        cout << "Human pile: " << human_pile.ToString() << endl;
+        cout << "Loose set: " << loose_set.ToString() << endl;
+        cout << "Builds: ";
+        for (Build build : builds) {
+            cout << build.ToString();
+        }
+        cout << "\nDeck:";
+        for (Card card : deck_cards) {
+            cout << " " << card.get_name();
+        }
+        cout << "\nHuman next: " << human_is_next << endl << endl;
 
         Computer computer(human_is_next, computer_score, computer_hand, computer_pile);
         Human human(!human_is_next, human_score, human_hand, human_pile);
