@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <stack>
 
-void Serialization::save_game(string a_name, string a_state)
+bool Serialization::save_game(string a_name, string a_state)
 {
     ofstream outfile("../Data/" + a_name);
 
@@ -11,11 +11,14 @@ void Serialization::save_game(string a_name, string a_state)
     {
         outfile << a_state;
         outfile.close();
-        exit(0);
+        
+        return true;
     }
     else
     {
         Console::display_message("ERROR: cannot save game!");
+
+        return false;
     }
 }
 
