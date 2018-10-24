@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Round.h"
-
 using namespace std;
 
 class Tournament

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Computer.h"
-#include "Human.h"
 #include "Deck.h"
 
 using namespace std;
