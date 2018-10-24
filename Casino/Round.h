@@ -18,7 +18,8 @@ public:
         m_table = a_table;
         m_deck = a_deck;
     }
-    inline int get_number() {
+    inline int get_number()
+    {
         return m_number;
     }
     void start(Computer & a_computer, Human & a_human);

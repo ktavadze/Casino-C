@@ -58,7 +58,10 @@ public:
     {
         m_pile.reset();
     }
-    virtual int make_move(Table & a_table) { return 0; }
+    virtual int make_move(Table & a_table)
+    {
+        return 0;
+    }
     string ToString();
 protected:
     bool m_is_human;
