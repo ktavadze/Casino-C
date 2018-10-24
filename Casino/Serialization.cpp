@@ -26,7 +26,8 @@ bool Serialization::load_game(string a_name, Tournament & a_tournament)
 {
     ifstream infile("../Data/" + a_name);
 
-    if (infile.is_open()) {
+    if (infile.is_open())
+    {
         int round_number = 0;
         int computer_score = 0;
         Set computer_hand;
@@ -43,33 +44,43 @@ bool Serialization::load_game(string a_name, Tournament & a_tournament)
 
         string line;
 
-        while (getline(infile, line)) {
-            if (line.find("Round") != string::npos) {
-                int index = line.find(": ");
+        while (getline(infile, line))
+        {
+            if (line.find("Round") != string::npos)
+            {
+                int index = line.find(":");
+
                 round_number = stoi(line.substr(index + 2));
             }
+            else if (line.find("Score") != string::npos)
+            {
+                int index = line.find(":");
 
-            if (line.find("Score") != string::npos) {
-                int index = line.find(": ");
-                if (read_computer) {
+                if (read_computer)
+                {
                     computer_score = stoi(line.substr(index + 2));
                 }
-                else {
+                else
+                {
                     human_score = stoi(line.substr(index + 2));
                 }
             }
+            else if (line.find("Hand") != string::npos)
+            {
+                if (line.length() > 9)
+                {
+                    int index = line.find(":");
 
-            if (line.find("Hand") != string::npos) {
-                if (line.length() > 9) {
-                    int index = line.find(": ");
-                    if (read_computer) {
+                    if (read_computer)
+                    {
                         string computer_hand_string = line.substr(index + 2);
 
                         vector<string> computer_hand_tokens = tokenize_set(computer_hand_string);
 
                         computer_hand = generate_set(computer_hand_tokens);
                     }
-                    else {
+                    else
+                    {
                         string human_hand_string = line.substr(index + 2);
 
                         vector<string> human_hand_tokens = tokenize_set(human_hand_string);
@@ -78,11 +89,14 @@ bool Serialization::load_game(string a_name, Tournament & a_tournament)
                     }
                 }
             }
+            else if (line.find("Pile") != string::npos)
+            {
+                int index = line.find(":");
 
-            if (line.find("Pile") != string::npos) {
-                int index = line.find(": ");
-                if (read_computer) {
-                    if (line.length() > 9) {
+                if (read_computer)
+                {
+                    if (line.length() > 9)
+                    {
                         string computer_pile_string = line.substr(index + 2);
 
                         vector<string> computer_pile_tokens = tokenize_set(computer_pile_string);
@@ -92,8 +106,10 @@ bool Serialization::load_game(string a_name, Tournament & a_tournament)
 
                     read_computer = false;
                 }
-                else {
-                    if (line.length() > 9) {
+                else
+                {
+                    if (line.length() > 9)
+                    {
                         string human_pile_string = line.substr(index + 2);
 
                         vector<string> human_pile_tokens = tokenize_set(human_pile_string);
@@ -102,34 +118,96 @@ bool Serialization::load_game(string a_name, Tournament & a_tournament)
                     }
                 }
             }
+            else if (line.find("Table") != string::npos)
+            {
+                int loose_set_start_index = 7;
 
-            if (line.find("Table") != string::npos) {
-                int startLooseCardIndex = 7;
+                if (line.find("[") != string::npos)
+                {
+                    int builds_start_index = line.find(":");
+                    int builds_end_index = line.find_last_of("]");
 
-                if (line.find("[") != string::npos) {
-                    int startBuildIndex = line.find(":");
-                    int endBuildIndex = line.find_last_of("]");
-                    startLooseCardIndex = endBuildIndex + 2;
+                    loose_set_start_index = builds_end_index + 2;
 
-                    string buildString = line.substr(startBuildIndex + 3, endBuildIndex - startBuildIndex - 2);
+                    string builds_string = line.substr(builds_start_index + 3,
+                        builds_end_index - builds_start_index - 2);
 
-                    vector<string> serializedBuilds = tokenize_builds(buildString);
+                    vector<string> builds_tokens = tokenize_builds(builds_string);
 
-                    for (string buildStr : serializedBuilds) {
-                        builds.push_back(generate_build(buildStr));
+                    for (string token : builds_tokens)
+                    {
+                        builds.push_back(generate_build(token));
                     }
                 }
 
-                string looseCardStrings = line.substr(startLooseCardIndex);
+                string loose_set_string = line.substr(loose_set_start_index);
 
-                vector<string> cardSerialData = tokenize_set(looseCardStrings);
+                vector<string> loose_set_tokens = tokenize_set(loose_set_string);
 
-                loose_set = generate_set(cardSerialData);
+                loose_set = generate_set(loose_set_tokens);
             }
+            else if (line.find("Build Owner") != string::npos)
+            {
+                vector<string> build_owners;
 
-            if (line.find("Deck") != string::npos) {
-                if (line.length() > 6) {
-                    int index = line.find(": ");
+                int index = line.find(":");
+
+                line.erase(line.begin(), line.begin() + index + 1);
+
+                while (line != "")
+                {
+                    if (line.find(" [ ") != string::npos && line.find(" ] ") != string::npos)
+                    {
+                        int build_start_index = line.find(" [ ");
+                        int build_end_index = line.find(" ] ");
+
+                        line.erase(line.begin() + build_start_index, line.begin() + build_end_index + 3);
+
+                        if (line.find(" [ ") != string::npos)
+                        {
+                            int next_build_index = line.find(" [ ");
+
+                            string owner = line.substr(0, next_build_index);
+
+                            owner.erase(remove(owner.begin(), owner.end(), ' '), owner.end());
+
+                            build_owners.push_back(owner);
+
+                            line.erase(line.begin(), line.begin() + next_build_index);
+                        }
+                        else
+                        {
+                            line.erase(remove(line.begin(), line.end(), ' '), line.end());
+
+                            build_owners.push_back(line);
+
+                            line.erase();
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                for (unsigned int i = 0; i < build_owners.size(); i++)
+                {
+                    if (build_owners[i] == "Computer")
+                    {
+                        builds.at(i).is_human(false);
+                    }
+                    else
+                    {
+                        builds.at(i).is_human(true);
+                    }
+                }
+            }
+            else if (line.find("Deck") != string::npos)
+            {
+                if (line.length() > 6)
+                {
+                    int index = line.find(":");
+
                     string deck_string = line.substr(index + 2);
 
                     vector<string> deck_tokens = tokenize_set(deck_string);
@@ -140,9 +218,10 @@ bool Serialization::load_game(string a_name, Tournament & a_tournament)
                     }
                 }
             }
+            else if (line.find("Next Player") != string::npos)
+            {
+                int index = line.find(":");
 
-            if (line.find("Next Player") != string::npos) {
-                int index = line.find(": ");
                 string next_player = line.substr(index + 2);
 
                 if (next_player == "Computer")
@@ -150,64 +229,7 @@ bool Serialization::load_game(string a_name, Tournament & a_tournament)
                     human_is_next = false;
                 }
             }
-
-            if (line.find("Build Owner") != string::npos) {
-                vector<string> owners;
-
-                int promptIndex = line.find(":");
-                line.erase(line.begin(), line.begin() + promptIndex + 1);
-
-                while (line != "") {
-                    if (line.find(" [ ") != string::npos && line.find(" ] ") != string::npos) {
-                        int startOfBuildIndex = line.find(" [ ");
-                        int endOfBuildIndex = line.find(" ] ");
-                        line.erase(line.begin() + startOfBuildIndex, line.begin() + endOfBuildIndex + 3);
-                        if (line.find(" [ ") != string::npos) {
-                            int nextBuild = line.find(" [ ");
-                            string name = line.substr(0, nextBuild);
-                            name.erase(remove(name.begin(), name.end(), ' '), name.end());
-                            owners.push_back(name);
-                            line.erase(line.begin(), line.begin() + nextBuild);
-                        }
-                        else {
-                            line.erase(remove(line.begin(), line.end(), ' '), line.end());
-                            owners.push_back(line);
-                            line.erase();
-                        }
-                    }
-                    else {
-                        break;
-                    }
-                }
-
-                for (unsigned int i = 0; i < owners.size(); i++) {
-                    if (owners[i] == "Human") {
-                        builds.at(i).is_human(true);
-                    }
-                    else {
-                        builds.at(i).is_human(false);
-                    }
-                }
-            }
         }
-
-        //cout << "\nRound number: " << round_number << endl;
-        //cout << "Computer score: " << computer_score << endl;
-        //cout << "Computer hand: " << computer_hand.ToString() << endl;
-        //cout << "Computer pile: " << computer_pile.ToString() << endl;
-        //cout << "Human score: " << human_score << endl;
-        //cout << "Human hand: " << human_hand.ToString() << endl;
-        //cout << "Human pile: " << human_pile.ToString() << endl;
-        //cout << "Loose set: " << loose_set.ToString() << endl;
-        //cout << "Builds:";
-        //for (Build build : builds) {
-        //    cout << " " << build.ToString();
-        //}
-        //cout << "\nDeck:";
-        //for (Card card : deck_cards) {
-        //    cout << " " << card.get_name();
-        //}
-        //cout << "\nHuman next: " << human_is_next << endl;
 
         Computer computer(!human_is_next, computer_score, computer_hand, computer_pile);
         Human human(human_is_next, human_score, human_hand, human_pile);
@@ -217,13 +239,14 @@ bool Serialization::load_game(string a_name, Tournament & a_tournament)
 
         Round round(round_number, table, deck);
 
-        infile.close();
-
         a_tournament = Tournament(computer, human, round);
+
+        infile.close();
 
         return true;
     }
-    else {
+    else
+    {
         Console::display_message("ERROR: cannot load game!");
 
         return false;
