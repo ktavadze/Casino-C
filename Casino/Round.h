@@ -13,8 +13,6 @@ public:
     Round(int a_number)
     {
         m_number = a_number;
-
-        Console::process_deck_seed();
     }
     Round(int a_number, Table a_table, Deck a_deck)
     {

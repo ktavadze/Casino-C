@@ -15,6 +15,7 @@ class Serialization
 public:
     static void save_game(string a_name, string a_state);
     static bool load_game(string a_name, Tournament & a_tournament);
+    static void seed_deck(Deck & a_deck);
 private:
     static vector<string> tokenize_set(string a_string);
     static vector<string> tokenize_builds(string a_string);

@@ -226,6 +226,30 @@ bool Serialization::load_game(string a_name, Tournament & a_tournament)
     }
 }
 
+void Serialization::seed_deck(Deck & a_deck)
+{
+    ifstream infile("../Data/deck.txt");
+
+    if (infile.is_open())
+    {
+        vector<Card> cards;
+
+        string name;
+        string line;
+
+        while (getline(infile, line))
+        {
+            cards.push_back(Card(line));
+        }
+
+        a_deck = Deck(cards);
+    }
+    else
+    {
+        Console::display_message("ERROR: cannot seed deck!");
+    }
+}
+
 vector<string> Serialization::tokenize_set(string a_string)
 {
     vector<string> tokens;

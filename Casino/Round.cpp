@@ -7,6 +7,18 @@ void Round::start(Computer & a_computer, Human & a_human)
     {
         if (a_computer.get_hand().get_size() == 0 && a_human.get_hand().get_size() == 0)
         {
+            // Seed deck
+            if (a_computer.get_pile().get_size() == 0 && a_human.get_pile().get_size() == 0)
+            {
+                if (m_table.get_loose_set().get_size() == 0 && m_table.get_builds().empty())
+                {
+                    if (Console::process_deck_seed())
+                    {
+                        Serialization::seed_deck(m_deck);
+                    }
+                }
+            }
+
             // Deal players
             a_human.set_hand(m_deck.draw_set());
             a_computer.set_hand(m_deck.draw_set());

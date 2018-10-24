@@ -30,8 +30,8 @@ Set Deck::draw_set()
     {
         if (!is_empty())
         {
-            set.add_card(m_cards.back());
-            m_cards.pop_back();
+            set.add_card(m_cards.front());
+            m_cards.erase(m_cards.begin());
         }
     }
 
