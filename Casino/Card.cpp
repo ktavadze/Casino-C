@@ -8,6 +8,9 @@ Card::Card(string a_name)
     // Assign value
     switch (a_name[1])
     {
+    case 'A':
+        m_value = 1;
+        break;
     case '2':
         m_value = 2;
         break;
@@ -44,9 +47,6 @@ Card::Card(string a_name)
     case 'K':
         m_value = 13;
         break;
-    case 'A':
-        m_value = 1;
-        break;
     }
 
     // Assign weight
@@ -70,6 +70,11 @@ Card::Card(string a_name)
     }
 }
 
+/**********************************************************************
+Function Name: is_spade
+Purpose: To determine whether a card is a spade
+Return Value: whether a card is a spade, a boolean value
+**********************************************************************/
 bool Card::is_spade()
 {
     if (m_name[0] == 'S')
@@ -80,6 +85,11 @@ bool Card::is_spade()
     return false;
 }
 
+/**********************************************************************
+Function Name: is_ace
+Purpose: To determine whether a card is an ace
+Return Value: whether a card is an ace, a boolean value
+**********************************************************************/
 bool Card::is_ace()
 {
     if (m_name[1] == 'A')
