@@ -368,11 +368,12 @@ vector<string> Console::string_to_vector(string a_string, char a_delimiter)
     vector<string> tokens;
 
     string token;
-    for_each(begin(a_string), end(a_string), [&](char const ch)
+
+    for_each(begin(a_string), end(a_string), [&](char const c)
     {
-        if (ch != a_delimiter)
+        if (c != ' ')
         {
-            token += ch;
+            token += c;
         }
         else
         {
