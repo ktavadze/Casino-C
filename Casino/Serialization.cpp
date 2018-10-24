@@ -261,7 +261,6 @@ void Serialization::seed_deck(Deck & a_deck)
     {
         vector<Card> cards;
 
-        string name;
         string line;
 
         while (getline(infile, line))
@@ -280,6 +279,7 @@ void Serialization::seed_deck(Deck & a_deck)
 vector<string> Serialization::tokenize_set(string a_string)
 {
     vector<string> tokens;
+
     string token;
 
     for_each(begin(a_string), end(a_string), [&](char const c)
@@ -310,23 +310,31 @@ vector<string> Serialization::tokenize_builds(string a_string)
 {
     vector<string> tokens;
 
-    while (a_string != "") {
-        int endOfBuildIndex = a_string.find(" ] [ ");
+    while (a_string != "")
+    {
+        int build_end_index = a_string.find(" ] [ ");
 
-        if (endOfBuildIndex == -1)
-            endOfBuildIndex = a_string.find_last_of("]");
+        if (build_end_index == -1)
+        {
+            build_end_index = a_string.find_last_of("]");
+        }
 
-        string build = a_string.substr(0, endOfBuildIndex + 2);
-        tokens.push_back(build);
+        tokens.push_back(a_string.substr(0, build_end_index + 2));
 
         if (a_string.find(" ] [ ") != string::npos)
-            a_string.erase(a_string.begin(), a_string.begin() + (endOfBuildIndex + 2));
+        {
+            a_string.erase(a_string.begin(), a_string.begin() + build_end_index + 2);
+        }
         else
+        {
             a_string.clear();
+        }
     }
 
-    for (unsigned int i = 0; i < tokens.size(); i++) {
-        if (tokens[i][0] == ' ') {
+    for (unsigned int i = 0; i < tokens.size(); i++)
+    {
+        if (tokens[i][0] == ' ')
+        {
             tokens[i].erase(tokens[i].begin(), tokens[i].begin() + 1);
         }
     }
@@ -349,31 +357,32 @@ Set Serialization::generate_set(vector<string> a_tokens)
 Build Serialization::generate_build(string a_string)
 {
     Build build;
+
     vector<Set> sets;
     stack<unsigned> brackets;
 
-    for (unsigned int i = 0; i < a_string.length() - 1; i++) {
-        if (a_string[i] == '[') {
+    for (unsigned int i = 0; i < a_string.length() - 1; i++)
+    {
+        if (a_string[i] == '[')
+        {
             brackets.push(i);
         }
-        else if (a_string[i] == ']') {
+        else if (a_string[i] == ']')
+        {
             unsigned int top_index = brackets.top();
-            string buildSubString = a_string.substr(top_index + 1, i - top_index - 1);
-            vector<string> build_str = tokenize_set(buildSubString);
-            Set buildSet = generate_set(build_str);
+            string temp_build_string = a_string.substr(top_index + 1, i - top_index - 1);
+            vector<string> build_string = tokenize_set(temp_build_string);
 
-            unsigned sum = 0;
-            for (int j = 0; j < buildSet.get_size(); j++) {
-                sum += buildSet.get_card(j).get_value();
-            }
+            Set build_set = generate_set(build_string);
 
-            sets.push_back(buildSet);
+            sets.push_back(build_set);
 
             brackets.pop();
         }
     }
 
-    for (unsigned int i = 0; i < sets.size(); i++) {
+    for (unsigned int i = 0; i < sets.size(); i++)
+    {
         build.extend(sets.at(i));
     }
 
