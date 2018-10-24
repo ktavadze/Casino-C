@@ -28,7 +28,6 @@ bool Serialization::load_game(string a_name, Tournament & a_tournament)
 
     if (infile.is_open()) {
         int round_number = 0;
-        int player_number = 0;
         int computer_score = 0;
         Set computer_hand;
         Set computer_pile;
@@ -40,6 +39,8 @@ bool Serialization::load_game(string a_name, Tournament & a_tournament)
         vector<Card> deck_cards;
         bool human_is_next = true;
 
+        bool read_computer = true;
+
         string line;
 
         while (getline(infile, line)) {
@@ -50,7 +51,7 @@ bool Serialization::load_game(string a_name, Tournament & a_tournament)
 
             if (line.find("Score") != string::npos) {
                 int index = line.find(": ");
-                if (player_number == 0) {
+                if (read_computer) {
                     computer_score = stoi(line.substr(index + 2));
                 }
                 else {
@@ -61,7 +62,7 @@ bool Serialization::load_game(string a_name, Tournament & a_tournament)
             if (line.find("Hand") != string::npos) {
                 if (line.length() > 9) {
                     int index = line.find(": ");
-                    if (player_number == 0) {
+                    if (read_computer) {
                         string computer_hand_string = line.substr(index + 2);
 
                         vector<string> computer_hand_tokens = tokenize_set(computer_hand_string);
@@ -80,7 +81,7 @@ bool Serialization::load_game(string a_name, Tournament & a_tournament)
 
             if (line.find("Pile") != string::npos) {
                 int index = line.find(": ");
-                if (player_number == 0) {
+                if (read_computer) {
                     if (line.length() > 9) {
                         string computer_pile_string = line.substr(index + 2);
 
@@ -89,7 +90,7 @@ bool Serialization::load_game(string a_name, Tournament & a_tournament)
                         computer_pile = generate_set(computer_pile_tokens);
                     }
 
-                    player_number++;
+                    read_computer = false;
                 }
                 else {
                     if (line.length() > 9) {
