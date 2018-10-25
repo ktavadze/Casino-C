@@ -1,6 +1,10 @@
 #include "pch.h"
 #include "Tournament.h"
 
+/**********************************************************************
+Function Name: start
+Purpose: To start the tournament
+**********************************************************************/
 void Tournament::start()
 {
     while (!is_over())
@@ -31,6 +35,11 @@ void Tournament::start()
     Console::display_tournament_result(m_computer.get_score(), m_human.get_score());
 }
 
+/**********************************************************************
+Function Name: is_over
+Purpose: To determine whether the tournament is over
+Return Value: Whether the tournament is over, a boolean value
+**********************************************************************/
 bool Tournament::is_over()
 {
     if (m_computer.get_score() >= 21 || m_human.get_score() >= 21)
