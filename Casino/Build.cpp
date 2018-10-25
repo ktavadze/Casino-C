@@ -1,6 +1,11 @@
 #include "pch.h"
 #include "Build.h"
 
+/**********************************************************************
+Function Name: get_value
+Purpose: To calculate the value of the build
+Return Value: The value of the build, an integer value
+**********************************************************************/
 int Build::get_value()
 {
     int value = 0;
@@ -16,6 +21,11 @@ int Build::get_value()
     return value;
 }
 
+/**********************************************************************
+Function Name: get_weight
+Purpose: To calculate the weight of the build
+Return Value: The weight of the build, an integer value
+**********************************************************************/
 int Build::get_weight()
 {
     int weight = 0;
@@ -28,21 +38,35 @@ int Build::get_weight()
     return weight;
 }
 
+/**********************************************************************
+Function Name: increase
+Purpose: To increase the build
+Parameters:
+    a_card, a Card instance passed by value
+**********************************************************************/
 void Build::increase(Card a_card)
 {
     m_sets[0].add_card(a_card);
 }
 
+/**********************************************************************
+Function Name: extend
+Purpose: To extend the build
+Parameters:
+    a_set, a Set instance passed by value
+**********************************************************************/
 void Build::extend(Set a_set)
 {
-    if (m_sets.empty())
-    {
-        m_value = a_set.get_value();
-    }
-
     m_sets.push_back(a_set);
 }
 
+/**********************************************************************
+Function Name: equals
+Purpose: To determine whether the build equals another build
+Parameters:
+    a_build, a Build instance passed by value
+Return Value: Whether the build equals another build, a boolean value
+**********************************************************************/
 bool Build::equals(Build a_build)
 {
     // Check size
@@ -69,6 +93,13 @@ bool Build::equals(Build a_build)
     return true;
 }
 
+/**********************************************************************
+Function Name: contains
+Purpose: To determine whether the Build contains a set
+Parameters:
+    a_set, a Set instance, passed by value
+Return Value: Whether the build contains a set, a boolean value
+**********************************************************************/
 bool Build::contains(Set a_set)
 {
     for (Set set : m_sets)
@@ -82,6 +113,13 @@ bool Build::contains(Set a_set)
     return false;
 }
 
+/**********************************************************************
+Function Name: contains
+Purpose: To determine whether the Build contains a card
+Parameters:
+    a_card, a Card instance, passed by value
+Return Value: Whether the build contains a card, a boolean value
+**********************************************************************/
 bool Build::contains(Card a_card)
 {
     for (Set set : m_sets)

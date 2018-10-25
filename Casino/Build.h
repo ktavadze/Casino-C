@@ -34,7 +34,5 @@ public:
     string ToString();
 private:
     bool m_is_human;
-    int m_value;
-    int m_weight;
     vector<Set> m_sets;
 };
