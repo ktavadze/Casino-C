@@ -3,6 +3,14 @@
 #include <algorithm>
 #include <stack>
 
+/**********************************************************************
+Function Name: save_game
+Purpose: To save game state
+Parameters:
+    a_name, a string
+    a_state, a string
+Return Value: Whether the game was successfully saved, a boolean value
+**********************************************************************/
 bool Serialization::save_game(string a_name, string a_state)
 {
     ofstream outfile("../Data/" + a_name);
@@ -22,6 +30,14 @@ bool Serialization::save_game(string a_name, string a_state)
     }
 }
 
+/**********************************************************************
+Function Name: load_game
+Purpose: To load game state
+Parameters:
+    a_name, a string
+    a_tournament, a Tournament instance passed by reference
+Return Value: Whether the game was successfully loaded, a boolean value
+**********************************************************************/
 bool Serialization::load_game(string a_name, Tournament & a_tournament)
 {
     ifstream infile("../Data/" + a_name);
@@ -253,6 +269,13 @@ bool Serialization::load_game(string a_name, Tournament & a_tournament)
     }
 }
 
+/**********************************************************************
+Function Name: seed_deck
+Purpose: To seed deck cards
+Parameters:
+    a_deck, a Deck instance passed by reference
+Return Value: Whether the deck was successfully seeded, a boolean value
+**********************************************************************/
 void Serialization::seed_deck(Deck & a_deck)
 {
     ifstream infile("../Data/deck.txt");
@@ -276,6 +299,13 @@ void Serialization::seed_deck(Deck & a_deck)
     }
 }
 
+/**********************************************************************
+Function Name: tokenize_set
+Purpose: To tokenize a set
+Parameters:
+    a_string, a string
+Return Value: String tokens, a vector of strings
+**********************************************************************/
 vector<string> Serialization::tokenize_set(string a_string)
 {
     vector<string> tokens;
@@ -306,6 +336,13 @@ vector<string> Serialization::tokenize_set(string a_string)
     return tokens;
 }
 
+/**********************************************************************
+Function Name: tokenize_builds
+Purpose: To tokenize builds
+Parameters:
+    a_string, a string
+Return Value: String tokens, a vector of strings
+**********************************************************************/
 vector<string> Serialization::tokenize_builds(string a_string)
 {
     vector<string> tokens;
@@ -342,6 +379,13 @@ vector<string> Serialization::tokenize_builds(string a_string)
     return tokens;
 }
 
+/**********************************************************************
+Function Name: generate_set
+Purpose: To generate a set from tokens
+Parameters:
+    a_tokens, a vector of strings passed by value
+Return Value: Generated set, an Set instance
+**********************************************************************/
 Set Serialization::generate_set(vector<string> a_tokens)
 {
     Set set;
@@ -354,6 +398,13 @@ Set Serialization::generate_set(vector<string> a_tokens)
     return set;
 }
 
+/**********************************************************************
+Function Name: generate_build
+Purpose: To generate a build from tokens
+Parameters:
+    a_string, a string
+Return Value: Generated build, an Build instance
+**********************************************************************/
 Build Serialization::generate_build(string a_string)
 {
     Build build;
