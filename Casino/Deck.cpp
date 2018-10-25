@@ -5,6 +5,8 @@
 Deck::Deck()
 {
     vector<Card> cards;
+
+    // Generate cards
     for (string suit : { "C", "D", "H", "S" })
     {
         for (string value : { "2", "3", "4", "5", "6", "7", "8", "9", "X", "J", "Q", "K", "A" })
@@ -13,15 +15,22 @@ Deck::Deck()
         }
     }
 
+    // Shuffle cards
     srand((unsigned int)time(NULL));
+
     for (int size = 52; size > 0; size--)
     {
-        int index = rand() % size;
-        m_cards.push_back(cards[index]);
-        cards.erase(cards.begin() + index);
+        int random_index = rand() % size;
+        m_cards.push_back(cards[random_index]);
+        cards.erase(cards.begin() + random_index);
     }
 }
 
+/**********************************************************************
+Function Name: draw_set
+Purpose: To draw a set of four cards from the deck
+Return Value: The set of cards, a Set instance
+**********************************************************************/
 Set Deck::draw_set()
 {
     Set set;
@@ -38,6 +47,11 @@ Set Deck::draw_set()
     return set;
 }
 
+/**********************************************************************
+Function Name: is_empty
+Purpose: To determine whether the deck is empty
+Return Value: Whether the deck is empty, a boolean value
+**********************************************************************/
 bool Deck::is_empty()
 {
     if (m_cards.size() == 0)
