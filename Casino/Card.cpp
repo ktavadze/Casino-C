@@ -72,8 +72,8 @@ Card::Card(string a_name)
 
 /**********************************************************************
 Function Name: is_spade
-Purpose: To determine whether a card is a spade
-Return Value: whether a card is a spade, a boolean value
+Purpose: To determine whether the card is a spade
+Return Value: whether the card is a spade, a boolean value
 **********************************************************************/
 bool Card::is_spade()
 {
@@ -87,8 +87,8 @@ bool Card::is_spade()
 
 /**********************************************************************
 Function Name: is_ace
-Purpose: To determine whether a card is an ace
-Return Value: whether a card is an ace, a boolean value
+Purpose: To determine whether the card is an ace
+Return Value: whether the card is an ace, a boolean value
 **********************************************************************/
 bool Card::is_ace()
 {
