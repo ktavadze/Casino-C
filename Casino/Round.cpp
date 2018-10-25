@@ -1,6 +1,13 @@
 #include "pch.h"
 #include "Round.h"
 
+/**********************************************************************
+Function Name: start
+Purpose: To start the round
+Parameters:
+    a_computer, a Computer instance passed by reference
+    a_human, a Human instance passed by reference
+**********************************************************************/
 void Round::start(Computer & a_computer, Human & a_human)
 {
     while (!is_over(a_computer, a_human))
@@ -105,6 +112,14 @@ string Round::ToString(Computer a_computer, Human a_human)
     return info;
 }
 
+/**********************************************************************
+Function Name: is_over
+Purpose: To determine whether the round is over
+Parameters:
+    a_computer, a Computer instance passed by value
+    a_human, a Human instance passed by value
+Return Value: Whether the round is over, a boolean value
+**********************************************************************/
 bool Round::is_over(Computer a_computer, Human a_human)
 {
     if (m_deck.is_empty())
@@ -118,6 +133,13 @@ bool Round::is_over(Computer a_computer, Human a_human)
     return false;
 }
 
+/**********************************************************************
+Function Name: start_turn
+Purpose: To start a turn
+Parameters:
+    a_computer, a Computer instance passed by reference
+    a_human, a Human instance passed by reference
+**********************************************************************/
 void Round::start_turn(Computer & a_computer, Human & a_human)
 {
     for (;;)
@@ -192,6 +214,14 @@ void Round::start_turn(Computer & a_computer, Human & a_human)
     }
 }
 
+/**********************************************************************
+Function Name: make_move
+Purpose: To allow players to make a move
+Parameters:
+    a_computer, a Computer instance passed by reference
+    a_human, a Human instance passed by reference
+Return Value: Whether a legal move was made, a boolean value
+**********************************************************************/
 bool Round::make_move(Computer & a_computer, Human & a_human)
 {
     if (a_human.is_next())
@@ -226,6 +256,13 @@ bool Round::make_move(Computer & a_computer, Human & a_human)
     }
 }
 
+/**********************************************************************
+Function Name: update_scores
+Purpose: To update player scores
+Parameters:
+    a_computer, a Computer instance passed by reference
+    a_human, a Human instance passed by reference
+**********************************************************************/
 void Round::update_scores(Computer & a_computer, Human & a_human)
 {
     int computer_score = 0;
