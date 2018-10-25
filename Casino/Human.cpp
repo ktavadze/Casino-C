@@ -39,35 +39,6 @@ int Human::make_move(Table & a_table)
 }
 
 /**********************************************************************
-Function Name: ask_for_help
-Purpose: To allow the human to ask for help
-Parameters:
-    a_table, a Table instance passed by value
-**********************************************************************/
-void Human::ask_for_help(Table a_table)
-{
-    if (can_increase(a_table))
-    {
-        find_best_increase(a_table);
-    }
-    else if (can_extend(a_table))
-    {
-        find_best_extend(a_table);
-    }
-    else if (can_create(a_table))
-    {
-        find_best_create(a_table);
-    }
-    else if (can_capture(a_table))
-    {
-        find_best_caputre(a_table);
-    }
-    else {
-        find_best_trail(a_table);
-    }
-}
-
-/**********************************************************************
 Function Name: process_build
 Purpose: To allow the human to make a build move
 Parameters:

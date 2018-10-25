@@ -1,6 +1,35 @@
 #include "pch.h"
 #include "Player.h"
 
+/**********************************************************************
+Function Name: ask_for_help
+Purpose: To allow the player to ask for help
+Parameters:
+    a_table, a Table instance passed by value
+**********************************************************************/
+void Player::ask_for_help(Table a_table)
+{
+    if (can_increase(a_table))
+    {
+        find_best_increase(a_table);
+    }
+    else if (can_extend(a_table))
+    {
+        find_best_extend(a_table);
+    }
+    else if (can_create(a_table))
+    {
+        find_best_create(a_table);
+    }
+    else if (can_capture(a_table))
+    {
+        find_best_caputre(a_table);
+    }
+    else {
+        find_best_trail(a_table);
+    }
+}
+
 string Player::ToString()
 {
     string info;

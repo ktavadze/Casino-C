@@ -62,6 +62,7 @@ public:
     {
         return 0;
     }
+    void ask_for_help(Table a_table);
     string ToString();
 protected:
     bool m_is_human;

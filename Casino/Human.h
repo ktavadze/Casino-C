@@ -20,7 +20,6 @@ public:
         m_pile = a_pile;
     }
     virtual int make_move(Table & a_table);
-    void ask_for_help(Table a_table);
 private:
     bool process_build(Table & a_table);
     bool process_build_create(Table & a_table);

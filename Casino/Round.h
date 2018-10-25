@@ -22,15 +22,15 @@ public:
     {
         return m_number;
     }
-    void start(Computer & a_computer, Human & a_human);
-    string ToString(Computer a_computer, Human a_human);
+    void start(Player & a_computer, Player & a_human);
+    string ToString(Player a_computer, Player a_human);
 private:
     int m_number;
     Table m_table;
     Deck m_deck;
 
-    bool is_over(Computer a_computer, Human a_human);
-    void start_turn(Computer & a_computer, Human & a_human);
-    bool make_move(Computer & a_computer, Human & a_human);
-    void update_scores(Computer & a_computer, Human & a_human);
+    bool is_over(Player a_computer, Player a_human);
+    void start_turn(Player & a_computer, Player & a_human);
+    bool make_move(Player & a_computer, Player & a_human);
+    void update_scores(Player & a_computer, Player & a_human);
 };
