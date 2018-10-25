@@ -27,5 +27,5 @@ public:
     static void display_tournament_scores(int a_computer_score, int a_human_score);
     static void display_tournament_result(int a_computer_score, int a_human_score);
 private:
-    static vector<string> string_to_vector(string a_string, char a_delimiter);
+    static vector<string> string_to_vector(string a_string);
 };

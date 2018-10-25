@@ -3,6 +3,11 @@
 #include <ctime>
 #include <algorithm>
 
+/**********************************************************************
+Function Name: process_main_menu
+Purpose: To process main menu
+Return Value: Menu choice, an integer value
+**********************************************************************/
 int Console::process_main_menu()
 {
     cout << "***WELCOME TO CASINO!***" << endl;
@@ -23,6 +28,11 @@ int Console::process_main_menu()
     return choice;
 }
 
+/**********************************************************************
+Function Name: process_coin_toss
+Purpose: To process coin toss
+Return Value: Whether the human guessed correctly, a boolean value
+**********************************************************************/
 bool Console::process_coin_toss()
 {
     int choice;
@@ -65,6 +75,11 @@ bool Console::process_coin_toss()
     return false;
 }
 
+/**********************************************************************
+Function Name: process_deck_seed
+Purpose: To process deck seed
+Return Value: Whether the human chose to seed deck, a boolean value
+**********************************************************************/
 bool Console::process_deck_seed()
 {
     int choice;
@@ -90,6 +105,13 @@ bool Console::process_deck_seed()
     }
 }
 
+/**********************************************************************
+Function Name: process_turn_menu
+Purpose: To process turn menu
+Parameters:
+    a_is_human, a boolean
+Return Value: Menu choice, an integer value
+**********************************************************************/
 int Console::process_turn_menu(bool a_is_human)
 {
     int choice;
@@ -126,6 +148,11 @@ int Console::process_turn_menu(bool a_is_human)
     return choice;
 }
 
+/**********************************************************************
+Function Name: process_move_menu
+Purpose: To process move menu
+Return Value: Menu choice, an integer value
+**********************************************************************/
 int Console::process_move_menu()
 {
     int choice;
@@ -144,6 +171,11 @@ int Console::process_move_menu()
     return choice;
 }
 
+/**********************************************************************
+Function Name: process_build_menu
+Purpose: To process build menu
+Return Value: Menu choice, an integer value
+**********************************************************************/
 int Console::process_build_menu()
 {
     int choice;
@@ -162,6 +194,11 @@ int Console::process_build_menu()
     return choice;
 }
 
+/**********************************************************************
+Function Name: process_file_menu
+Purpose: To process file menu
+Return Value: File name, a string value
+**********************************************************************/
 string Console::process_file_menu()
 {
     string name;
@@ -173,6 +210,13 @@ string Console::process_file_menu()
     return name;
 }
 
+/**********************************************************************
+Function Name: pick_player_card
+Purpose: To pick player card
+Parameters:
+    a_hand, a Set instance passed by value
+Return Value: Menu choice, an integer value
+**********************************************************************/
 int Console::pick_player_card(Set a_hand)
 {
     int size = a_hand.get_size();
@@ -198,6 +242,13 @@ int Console::pick_player_card(Set a_hand)
     return choice;
 }
 
+/**********************************************************************
+Function Name: pick_build
+Purpose: To pick build
+Parameters:
+    a_builds, a vector of Build instances passed by value
+Return Value: Menu choice, an integer value
+**********************************************************************/
 int Console::pick_build(vector<Build> a_builds)
 {
     int size = a_builds.size();
@@ -223,6 +274,13 @@ int Console::pick_build(vector<Build> a_builds)
     return choice;
 }
 
+/**********************************************************************
+Function Name: pick_loose_set
+Purpose: To pick loose set
+Parameters:
+    a_set, a Set instance passed by value
+Return Value: Picked loose set, a Set instance
+**********************************************************************/
 Set Console::pick_loose_set(Set a_set)
 {
     Set selected_set;
@@ -243,7 +301,7 @@ Set Console::pick_loose_set(Set a_set)
         transform(input.begin(), input.end(), input.begin(), ::toupper);
 
         // Tokenize
-        vector<string> names = string_to_vector(input, ' ');
+        vector<string> names = string_to_vector(input);
 
         // Validate
         if (names.empty())
@@ -269,6 +327,13 @@ Set Console::pick_loose_set(Set a_set)
     return selected_set;
 }
 
+/**********************************************************************
+Function Name: pick_table_set
+Purpose: To pick table set
+Parameters:
+    a_table, a Table instance passed by value
+Return Value: Picked set, a Set instance
+**********************************************************************/
 Set Console::pick_table_set(Table a_table)
 {
     Set selected_set;
@@ -289,7 +354,7 @@ Set Console::pick_table_set(Table a_table)
         transform(input.begin(), input.end(), input.begin(), ::toupper);
 
         // Tokenize
-        vector<string> names = string_to_vector(input, ' ');
+        vector<string> names = string_to_vector(input);
 
         // Validate
         if (names.empty())
@@ -315,6 +380,12 @@ Set Console::pick_table_set(Table a_table)
     return selected_set;
 }
 
+/**********************************************************************
+Function Name: display_message
+Purpose: To display a message
+Parameters:
+    a_message, a string
+**********************************************************************/
 void Console::display_message(string a_message)
 {
     cout << endl << "**************************************************" << endl;
@@ -322,6 +393,17 @@ void Console::display_message(string a_message)
     cout << endl << "**************************************************" << endl;
 }
 
+/**********************************************************************
+Function Name: display_round_results
+Purpose: To display round results
+Parameters:
+    a_computer_pile, a Set instance passed by value
+    a_human_pile, a Set instance passed by value
+    a_computer_spades, an integer
+    a_human_spades, an integer
+    a_computer_score, an integer
+    a_human_score, an integer
+**********************************************************************/
 void Console::display_round_results(Set a_computer_pile, Set a_human_pile,
     int a_computer_spades, int a_human_spades, int a_computer_score, int a_human_score)
 {
@@ -338,6 +420,13 @@ void Console::display_round_results(Set a_computer_pile, Set a_human_pile,
     cout << "   Score: +" << a_human_score << endl;
 }
 
+/**********************************************************************
+Function Name: display_tournament_scores
+Purpose: To display tournament scores
+Parameters:
+    a_computer_score, an integer
+    a_human_score, an integer
+**********************************************************************/
 void Console::display_tournament_scores(int a_computer_score, int a_human_score)
 {
     cout << endl << "***TOURNAMENT SCORES***" << endl;
@@ -345,6 +434,13 @@ void Console::display_tournament_scores(int a_computer_score, int a_human_score)
     cout << "Human: " << a_human_score << endl;
 }
 
+/**********************************************************************
+Function Name: display_tournament_result
+Purpose: To display tournament result
+Parameters:
+    a_computer_score, an integer
+    a_human_score, an integer
+**********************************************************************/
 void Console::display_tournament_result(int a_computer_score, int a_human_score)
 {
     cout << endl << "***FINAL RESULT***" << endl;
@@ -363,7 +459,14 @@ void Console::display_tournament_result(int a_computer_score, int a_human_score)
     cout << endl << endl;
 }
 
-vector<string> Console::string_to_vector(string a_string, char a_delimiter)
+/**********************************************************************
+Function Name: string_to_vector
+Purpose: To tokenize a string
+Parameters:
+    a_string, a string
+Return Value: String tokens, a vector of strings
+**********************************************************************/
+vector<string> Console::string_to_vector(string a_string)
 {
     vector<string> tokens;
 
