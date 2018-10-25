@@ -14,6 +14,13 @@ string Player::ToString()
     return info;
 }
 
+/**********************************************************************
+Function Name: capture_loose_card
+Purpose: To capture a loose card
+Parameters:
+    a_table, a Table instace passed by reference
+    a_card, a Card instance passed by value
+**********************************************************************/
 void Player::capture_loose_card(Table & a_table, Card a_card)
 {
     // Add loose card to pile
@@ -23,6 +30,13 @@ void Player::capture_loose_card(Table & a_table, Card a_card)
     a_table.remove_loose_card(a_card);
 }
 
+/**********************************************************************
+Function Name: capture_build
+Purpose: To capture a build
+Parameters:
+    a_table, a Table instace passed by reference
+    a_build, a Build instance passed by value
+**********************************************************************/
 void Player::capture_build(Table & a_table, Build a_build)
 {
     // Add build to pile
@@ -35,6 +49,13 @@ void Player::capture_build(Table & a_table, Build a_build)
     a_table.remove_build(a_build);
 }
 
+/**********************************************************************
+Function Name: can_increase
+Purpose: To determine whether the player can increase any builds
+Parameters:
+    a_table, a Table instace passed by value
+Return Value: Whether the player can increase any builds, a boolean value
+**********************************************************************/
 bool Player::can_increase(Table a_table)
 {
     Set table_loose_set = a_table.get_loose_set();
@@ -61,6 +82,13 @@ bool Player::can_increase(Table a_table)
     return false;
 }
 
+/**********************************************************************
+Function Name: can_extend
+Purpose: To determine whether the player can extend any builds
+Parameters:
+    a_table, a Table instace passed by value
+Return Value: Whether the player can extend any builds, a boolean value
+**********************************************************************/
 bool Player::can_extend(Table a_table)
 {
     Set table_loose_set = a_table.get_loose_set();
@@ -79,6 +107,7 @@ bool Player::can_extend(Table a_table)
                     build_set.add_card(player_card);
                     build_set.add_card(loose_card);
 
+                    // Check for possible extended builds
                     for (Build table_build : a_table.get_builds())
                     {
                         if (table_build.get_value() == build_set.get_value())
@@ -98,6 +127,7 @@ bool Player::can_extend(Table a_table)
                     build_set.add_card(player_card);
                     build_set.add_set(loose_set);
 
+                    // Check for possible extended builds
                     for (Build table_build : a_table.get_builds())
                     {
                         if (table_build.get_value() == build_set.get_value())
@@ -113,6 +143,13 @@ bool Player::can_extend(Table a_table)
     return false;
 }
 
+/**********************************************************************
+Function Name: can_build
+Purpose: To determine whether the player create any builds
+Parameters:
+    a_table, a Table instace passed by value
+Return Value: Whether the player can create any builds, a boolean value
+**********************************************************************/
 bool Player::can_build(Table a_table)
 {
     Set table_loose_set = a_table.get_loose_set();
@@ -145,6 +182,13 @@ bool Player::can_build(Table a_table)
     return false;
 }
 
+/**********************************************************************
+Function Name: can_capture
+Purpose: To determine whether the player can capture anything
+Parameters:
+    a_table, a Table instace passed by value
+Return Value: Whether the player can capture anything, a boolean value
+**********************************************************************/
 bool Player::can_capture(Table a_table)
 {
     // Check loose set
@@ -192,6 +236,14 @@ bool Player::can_capture(Table a_table)
     return false;
 }
 
+/**********************************************************************
+Function Name: reserved_for_capture
+Purpose: To determine whether a card is reserved for capture
+Parameters:
+    a_table, a Table instace passed by value
+    a_card, a Card instance passed by value
+Return Value: Whether a card is reserved for capture, a boolean value
+**********************************************************************/
 bool Player::reserved_for_capture(Table a_table, Card a_card)
 {
     for (Build build : a_table.get_builds())
@@ -208,6 +260,13 @@ bool Player::reserved_for_capture(Table a_table, Card a_card)
     return false;
 }
 
+/**********************************************************************
+Function Name: owns_build
+Purpose: To determine whether the player owns any builds
+Parameters:
+    a_table, a Table instace passed by value
+Return Value: Whether the player owns any builds, a boolean value
+**********************************************************************/
 bool Player::owns_build(Table a_table)
 {
     for (Build build : a_table.get_builds())
@@ -221,6 +280,13 @@ bool Player::owns_build(Table a_table)
     return false;
 }
 
+/**********************************************************************
+Function Name: count_cards_held
+Purpose: To calculate the number of cards of specified value in hand
+Parameters:
+    a_value, an integer
+Return Value: The number of cards of specified value in held, an integer value
+**********************************************************************/
 int Player::count_cards_held(int a_value)
 {
     int count = 0;
@@ -236,6 +302,13 @@ int Player::count_cards_held(int a_value)
     return count;
 }
 
+/**********************************************************************
+Function Name: find_best_increase
+Purpose: To find the best increased build
+Parameters:
+    a_table, a Table instace passed by value
+Return Value: The best increased build, a Build instance
+**********************************************************************/
 Build Player::find_best_increase(Table a_table)
 {
     // Find possible builds
@@ -286,6 +359,13 @@ Build Player::find_best_increase(Table a_table)
     return best_build;
 }
 
+/**********************************************************************
+Function Name: find_best_extend
+Purpose: To find the best extended build
+Parameters:
+    a_table, a Table instace passed by value
+Return Value: The best extended build, a Build instance
+**********************************************************************/
 Build Player::find_best_extend(Table a_table)
 {
     // Find possible builds
@@ -307,6 +387,7 @@ Build Player::find_best_extend(Table a_table)
                     build_set.add_card(player_card);
                     build_set.add_card(loose_card);
 
+                    // Find possible extended builds
                     for (Build table_build : a_table.get_builds())
                     {
                         if (table_build.get_value() == build_set.get_value())
@@ -329,6 +410,7 @@ Build Player::find_best_extend(Table a_table)
                     build_set.add_card(player_card);
                     build_set.add_set(loose_set);
 
+                    // Find possible extended builds
                     for (Build table_build : a_table.get_builds())
                     {
                         if (table_build.get_value() == build_set.get_value())
@@ -362,6 +444,13 @@ Build Player::find_best_extend(Table a_table)
     return best_build;
 }
 
+/**********************************************************************
+Function Name: find_best_build
+Purpose: To find the best new build
+Parameters:
+    a_table, a Table instace passed by value
+Return Value: The best new build, a Build instance
+**********************************************************************/
 Build Player::find_best_build(Table a_table)
 {
     // Find possible builds
@@ -424,6 +513,13 @@ Build Player::find_best_build(Table a_table)
     return best_build;
 }
 
+/**********************************************************************
+Function Name: find_best_capture_set
+Purpose: To find the best capture set
+Parameters:
+    a_table, a Table instace passed by value
+Return Value: The best capture set, a Set instance
+**********************************************************************/
 Set Player::find_best_capture_set(Table a_table)
 {
     // Find possible capture sets
@@ -517,6 +613,13 @@ Set Player::find_best_capture_set(Table a_table)
     return best_capture_set;
 }
 
+/**********************************************************************
+Function Name: find_best_trail_card
+Purpose: To find the best trail card
+Parameters:
+    a_table, a Table instace passed by value
+Return Value: The best trail card, a Card instance
+**********************************************************************/
 Card Player::find_best_trail_card(Table a_table)
 {
     // Find best trail card
@@ -540,6 +643,13 @@ Card Player::find_best_trail_card(Table a_table)
     return best_trail_card;
 }
 
+/**********************************************************************
+Function Name: generate_set_combinations
+Purpose: To generate set combinations
+Parameters:
+    a_loose_set, a Set instace passed by value
+Return Value: The possible set combinations, a vector of Set instances
+**********************************************************************/
 vector<Set> Player::generate_set_combinations(Set a_loose_set)
 {
     vector<Set> loose_sets;
@@ -601,6 +711,14 @@ vector<Set> Player::generate_set_combinations(Set a_loose_set)
     return loose_sets;
 }
 
+/**********************************************************************
+Function Name: vector_contains_set
+Purpose: To determine whether a vector of sets contains specified set
+Parameters:
+    a_vector, a vector of Set instances passed by value
+    a_set, a Set instace passed by value
+Return Value: The possible set combinations, a vector of Set instances
+**********************************************************************/
 bool Player::vector_contains_set(vector<Set> a_vector, Set a_set)
 {
     for (Set set : a_vector)
