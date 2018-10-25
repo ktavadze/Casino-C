@@ -3,10 +3,11 @@
 
 /**********************************************************************
 Function Name: make_move
-Purpose: To allow the player (virtual) to make a move
+Purpose: To allow the computer (virtual) to make a move
 Parameters:
     a_table, a Table instance passed by reference
 Return Value: The move code associated with made move, an integer value
+    (1 = capture; 0 = build/trail)
 **********************************************************************/
 int Computer::make_move(Table & a_table)
 {

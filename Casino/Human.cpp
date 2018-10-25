@@ -1,6 +1,14 @@
 #include "pch.h"
 #include "Human.h"
 
+/**********************************************************************
+Function Name: make_move
+Purpose: To allow the human (virtual) to make a move
+Parameters:
+    a_table, a Table instance passed by reference
+Return Value: The move code associated with made move, an integer value
+    (1 = capture; 0 = build/trail; -1 = illegal)
+**********************************************************************/
 int Human::make_move(Table & a_table)
 {
     int choice = Console::process_move_menu();
@@ -30,6 +38,12 @@ int Human::make_move(Table & a_table)
     return -1;
 }
 
+/**********************************************************************
+Function Name: ask_for_help
+Purpose: To allow the human to ask for help
+Parameters:
+    a_table, a Table instance passed by value
+**********************************************************************/
 void Human::ask_for_help(Table a_table)
 {
     if (can_increase(a_table))
@@ -53,6 +67,13 @@ void Human::ask_for_help(Table a_table)
     }
 }
 
+/**********************************************************************
+Function Name: process_build
+Purpose: To allow the human to make a build move
+Parameters:
+    a_table, a Table instance passed by reference
+Return Value: Whether a legal build move was made, a boolean value
+**********************************************************************/
 bool Human::process_build(Table & a_table)
 {
     int choice = Console::process_build_menu();
@@ -70,6 +91,13 @@ bool Human::process_build(Table & a_table)
     }
 }
 
+/**********************************************************************
+Function Name: process_build_create
+Purpose: To allow the human to create a build
+Parameters:
+    a_table, a Table instance passed by reference
+Return Value: Whether a legal build was created, a boolean value
+**********************************************************************/
 bool Human::process_build_create(Table & a_table)
 {
     // Check loose set
@@ -110,6 +138,13 @@ bool Human::process_build_create(Table & a_table)
     return false;
 }
 
+/**********************************************************************
+Function Name: process_build_increase
+Purpose: To allow the human to increase a build
+Parameters:
+    a_table, a Table instance passed by reference
+Return Value: Whether a legal build was increased, a boolean value
+**********************************************************************/
 bool Human::process_build_increase(Table & a_table)
 {
     // Check builds
@@ -142,6 +177,13 @@ bool Human::process_build_increase(Table & a_table)
     return false;
 }
 
+/**********************************************************************
+Function Name: process_build_extend
+Purpose: To allow the human to extend a build
+Parameters:
+    a_table, a Table instance passed by reference
+Return Value: Whether a legal build was extended, a boolean value
+**********************************************************************/
 bool Human::process_build_extend(Table & a_table)
 {
     // Check builds
@@ -188,6 +230,13 @@ bool Human::process_build_extend(Table & a_table)
     return false;
 }
 
+/**********************************************************************
+Function Name: process_capture
+Purpose: To allow the human to make a capture move
+Parameters:
+    a_table, a Table instance passed by reference
+Return Value: Whether a legal capture move was made, a boolean value
+**********************************************************************/
 bool Human::process_capture(Table & a_table)
 {
     // Check table
@@ -232,6 +281,13 @@ bool Human::process_capture(Table & a_table)
     return false;
 }
 
+/**********************************************************************
+Function Name: process_trail
+Purpose: To allow the human to make a trail move
+Parameters:
+    a_table, a Table instance passed by reference
+Return Value: Whether a legal trail move was made, a boolean value
+**********************************************************************/
 bool Human::process_trail(Table & a_table)
 {
     // Select trail card
@@ -252,6 +308,15 @@ bool Human::process_trail(Table & a_table)
     return false;
 }
 
+/**********************************************************************
+Function Name: can_create_build
+Purpose: To determine whether the human can create specified build
+Parameters:
+    a_table, a Table instace passed by value
+    a_build_card, a Card instance passed by value
+    a_loose_set, a Set instance passed by value
+Return Value: Whether the human can create specified build, a boolean value
+**********************************************************************/
 bool Human::can_create_build(Table a_table, Card a_build_card, Set a_loose_set)
 {
     // Check build card
@@ -273,6 +338,15 @@ bool Human::can_create_build(Table a_table, Card a_build_card, Set a_loose_set)
     return true;
 }
 
+/**********************************************************************
+Function Name: can_increase_build
+Purpose: To determine whether the human can increase specified build
+Parameters:
+    a_table, a Table instace passed by value
+    a_selected_build, a Build instance passed by value
+    a_build_card, a Card instance passed by value
+Return Value: Whether the human can increase specified build, a boolean value
+**********************************************************************/
 bool Human::can_increase_build(Table a_table, Build a_selected_build, Card a_build_card)
 {
     // Check build card
@@ -310,6 +384,16 @@ bool Human::can_increase_build(Table a_table, Build a_selected_build, Card a_bui
     return true;
 }
 
+/**********************************************************************
+Function Name: can_extend_build
+Purpose: To determine whether the human can extend specified build
+Parameters:
+    a_table, a Table instace passed by value
+    a_selected_build, a Build instance passed by value
+    a_build_card, a Card instance passed by value
+    a_loose_set, a Set instance passed by value
+Return Value: Whether the human can extend specified build, a boolean value
+**********************************************************************/
 bool Human::can_extend_build(Table a_table, Build a_selected_build, Card a_build_card, Set a_loose_set)
 {
     // Check build card
@@ -331,6 +415,16 @@ bool Human::can_extend_build(Table a_table, Build a_selected_build, Card a_build
     return true;
 }
 
+/**********************************************************************
+Function Name: can_capture_selection
+Purpose: To determine whether the human can capture specified selection
+Parameters:
+    a_table, a Table instace passed by value
+    a_capture_card, a Card instance passed by value
+    a_loose_set, a Set instance passed by value
+    a_firm_set, a Set instance passed by value
+Return Value: Whether the human can extend specified build, a boolean value
+**********************************************************************/
 bool Human::can_capture_selection(Table a_table, Card a_capture_card, Set a_loose_set, Set a_firm_set)
 {
     // Check loose set
@@ -355,6 +449,7 @@ bool Human::can_capture_selection(Table a_table, Card a_capture_card, Set a_loos
         }
     }
 
+    // Check for matching loose cards
     for (Card card : a_table.get_loose_set().get_cards())
     {
         if (card.get_value() == a_capture_card.get_value())
@@ -377,6 +472,7 @@ bool Human::can_capture_selection(Table a_table, Card a_capture_card, Set a_loos
         {
             if (build.get_value() == a_capture_card.get_value())
             {
+                // Check for matching owned builds
                 if (build.is_human() == m_is_human && !a_firm_set.contains(build.get_sets()))
                 {
                     if (count_cards_held(a_capture_card.get_value()) < 2)
@@ -423,6 +519,14 @@ bool Human::can_capture_selection(Table a_table, Card a_capture_card, Set a_loos
     return true;
 }
 
+/**********************************************************************
+Function Name: can_trail
+Purpose: To determine whether the human can trail specified card
+Parameters:
+    a_table, a Table instace passed by value
+    a_trail_card, a Card instance passed by value
+Return Value: Whether the human can extend specified build, a boolean value
+**********************************************************************/
 bool Human::can_trail(Table a_table, Card a_trail_card)
 {
     // Check trail card
@@ -455,6 +559,15 @@ bool Human::can_trail(Table a_table, Card a_trail_card)
     return true;
 }
 
+/**********************************************************************
+Function Name: capture
+Purpose: To allow the human to capture specified selection
+Parameters:
+    a_table, a Table instace passed by reference
+    a_capture_card, a Card instance passed by value
+    a_loose_set, a Set instance passed by value
+    a_firm_set, a Set instance passed by value
+**********************************************************************/
 void Human::capture(Table & a_table, Card a_capture_card, Set a_loose_set, Set a_firm_set)
 {
     // Add capture card to pile
