@@ -75,7 +75,7 @@ protected:
     void capture_build(Table & a_table, Build a_build);
     bool can_increase(Table a_table);
     bool can_extend(Table a_table);
-    bool can_build(Table a_table);
+    bool can_create(Table a_table);
     bool can_capture(Table a_table);
     bool reserved_for_capture(Table a_table, Card a_card);
     bool owns_build(Table a_table);
@@ -83,9 +83,9 @@ protected:
 
     Build find_best_increase(Table a_table);
     Build find_best_extend(Table a_table);
-    Build find_best_build(Table a_table);
-    Set find_best_capture_set(Table a_table);
-    Card find_best_trail_card(Table a_table);
+    Build find_best_create(Table a_table);
+    Set find_best_caputre(Table a_table);
+    Card find_best_trail(Table a_table);
 
     vector<Set> generate_set_combinations(Set a_set);
     bool vector_contains_set(vector<Set> a_vector, Set a_set);

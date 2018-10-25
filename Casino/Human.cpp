@@ -40,16 +40,16 @@ void Human::ask_for_help(Table a_table)
     {
         find_best_extend(a_table);
     }
-    else if (can_build(a_table))
+    else if (can_create(a_table))
     {
-        find_best_build(a_table);
+        find_best_create(a_table);
     }
     else if (can_capture(a_table))
     {
-        find_best_capture_set(a_table);
+        find_best_caputre(a_table);
     }
     else {
-        find_best_trail_card(a_table);
+        find_best_trail(a_table);
     }
 }
 

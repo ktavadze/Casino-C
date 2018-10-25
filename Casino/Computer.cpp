@@ -11,7 +11,7 @@ int Computer::make_move(Table & a_table)
     {
         process_extend(a_table);
     }
-    else if (can_build(a_table))
+    else if (can_create(a_table))
     {
         process_build(a_table);
     }
@@ -44,21 +44,21 @@ void Computer::process_extend(Table & a_table)
 
 void Computer::process_build(Table & a_table)
 {
-    Build best_build = find_best_build(a_table);
+    Build best_build = find_best_create(a_table);
 
     create_build(a_table, best_build);
 }
 
 void Computer::process_capture(Table & a_table)
 {
-    Set best_capture_set = find_best_capture_set(a_table);
+    Set best_capture_set = find_best_caputre(a_table);
 
     capture(a_table, best_capture_set);
 }
 
 void Computer::process_trail(Table & a_table)
 {
-    Card best_trail_card = find_best_trail_card(a_table);
+    Card best_trail_card = find_best_trail(a_table);
 
     trail(a_table, best_trail_card);
 }
