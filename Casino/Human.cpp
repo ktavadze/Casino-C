@@ -166,7 +166,7 @@ bool Human::process_build_increase(Table & a_table)
     // Increase build
     if (can_increase_build(a_table, selected_build, build_card))
     {
-        a_table.increase_build(build_card_index, build_card, m_is_human);
+        a_table.increase_build(selected_build_index, build_card, m_is_human);
 
         // Remove build card from hand
         m_hand.remove_card(build_card);
