@@ -5,15 +5,15 @@ int Computer::make_move(Table & a_table)
 {
     if (can_increase(a_table))
     {
-        process_increase(a_table);
+        process_increase_build(a_table);
     }
     else if (can_extend(a_table))
     {
-        process_extend(a_table);
+        process_extend_build(a_table);
     }
     else if (can_create(a_table))
     {
-        process_build(a_table);
+        process_create_build(a_table);
     }
     else if (can_capture(a_table))
     {
@@ -28,21 +28,21 @@ int Computer::make_move(Table & a_table)
     return 0;
 }
 
-void Computer::process_increase(Table & a_table)
+void Computer::process_increase_build(Table & a_table)
 {
     Build best_build = find_best_increase(a_table);
 
     increase_build(a_table, best_build);
 }
 
-void Computer::process_extend(Table & a_table)
+void Computer::process_extend_build(Table & a_table)
 {
     Build best_build = find_best_extend(a_table);
 
     extend_build(a_table, best_build);
 }
 
-void Computer::process_build(Table & a_table)
+void Computer::process_create_build(Table & a_table)
 {
     Build best_build = find_best_create(a_table);
 

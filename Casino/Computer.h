@@ -21,9 +21,9 @@ public:
     }
     virtual int make_move(Table & a_table);
 private:
-    void process_increase(Table & a_table);
-    void process_extend(Table & a_table);
-    void process_build(Table & a_table);
+    void process_increase_build(Table & a_table);
+    void process_extend_build(Table & a_table);
+    void process_create_build(Table & a_table);
     void process_capture(Table & a_table);
     void process_trail(Table & a_table);
     void increase_build(Table & a_table, Build a_build);
