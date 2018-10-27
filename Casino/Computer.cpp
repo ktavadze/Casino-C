@@ -110,7 +110,7 @@ Parameters:
 **********************************************************************/
 void Computer::increase_build(Table & a_table, Build a_build)
 {
-    Set build_set = a_build.get_sets().at(0);
+    Set build_set = a_build.get_sets().front();
 
     // Remove player card from hand
     m_hand.remove_card(build_set.get_last_card());
@@ -136,7 +136,7 @@ Parameters:
 **********************************************************************/
 void Computer::extend_build(Table & a_table, Build a_build)
 {
-    Set build_set = a_build.get_sets().at(a_build.get_sets().size() - 1);
+    Set build_set = a_build.get_sets().back();
 
     // Remove player card from hand
     m_hand.remove_card(build_set.get_first_card());
@@ -181,7 +181,7 @@ Parameters:
 **********************************************************************/
 void Computer::create_build(Table & a_table, Build a_build)
 {
-    Set build_set = a_build.get_sets().at(0);
+    Set build_set = a_build.get_sets().front();
 
     // Remove player card from hand
     m_hand.remove_card(build_set.get_first_card());

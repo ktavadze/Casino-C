@@ -377,7 +377,7 @@ Build Player::find_best_increase(Table a_table)
         }
     }
 
-    cout << "\nWith " << best_build.get_sets().at(0).get_cards().back().get_name();
+    cout << "\nWith " << best_build.get_sets().front().get_last_card().get_name();
     cout << " increase " << best_build.ToString() << endl;
     cout << "Heuristic: " << best_build.get_weight() << endl;
 
