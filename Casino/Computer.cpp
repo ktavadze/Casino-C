@@ -141,6 +141,15 @@ void Computer::extend_build(Table & a_table, Build a_build)
     // Remove player card from hand
     m_hand.remove_card(build_set.get_first_card());
 
+    // Remove loose set from table
+    for (Card card : a_table.get_loose_set().get_cards())
+    {
+        if (build_set.contains(card))
+        {
+            a_table.remove_loose_card(card);
+        }
+    }
+
     Set extended_set;
 
     for (Build build : a_table.get_builds())
