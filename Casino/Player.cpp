@@ -357,13 +357,9 @@ Build Player::find_best_increase(Table a_table)
                 {
                     if (count_cards_held(build.get_value() + player_card.get_value()) > 0)
                     {
-                        Set build_set;
-                        build_set.add_card(player_card);
-                        build_set.add_set(build.get_sets().at(0));
+                        build.increase(player_card);
 
-                        Build increased_build(m_is_human, build_set);
-
-                        possible_builds.push_back(increased_build);
+                        possible_builds.push_back(build);
                     }
                 }
             }
@@ -381,7 +377,7 @@ Build Player::find_best_increase(Table a_table)
         }
     }
 
-    cout << "\nWith " << best_build.get_sets().at(0).get_card(0).get_name();
+    cout << "\nWith " << best_build.get_sets().at(0).get_cards().back().get_name();
     cout << " increase " << best_build.ToString() << endl;
     cout << "Heuristic: " << best_build.get_weight() << endl;
 
