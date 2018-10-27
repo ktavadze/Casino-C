@@ -393,6 +393,12 @@ void Console::display_message(string a_message)
     cout << endl << "**************************************************" << endl;
 }
 
+/**********************************************************************
+Function Name: display_best_increase
+Purpose: To display best increase move
+Parameters:
+    a_build, a Build instance passed by value
+**********************************************************************/
 void Console::display_best_increase(Build a_build)
 {
     cout << endl << "***INCREASE BUILD***" << endl;
@@ -401,6 +407,12 @@ void Console::display_best_increase(Build a_build)
     cout << "Heuristic: " << a_build.get_weight() << endl;
 }
 
+/**********************************************************************
+Function Name: display_best_extend
+Purpose: To display best extend move
+Parameters:
+    a_build, a Build instance passed by value
+**********************************************************************/
 void Console::display_best_extend(Build a_build)
 {
     cout << endl << "***EXTEND BUILD***" << endl;
@@ -409,14 +421,26 @@ void Console::display_best_extend(Build a_build)
     cout << "Heuristic: " << a_build.get_weight() << endl;
 }
 
+/**********************************************************************
+Function Name: display_best_create
+Purpose: To display best create move
+Parameters:
+    a_build, a Build instance passed by value
+**********************************************************************/
 void Console::display_best_create(Build a_build)
 {
     cout << endl << "***CREATE BUILD***" << endl;
     cout << "With " << a_build.get_sets().front().get_first_card().get_name();
-    cout << " build " << a_build.ToString() << endl;
+    cout << " create " << a_build.ToString() << endl;
     cout << "Heuristic: " << a_build.get_weight() << endl;
 }
 
+/**********************************************************************
+Function Name: display_best_capture
+Purpose: To display best capture move
+Parameters:
+    a_set, a Set instance passed by value
+**********************************************************************/
 void Console::display_best_capture(Set a_set)
 {
     cout << endl << "***CAPTURE***" << endl;
@@ -425,6 +449,12 @@ void Console::display_best_capture(Set a_set)
     cout << "Heuristic: " << a_set.get_weight() << endl;
 }
 
+/**********************************************************************
+Function Name: display_best_trail
+Purpose: To display best trail move
+Parameters:
+    a_card, a Card instance passed by value
+**********************************************************************/
 void Console::display_best_trail(Card a_card)
 {
     cout << endl << "***TRAIL***" << endl;
