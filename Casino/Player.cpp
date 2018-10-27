@@ -462,7 +462,7 @@ Build Player::find_best_extend(Table a_table)
         }
     }
 
-    cout << "\nWith " << best_build.get_sets().at(0).get_card(0).get_name();
+    cout << "\nWith " << best_build.get_sets().back().get_card(0).get_name();
     cout << " extend " << best_build.ToString() << endl;
     cout << "Heuristic: " << best_build.get_weight() << endl;
 
