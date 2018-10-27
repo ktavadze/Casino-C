@@ -418,7 +418,6 @@ Build Player::find_best_extend(Table a_table)
                         if (table_build.get_value() == build_set.get_value())
                         {
                             table_build.extend(build_set);
-                            table_build.is_human(m_is_human);
 
                             possible_builds.push_back(table_build);
                         }
@@ -441,7 +440,6 @@ Build Player::find_best_extend(Table a_table)
                         if (table_build.get_value() == build_set.get_value())
                         {
                             table_build.extend(build_set);
-                            table_build.is_human(m_is_human);
 
                             possible_builds.push_back(table_build);
                         }
