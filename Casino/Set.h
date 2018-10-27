@@ -26,6 +26,14 @@ public:
     {
         return m_cards.at(a_index);
     }
+    inline Card get_first_card()
+    {
+        return m_cards.front();
+    }
+    inline Card get_last_card()
+    {
+        return m_cards.back();
+    }
     int get_value();
     int get_weight();
     void add_card(Card a_card);

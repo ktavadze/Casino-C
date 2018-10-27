@@ -113,7 +113,7 @@ void Computer::increase_build(Table & a_table, Build a_build)
     Set build_set = a_build.get_sets().at(0);
 
     // Remove player card from hand
-    m_hand.remove_card(build_set.get_card(0));
+    m_hand.remove_card(build_set.get_last_card());
 
     // Increase build
     for (unsigned int i = 0; i < a_table.get_builds().size(); i++)
@@ -122,7 +122,7 @@ void Computer::increase_build(Table & a_table, Build a_build)
 
         if (build_set.contains(build.get_sets()))
         {
-            a_table.increase_build(i, build_set.get_card(0), m_is_human);
+            a_table.increase_build(i, build_set.get_last_card(), m_is_human);
         }
     }
 }
@@ -139,7 +139,7 @@ void Computer::extend_build(Table & a_table, Build a_build)
     Set build_set = a_build.get_sets().at(a_build.get_sets().size() - 1);
 
     // Remove player card from hand
-    m_hand.remove_card(build_set.get_card(0));
+    m_hand.remove_card(build_set.get_first_card());
 
     Set extended_set;
 
@@ -175,7 +175,7 @@ void Computer::create_build(Table & a_table, Build a_build)
     Set build_set = a_build.get_sets().at(0);
 
     // Remove player card from hand
-    m_hand.remove_card(build_set.get_card(0));
+    m_hand.remove_card(build_set.get_first_card());
 
     // Remove loose set from table
     for (Card card : a_table.get_loose_set().get_cards())
@@ -200,10 +200,10 @@ Parameters:
 void Computer::capture(Table & a_table, Set a_capture_set)
 {
     // Remove capture card from hand
-    m_hand.remove_card(a_capture_set.get_card(0));
+    m_hand.remove_card(a_capture_set.get_first_card());
 
     // Add capture card to pile
-    m_pile.add_card(a_capture_set.get_card(0));
+    m_pile.add_card(a_capture_set.get_first_card());
 
     // Capture loose set
     for (Card card : a_table.get_loose_set().get_cards())

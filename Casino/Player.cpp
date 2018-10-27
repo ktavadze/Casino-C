@@ -460,7 +460,7 @@ Build Player::find_best_extend(Table a_table)
         }
     }
 
-    cout << "\nWith " << best_build.get_sets().back().get_card(0).get_name();
+    cout << "\nWith " << best_build.get_sets().back().get_first_card().get_name();
     cout << " extend " << best_build.ToString() << endl;
     cout << "Heuristic: " << best_build.get_weight() << endl;
 
@@ -529,7 +529,7 @@ Build Player::find_best_create(Table a_table)
         }
     }
 
-    cout << "\nWith " << best_build.get_sets().at(0).get_card(0).get_name();
+    cout << "\nWith " << best_build.get_sets().front().get_first_card().get_name();
     cout << " build " << best_build.ToString() << endl;
     cout << "Heuristic: " << best_build.get_weight() << endl;
 
@@ -629,7 +629,7 @@ Set Player::find_best_caputre(Table a_table)
         }
     }
 
-    cout << "\nWith " << best_capture_set.get_card(0).get_name();
+    cout << "\nWith " << best_capture_set.get_first_card().get_name();
     cout << " capture " << best_capture_set.ToString() << endl;
     cout << "Heuristic: " << best_capture_set.get_weight() << endl;
 
