@@ -14,6 +14,10 @@ public:
     {
         m_cards.clear();
     }
+    inline bool is_empty()
+    {
+        return m_cards.empty();
+    }
     inline int get_size()
     {
         return m_cards.size();

@@ -72,7 +72,7 @@ Return Value: Whether a legal build was created, a boolean value
 bool Human::process_build_create(Table & a_table)
 {
     // Check loose set
-    if (a_table.get_loose_set().get_size() == 0)
+    if (a_table.get_loose_set().is_empty())
     {
         Console::display_message("ERROR: no loose cards to build with!");
 
@@ -119,7 +119,7 @@ Return Value: Whether a legal build was increased, a boolean value
 bool Human::process_build_increase(Table & a_table)
 {
     // Check builds
-    if (a_table.get_builds().size() == 0)
+    if (a_table.get_builds().empty())
     {
         Console::display_message("ERROR: no builds to increase!");
 
@@ -158,7 +158,7 @@ Return Value: Whether a legal build was extended, a boolean value
 bool Human::process_build_extend(Table & a_table)
 {
     // Check builds
-    if (a_table.get_builds().size() == 0)
+    if (a_table.get_builds().empty())
     {
         Console::display_message("ERROR: no builds to extend!");
 
@@ -211,7 +211,7 @@ Return Value: Whether a legal capture move was made, a boolean value
 bool Human::process_capture(Table & a_table)
 {
     // Check table
-    if (a_table.get_builds().empty() && a_table.get_loose_set().get_size() == 0)
+    if (a_table.get_loose_set().is_empty() && a_table.get_builds().empty())
     {
         Console::display_message("ERROR: no cards to capture!");
 

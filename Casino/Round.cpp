@@ -12,12 +12,12 @@ void Round::start(Player & a_computer, Player & a_human)
 {
     while (!is_over(a_computer, a_human))
     {
-        if (a_computer.get_hand().get_size() == 0 && a_human.get_hand().get_size() == 0)
+        if (a_computer.get_hand().is_empty() && a_human.get_hand().is_empty())
         {
             // Seed deck
-            if (a_computer.get_pile().get_size() == 0 && a_human.get_pile().get_size() == 0)
+            if (a_computer.get_pile().is_empty() && a_human.get_pile().is_empty())
             {
-                if (m_table.get_loose_set().get_size() == 0 && m_table.get_builds().empty())
+                if (m_table.get_loose_set().is_empty() && m_table.get_builds().empty())
                 {
                     if (Console::process_deck_seed())
                     {
@@ -30,9 +30,9 @@ void Round::start(Player & a_computer, Player & a_human)
             a_human.set_hand(m_deck.draw_set());
             a_computer.set_hand(m_deck.draw_set());
 
-            if (a_computer.get_pile().get_size() == 0 && a_human.get_pile().get_size() == 0)
+            if (a_computer.get_pile().is_empty() && a_human.get_pile().is_empty())
             {
-                if (m_table.get_loose_set().get_size() == 0 && m_table.get_builds().empty())
+                if (m_table.get_loose_set().is_empty() && m_table.get_builds().empty())
                 {
                     // Deal table
                     m_table.set_loose_set(m_deck.draw_set());
@@ -124,7 +124,7 @@ bool Round::is_over(Player a_computer, Player a_human)
 {
     if (m_deck.is_empty())
     {
-        if (a_computer.get_hand().get_size() == 0 && a_human.get_hand().get_size() == 0)
+        if (a_computer.get_hand().is_empty() && a_human.get_hand().is_empty())
         {
             return true;
         }

@@ -54,7 +54,7 @@ Return Value: Whether the deck is empty, a boolean value
 **********************************************************************/
 bool Deck::is_empty()
 {
-    if (m_cards.size() == 0)
+    if (m_cards.empty())
     {
         return true;
     }
