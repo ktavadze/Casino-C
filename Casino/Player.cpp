@@ -377,9 +377,7 @@ Build Player::find_best_increase(Table a_table)
         }
     }
 
-    cout << "\nWith " << best_build.get_sets().front().get_last_card().get_name();
-    cout << " increase " << best_build.ToString() << endl;
-    cout << "Heuristic: " << best_build.get_weight() << endl;
+    Console::display_best_increase(best_build);
 
     return best_build;
 }
@@ -460,9 +458,7 @@ Build Player::find_best_extend(Table a_table)
         }
     }
 
-    cout << "\nWith " << best_build.get_sets().back().get_first_card().get_name();
-    cout << " extend " << best_build.ToString() << endl;
-    cout << "Heuristic: " << best_build.get_weight() << endl;
+    Console::display_best_extend(best_build);
 
     return best_build;
 }
@@ -529,9 +525,7 @@ Build Player::find_best_create(Table a_table)
         }
     }
 
-    cout << "\nWith " << best_build.get_sets().front().get_first_card().get_name();
-    cout << " build " << best_build.ToString() << endl;
-    cout << "Heuristic: " << best_build.get_weight() << endl;
+    Console::display_best_create(best_build);
 
     return best_build;
 }
@@ -629,9 +623,7 @@ Set Player::find_best_caputre(Table a_table)
         }
     }
 
-    cout << "\nWith " << best_capture_set.get_first_card().get_name();
-    cout << " capture " << best_capture_set.ToString() << endl;
-    cout << "Heuristic: " << best_capture_set.get_weight() << endl;
+    Console::display_best_capture(best_capture_set);
 
     return best_capture_set;
 }
@@ -660,8 +652,7 @@ Card Player::find_best_trail(Table a_table)
         }
     }
 
-    cout << "\nTrail with " << best_trail_card.get_name() << endl;
-    cout << "Heuristic: " << best_trail_card.get_weight() << endl;
+    Console::display_best_trail(best_trail_card);
 
     return best_trail_card;
 }

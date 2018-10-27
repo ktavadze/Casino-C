@@ -393,6 +393,45 @@ void Console::display_message(string a_message)
     cout << endl << "**************************************************" << endl;
 }
 
+void Console::display_best_increase(Build a_build)
+{
+    cout << endl << "***INCREASE BUILD***" << endl;
+    cout << "With " << a_build.get_sets().front().get_last_card().get_name();
+    cout << " increase " << a_build.ToString() << endl;
+    cout << "Heuristic: " << a_build.get_weight() << endl;
+}
+
+void Console::display_best_extend(Build a_build)
+{
+    cout << endl << "***EXTEND BUILD***" << endl;
+    cout << "With " << a_build.get_sets().back().get_first_card().get_name();
+    cout << " extend " << a_build.ToString() << endl;
+    cout << "Heuristic: " << a_build.get_weight() << endl;
+}
+
+void Console::display_best_create(Build a_build)
+{
+    cout << endl << "***CREATE BUILD***" << endl;
+    cout << "With " << a_build.get_sets().front().get_first_card().get_name();
+    cout << " build " << a_build.ToString() << endl;
+    cout << "Heuristic: " << a_build.get_weight() << endl;
+}
+
+void Console::display_best_capture(Set a_set)
+{
+    cout << endl << "***CAPTURE***" << endl;
+    cout << "With " << a_set.get_first_card().get_name();
+    cout << " capture " << a_set.ToString() << endl;
+    cout << "Heuristic: " << a_set.get_weight() << endl;
+}
+
+void Console::display_best_trail(Card a_card)
+{
+    cout << endl << "***TRAIL***" << endl;
+    cout << "Trail with " << a_card.get_name() << endl;
+    cout << "Heuristic: " << a_card.get_weight() << endl;
+}
+
 /**********************************************************************
 Function Name: display_round_results
 Purpose: To display round results
