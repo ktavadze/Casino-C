@@ -85,7 +85,7 @@ protected:
     Build find_best_increase(Table a_table);
     Build find_best_extend(Table a_table);
     Build find_best_create(Table a_table);
-    Set find_best_caputre(Table a_table);
+    Set find_best_capture(Table a_table);
     Card find_best_trail(Table a_table);
 
     vector<Set> generate_set_combinations(Set a_set);

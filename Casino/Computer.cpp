@@ -83,7 +83,7 @@ Parameters:
 **********************************************************************/
 void Computer::process_capture(Table & a_table)
 {
-    Set best_capture_set = find_best_caputre(a_table);
+    Set best_capture_set = find_best_capture(a_table);
 
     capture(a_table, best_capture_set);
 }

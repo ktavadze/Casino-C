@@ -23,7 +23,7 @@ void Player::ask_for_help(Table a_table)
     }
     else if (can_capture(a_table))
     {
-        find_best_caputre(a_table);
+        find_best_capture(a_table);
     }
     else {
         find_best_trail(a_table);
@@ -47,7 +47,7 @@ string Player::ToString()
 Function Name: capture_loose_card
 Purpose: To capture a loose card
 Parameters:
-    a_table, a Table instace passed by reference
+    a_table, a Table instance passed by reference
     a_card, a Card instance passed by value
 **********************************************************************/
 void Player::capture_loose_card(Table & a_table, Card a_card)
@@ -63,7 +63,7 @@ void Player::capture_loose_card(Table & a_table, Card a_card)
 Function Name: capture_build
 Purpose: To capture a build
 Parameters:
-    a_table, a Table instace passed by reference
+    a_table, a Table instance passed by reference
     a_build, a Build instance passed by value
 **********************************************************************/
 void Player::capture_build(Table & a_table, Build a_build)
@@ -82,7 +82,7 @@ void Player::capture_build(Table & a_table, Build a_build)
 Function Name: can_increase
 Purpose: To determine whether the player can increase any builds
 Parameters:
-    a_table, a Table instace passed by value
+    a_table, a Table instance passed by value
 Return Value: Whether the player can increase any builds, a boolean value
 **********************************************************************/
 bool Player::can_increase(Table a_table)
@@ -115,7 +115,7 @@ bool Player::can_increase(Table a_table)
 Function Name: can_extend
 Purpose: To determine whether the player can extend any builds
 Parameters:
-    a_table, a Table instace passed by value
+    a_table, a Table instance passed by value
 Return Value: Whether the player can extend any builds, a boolean value
 **********************************************************************/
 bool Player::can_extend(Table a_table)
@@ -176,7 +176,7 @@ bool Player::can_extend(Table a_table)
 Function Name: can_create
 Purpose: To determine whether the player create any builds
 Parameters:
-    a_table, a Table instace passed by value
+    a_table, a Table instance passed by value
 Return Value: Whether the player can create any builds, a boolean value
 **********************************************************************/
 bool Player::can_create(Table a_table)
@@ -215,7 +215,7 @@ bool Player::can_create(Table a_table)
 Function Name: can_capture
 Purpose: To determine whether the player can capture anything
 Parameters:
-    a_table, a Table instace passed by value
+    a_table, a Table instance passed by value
 Return Value: Whether the player can capture anything, a boolean value
 **********************************************************************/
 bool Player::can_capture(Table a_table)
@@ -269,7 +269,7 @@ bool Player::can_capture(Table a_table)
 Function Name: reserved_for_capture
 Purpose: To determine whether a card is reserved for capture
 Parameters:
-    a_table, a Table instace passed by value
+    a_table, a Table instance passed by value
     a_card, a Card instance passed by value
 Return Value: Whether a card is reserved for capture, a boolean value
 **********************************************************************/
@@ -293,7 +293,7 @@ bool Player::reserved_for_capture(Table a_table, Card a_card)
 Function Name: owns_build
 Purpose: To determine whether the player owns any builds
 Parameters:
-    a_table, a Table instace passed by value
+    a_table, a Table instance passed by value
 Return Value: Whether the player owns any builds, a boolean value
 **********************************************************************/
 bool Player::owns_build(Table a_table)
@@ -335,7 +335,7 @@ int Player::count_cards_held(int a_value)
 Function Name: find_best_increase
 Purpose: To find the best increased build
 Parameters:
-    a_table, a Table instace passed by value
+    a_table, a Table instance passed by value
 Return Value: The best increased build, a Build instance
 **********************************************************************/
 Build Player::find_best_increase(Table a_table)
@@ -386,7 +386,7 @@ Build Player::find_best_increase(Table a_table)
 Function Name: find_best_extend
 Purpose: To find the best extended build
 Parameters:
-    a_table, a Table instace passed by value
+    a_table, a Table instance passed by value
 Return Value: The best extended build, a Build instance
 **********************************************************************/
 Build Player::find_best_extend(Table a_table)
@@ -467,7 +467,7 @@ Build Player::find_best_extend(Table a_table)
 Function Name: find_best_create
 Purpose: To find the best new build
 Parameters:
-    a_table, a Table instace passed by value
+    a_table, a Table instance passed by value
 Return Value: The best new build, a Build instance
 **********************************************************************/
 Build Player::find_best_create(Table a_table)
@@ -531,13 +531,13 @@ Build Player::find_best_create(Table a_table)
 }
 
 /**********************************************************************
-Function Name: find_best_caputre
+Function Name: find_best_capture
 Purpose: To find the best capture set
 Parameters:
-    a_table, a Table instace passed by value
+    a_table, a Table instance passed by value
 Return Value: The best capture set, a Set instance
 **********************************************************************/
-Set Player::find_best_caputre(Table a_table)
+Set Player::find_best_capture(Table a_table)
 {
     // Find possible capture sets
     vector<Set> possible_capture_sets;
@@ -632,7 +632,7 @@ Set Player::find_best_caputre(Table a_table)
 Function Name: find_best_trail
 Purpose: To find the best trail card
 Parameters:
-    a_table, a Table instace passed by value
+    a_table, a Table instance passed by value
 Return Value: The best trail card, a Card instance
 **********************************************************************/
 Card Player::find_best_trail(Table a_table)
@@ -661,7 +661,7 @@ Card Player::find_best_trail(Table a_table)
 Function Name: generate_set_combinations
 Purpose: To generate set combinations
 Parameters:
-    a_loose_set, a Set instace passed by value
+    a_loose_set, a Set instance passed by value
 Return Value: The possible set combinations, a vector of Set instances
 **********************************************************************/
 vector<Set> Player::generate_set_combinations(Set a_loose_set)
@@ -730,7 +730,7 @@ Function Name: vector_contains_set
 Purpose: To determine whether a vector of sets contains specified set
 Parameters:
     a_vector, a vector of Set instances passed by value
-    a_set, a Set instace passed by value
+    a_set, a Set instance passed by value
 Return Value: The possible set combinations, a vector of Set instances
 **********************************************************************/
 bool Player::vector_contains_set(vector<Set> a_vector, Set a_set)

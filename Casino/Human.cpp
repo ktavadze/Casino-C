@@ -283,7 +283,7 @@ bool Human::process_trail(Table & a_table)
 Function Name: can_create_build
 Purpose: To determine whether the human can create specified build
 Parameters:
-    a_table, a Table instace passed by value
+    a_table, a Table instance passed by value
     a_build_card, a Card instance passed by value
     a_loose_set, a Set instance passed by value
 Return Value: Whether the human can create specified build, a boolean value
@@ -313,7 +313,7 @@ bool Human::can_create_build(Table a_table, Card a_build_card, Set a_loose_set)
 Function Name: can_increase_build
 Purpose: To determine whether the human can increase specified build
 Parameters:
-    a_table, a Table instace passed by value
+    a_table, a Table instance passed by value
     a_selected_build, a Build instance passed by value
     a_build_card, a Card instance passed by value
 Return Value: Whether the human can increase specified build, a boolean value
@@ -359,7 +359,7 @@ bool Human::can_increase_build(Table a_table, Build a_selected_build, Card a_bui
 Function Name: can_extend_build
 Purpose: To determine whether the human can extend specified build
 Parameters:
-    a_table, a Table instace passed by value
+    a_table, a Table instance passed by value
     a_selected_build, a Build instance passed by value
     a_build_card, a Card instance passed by value
     a_loose_set, a Set instance passed by value
@@ -390,7 +390,7 @@ bool Human::can_extend_build(Table a_table, Build a_selected_build, Card a_build
 Function Name: can_capture_selection
 Purpose: To determine whether the human can capture specified selection
 Parameters:
-    a_table, a Table instace passed by value
+    a_table, a Table instance passed by value
     a_capture_card, a Card instance passed by value
     a_loose_set, a Set instance passed by value
     a_firm_set, a Set instance passed by value
@@ -494,7 +494,7 @@ bool Human::can_capture_selection(Table a_table, Card a_capture_card, Set a_loos
 Function Name: can_trail
 Purpose: To determine whether the human can trail specified card
 Parameters:
-    a_table, a Table instace passed by value
+    a_table, a Table instance passed by value
     a_trail_card, a Card instance passed by value
 Return Value: Whether the human can extend specified build, a boolean value
 **********************************************************************/
@@ -534,7 +534,7 @@ bool Human::can_trail(Table a_table, Card a_trail_card)
 Function Name: capture
 Purpose: To allow the human to capture specified selection
 Parameters:
-    a_table, a Table instace passed by reference
+    a_table, a Table instance passed by reference
     a_capture_card, a Card instance passed by value
     a_loose_set, a Set instance passed by value
     a_firm_set, a Set instance passed by value
