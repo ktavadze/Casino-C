@@ -722,6 +722,39 @@ vector<Set> Player::generate_set_combinations(Set a_loose_set)
         }
     }
 
+    // Generate quadruplets
+    if (a_loose_set.get_size() > 2)
+    {
+        for (int i = 0; i < a_loose_set.get_size(); i++)
+        {
+            for (int j = 0; j < a_loose_set.get_size(); j++)
+            {
+                for (int k = 0; k < a_loose_set.get_size(); k++)
+                {
+                    for (int l = 0; l < a_loose_set.get_size(); l++)
+                    {
+                        if (i != j && i != k && i != l && j != k && j != l && k != l)
+                        {
+                            Set set;
+                            set.add_card(a_loose_set.get_card(i));
+                            set.add_card(a_loose_set.get_card(j));
+                            set.add_card(a_loose_set.get_card(k));
+                            set.add_card(a_loose_set.get_card(l));
+
+                            if (set.get_value() < 14)
+                            {
+                                if (!vector_contains_set(loose_sets, set))
+                                {
+                                    loose_sets.push_back(set);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     return loose_sets;
 }
 
