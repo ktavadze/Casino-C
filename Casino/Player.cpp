@@ -723,7 +723,7 @@ vector<Set> Player::generate_set_combinations(Set a_loose_set)
     }
 
     // Generate quadruplets
-    if (a_loose_set.get_size() > 2)
+    if (a_loose_set.get_size() > 3)
     {
         for (int i = 0; i < a_loose_set.get_size(); i++)
         {
