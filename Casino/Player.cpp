@@ -668,12 +668,14 @@ vector<Set> Player::generate_set_combinations(Set a_loose_set)
 {
     vector<Set> loose_sets;
 
+    int size = a_loose_set.get_size();
+
     // Generate doubles
-    if (a_loose_set.get_size() > 1)
+    if (size > 1)
     {
-        for (int i = 0; i < a_loose_set.get_size(); i++)
+        for (int i = 0; i < size; i++)
         {
-            for (int j = 0; j < a_loose_set.get_size(); j++)
+            for (int j = 0; j < size; j++)
             {
                 if (i != j)
                 {
@@ -694,13 +696,13 @@ vector<Set> Player::generate_set_combinations(Set a_loose_set)
     }
 
     // Generate triples
-    if (a_loose_set.get_size() > 2)
+    if (size > 2)
     {
-        for (int i = 0; i < a_loose_set.get_size(); i++)
+        for (int i = 0; i < size; i++)
         {
-            for (int j = 0; j < a_loose_set.get_size(); j++)
+            for (int j = 0; j < size; j++)
             {
-                for (int k = 0; k < a_loose_set.get_size(); k++)
+                for (int k = 0; k < size; k++)
                 {
                     if (i != j && i != k && j != k)
                     {
@@ -723,15 +725,15 @@ vector<Set> Player::generate_set_combinations(Set a_loose_set)
     }
 
     // Generate quadruplets
-    if (a_loose_set.get_size() > 3)
+    if (size > 3)
     {
-        for (int i = 0; i < a_loose_set.get_size(); i++)
+        for (int i = 0; i < size; i++)
         {
-            for (int j = 0; j < a_loose_set.get_size(); j++)
+            for (int j = 0; j < size; j++)
             {
-                for (int k = 0; k < a_loose_set.get_size(); k++)
+                for (int k = 0; k < size; k++)
                 {
-                    for (int l = 0; l < a_loose_set.get_size(); l++)
+                    for (int l = 0; l < size; l++)
                     {
                         if (i != j && i != k && i != l && j != k && j != l && k != l)
                         {
